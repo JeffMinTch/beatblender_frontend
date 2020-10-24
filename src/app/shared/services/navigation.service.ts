@@ -73,12 +73,12 @@ export class NavigationService {
       type: 'dropDown',
       tooltip: 'Sample Market',
       icon: 'storefront',
-      state: 'sample-market',
+      state: 'sample-licensing-market',
       sub: [
-        {name: 'BeatBlender Licenses', state: ''},
-        {name: 'Full Licenses', state: 'products/5a9ae2106f155194e5c95d67'},
-        {name: 'How To Get A License', state: 'checkout'},
-        {name: 'Upload Your Samples', state: 'cart'}
+        {name: 'Basic Licenses', state: 'basic-licenses'},
+        {name: 'Full Licenses', state: 'full-licenses'},
+        {name: 'How To Get A License', state: 'how-it-works'}
+        // {name: 'Upload Your Samples', state: 'upload-samples'}
       ]
     },
     {

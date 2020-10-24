@@ -112,8 +112,8 @@ export const rootRouterConfig: Routes = [
       },
       {
         path: 'sample-licensing-market',
-        loadChildren: () => import('./views/shop/shop.module').then(m => m.ShopModule),
-        data: { title: 'Sample Licensing Market ', breadcrumb: 'Get BeatBlender Licenses'}
+        loadChildren: () => import('./views/sample-licensing-market/sample-licensing-market.module').then(m => m.SampleLicensingMarketModule),
+        data: { title: 'Sample Licensing Market ', breadcrumb: 'Get Sample Licenses'}
       },
       {
         path: 'search',

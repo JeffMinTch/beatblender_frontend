@@ -23,17 +23,20 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { StarRatingModule } from 'angular-star-rating';
 import { NgxPaginationModule } from 'ngx-pagination';
-import { SharedModule } from '../../shared/shared.module'
-import { ProductsComponent } from './products/products.component';
-import { ShopService } from './shop.service';
-import { ShopRoutes } from './shop.routing';
-import { ProductDetailsComponent } from './product-details/product-details.component';
-import { CartComponent } from './cart/cart.component';
-import { CheckoutComponent } from './checkout/checkout.component';
-import { SharedDirectivesModule } from '../../shared/directives/shared-directives.module';
-// import { SharedDirectivesModule } from 'app/shared/directives/shared-directives.module';
+import { SharedModule } from '../../shared/shared.module';
+import { SampleLicensingMarketService } from './sample-licensing-market.service';
+import {SampleLicensingMarketRoutes } from './sample-licensing-market.routing';
+import { SharedDirectivesModule } from 'app/shared/directives/shared-directives.module';
+import { HowItWorksComponent } from './how-it-works/how-it-works.component';
+import { BasicLicensesComponent } from './basic-licenses/basic-licenses.component';
+import { FullLicensesComponent } from './full-licenses/full-licenses.component';
+
 
 @NgModule({
+  // ProductsComponent, 
+  // ProductDetailsComponent, 
+  // CartComponent, 
+
   imports: [
     CommonModule,
     FormsModule,
@@ -59,14 +62,12 @@ import { SharedDirectivesModule } from '../../shared/directives/shared-directive
     StarRatingModule.forRoot(),
     NgxPaginationModule,
     NgxDatatableModule,
-    RouterModule.forChild(ShopRoutes),
+    RouterModule.forChild(SampleLicensingMarketRoutes),
     SharedDirectivesModule
   ],
-  declarations: [
-    ProductsComponent, 
-    ProductDetailsComponent, 
-    CartComponent, CheckoutComponent
-  ],
-  providers: [ShopService]
+  declarations: [HowItWorksComponent, BasicLicensesComponent, FullLicensesComponent],
+  providers: [SampleLicensingMarketService]
 })
-export class ShopModule { }
+export class SampleLicensingMarketModule {
+
+}
