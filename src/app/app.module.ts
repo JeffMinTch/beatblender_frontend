@@ -1,7 +1,9 @@
-import { NgModule, ErrorHandler } from '@angular/core';
+// import { StateManagerService } from './shared/services/state-manager.service';
+import { NgModule, ErrorHandler, APP_INITIALIZER } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { BrowserModule, HAMMER_GESTURE_CONFIG } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { StateManagerService} from './shared/services/state-manager.service'
 // import { GestureConfig } from '@angular/material/core';
 import { 
   PerfectScrollbarModule, 
@@ -30,6 +32,10 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient);
 }
 
+// export function stateManagerFactory(stateManagerService: StateManagerService) {
+//   return () => stateManagerService.load();
+// }
+
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true
 };
@@ -57,11 +63,13 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     // { provide: HAMMER_GESTURE_CONFIG, useClass: GestureConfig },
     { provide: PERFECT_SCROLLBAR_CONFIG, useValue: DEFAULT_PERFECT_SCROLLBAR_CONFIG },
     // REQUIRED IF YOU USE JWT AUTHENTICATION
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: TokenInterceptor,
-      multi: true,
-    },
+    // {
+    //   provide: HTTP_INTERCEPTORS,
+    //   useClass: TokenInterceptor,
+    //   multi: true,
+    // },
+    // StateManagerService,
+    // { provide: APP_INITIALIZER, useFactory: stateManagerFactory, deps: [StateManagerService], multi: true },
   ],
   bootstrap: [AppComponent]
 })

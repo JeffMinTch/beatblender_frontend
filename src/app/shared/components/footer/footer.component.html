@@ -1,12 +1,86 @@
 <footer class="main-footer">
   <div class="container-dynamic d-flex">
-    <a
-      mat-raised-button
-      color="accent"
-      href="http://1.envato.market/JN1r7"
-      >Buy Egret</a
-    >
-    <span class="m-auto"></span>
-    Design & Developed by <a href="https://ui-lib.com"> UI Lib</a>
+    <div class="toolbar" fxLayout="row" fxLayoutAlign="center center">
+      <div class="player" fxLayout="row nowrap">
+        <button class="player-button previous-button-player" (click)="previousNext('prev')"
+          [disabled]="isFirstPlaying()" type="button" mat-icon-button onclick="this.blur()">
+          <mat-icon class="skip-previous player-icon" aria-hidden="false" aria-label="skip previous track">skip_previous
+          </mat-icon>
+        </button>
+        <button type="button" mat-icon-button onclick="this.blur()" class="player-button">
+          <mat-icon #playerPlayIcon (click)="changeToPauseView($event)"
+            class="play-arrow player-icon player-play-icon icon-control-play disable-active" aria-hidden="false"
+            aria-label="Example home icon">{{playStateControlService.getPlayState() ? 'pause' : 'play_arrow' }}
+          </mat-icon>
+          <!-- <mat-icon #playerPauseIcon (click)="changeToPlayView($event)"
+            class="play-arrow player-icon player-pause-icon icon-control-pause" aria-hidden="false"
+            aria-label="Example home icon">pause
+          </mat-icon> -->
+        </button>
+        <button (click)="previousNext('next')" type="button" mat-icon-button onclick="this.blur()"
+          [disabled]="isLastPlaying()" class="player-button next-button-player">
+          <mat-icon class="skip-next player-icon icon-control-end rewind-icon" aria-hidden="false"
+            aria-label="Example home icon">skip_next</mat-icon>
+        </button>
+      </div>
+      <div class="player-tools" fxLayout="row nowrap" fxLayoutALign="center center">
+        <button mat-icon-button *ngIf="!isMuted" (click)="toggleMute()" type="button" mat-icon-button
+            onclick="this.blur()" class="mute-button" style="">
+            <mat-icon inline="true" class="mute-icon" aria-hidden="false" aria-label="Example home icon">volume_mute</mat-icon>
+          </button>
+      </div>
+    </div>
+    <div class="waveform-container" #waveFormContainer>
+      <!-- [ngClass]="{'waveform-background': isPanelOpen(expansionPanelHeader)}" -->
+      <div id="waveform" #waveform>
+        
+      </div>
+    </div>
+    <div class="current-audio-container">
+      <img src="/assets/images/a3.png" alt="">
+      <div class="current-audio-info" fxLayout="column">
+        <span>Michael Jackson</span>
+        <span>Thriller</span>
+      </div>
+    </div>
+    <!-- <div class="player-wrap">
+      <section class="player-container">
+        <button class="player-button previous-button-player" (click)="previousNext('prev')"
+          [disabled]="isFirstPlaying()" type="button" mat-icon-button onclick="this.blur()">
+          <mat-icon class="skip-previous player-icon" aria-hidden="false" aria-label="skip previous track">skip_previous
+          </mat-icon>
+        </button>
+        <button type="button" mat-icon-button onclick="this.blur()" class="player-button">
+          <mat-icon #playerPlayIcon (click)="changeToPauseView($event)"
+            class="play-arrow player-icon player-play-icon icon-control-play disable-active" aria-hidden="false"
+            aria-label="Example home icon">play_arrow
+          </mat-icon>
+          <mat-icon #playerPauseIcon (click)="changeToPlayView($event)"
+            class="play-arrow player-icon player-pause-icon icon-control-pause" aria-hidden="false"
+            aria-label="Example home icon">pause
+          </mat-icon>
+        </button>
+
+        <button (click)="previousNext('next')" type="button" mat-icon-button onclick="this.blur()"
+          [disabled]="isLastPlaying()" class="player-button next-button-player">
+          <mat-icon class="skip-next player-icon icon-control-end rewind-icon" aria-hidden="false"
+            aria-label="Example home icon">skip_next</mat-icon>
+        </button>
+      </section>
+      <div style="display: flex; height: 100%; width: 100%; z-index: 1;"></div>
+      <div class="utilities-container">
+        <div class="mute-container">
+          <button mat-icon-button *ngIf="!isMuted" (click)="toggleMute()" type="button" mat-icon-button
+            onclick="this.blur()" class="mute-button" style="">
+            <mat-icon class="mute-icon" aria-hidden="false" aria-label="Example home icon" style="">volume_mute</mat-icon>
+          </button>
+          <button *ngIf="isMuted" (click)="toggleMute()" type="button" mat-icon-button onclick="this.blur()"
+            class="mute-button" style="">
+            <mat-icon class="mute-icon" aria-hidden="false" aria-label="Example home icon" style="">volume_off</mat-icon>
+          </button>
+        </div>
+      </div>
+    </div> -->
+
   </div>
 </footer>

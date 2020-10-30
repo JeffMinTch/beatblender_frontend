@@ -34,6 +34,7 @@
     "@ngu/carousel": "1.5.4",
     "@ngx-translate/core": "13.0.0",
     "@ngx-translate/http-loader": "6.0.0",
+    "@okta/okta-angular": "^2.2.1",
     "@swimlane/ngx-datatable": "17.0.0",
     "angular-calendar": "0.28.16",
     "angular-in-memory-web-api": "0.11.0",
@@ -67,11 +68,12 @@
     "rxjs-compat": "6.1.0",
     "tinycolor2": "^1.4.1",
     "tslib": "^2.0.0",
+    "wavesurfer.js": "^4.2.0",
     "web-animations-js": "^2.3.2",
     "zone.js": "~0.10.2"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "~0.1000.1",
+    "@angular-devkit/build-angular": "^0.1002.0",
     "@angular-devkit/core": "10.0.1",
     "@angular/cli": "10.0.1",
     "@angular/compiler-cli": "10.0.2",

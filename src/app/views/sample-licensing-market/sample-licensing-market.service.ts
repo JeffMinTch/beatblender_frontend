@@ -1,13 +1,15 @@
+import { CloudService } from './../../shared/services/cloud-service.service';
 import { Injectable } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { ProductDB } from 'app/shared/inmemory-db/products';
 import { Product } from 'app/shared/models/product.model';
-import { combineLatest, throwError as observableThrowError} from 'rxjs';
+import { combineLatest, throwError as observableThrowError } from 'rxjs';
 import { Observable } from 'rxjs/internal/Observable';
 import { of } from 'rxjs/internal/observable/of';
 import { delay } from 'rxjs/internal/operators/delay';
 import { map } from 'rxjs/internal/operators/map';
 import { debounceTime, startWith, switchMap } from 'rxjs/operators';
+import { Sample } from 'app/shared/models/sample.model';
 
 export interface CartItem {
   product: Product;
@@ -34,18 +36,18 @@ export class SampleLicensingMarketService {
   public cartData = {
     itemCount: 0
   }
-  constructor() { }
+  constructor(private cloudService: CloudService) { }
   public getCart(): Observable<CartItem[]> {
     return of(this.cart)
   }
   public addToCart(cartItem: CartItem): Observable<CartItem[]> {
     let index = -1;
     this.cart.forEach((item, i) => {
-      if(item.product._id === cartItem.product._id) {
+      if (item.product._id === cartItem.product._id) {
         index = i;
       }
     })
-    if(index !== -1) {
+    if (index !== -1) {
       this.cart[index].data.quantity += cartItem.data.quantity;
       this.updateCount();
       return of(this.cart)
@@ -63,7 +65,7 @@ export class SampleLicensingMarketService {
   }
   public removeFromCart(cartItem: CartItem): Observable<CartItem[]> {
     this.cart = this.cart.filter(item => {
-      if(item.product._id == cartItem.product._id) {
+      if (item.product._id == cartItem.product._id) {
         return false;
       }
       return true;
@@ -71,6 +73,7 @@ export class SampleLicensingMarketService {
     this.updateCount();
     return of(this.cart)
   }
+
   public getProducts(): Observable<Product[]> {
     let productDB = new ProductDB();
     return of(productDB.products)
@@ -85,11 +88,20 @@ export class SampleLicensingMarketService {
   public getProductDetails(productID): Observable<Product> {
     let productDB = new ProductDB();
     let product = productDB.products.filter(p => p._id === productID)[0];
-    if(!product) {
+    if (!product) {
       return observableThrowError(new Error('Product not found!'));
     }
     return of(product)
   }
+
+  public getAudioFiles(): Observable<Sample[]> {
+    return this.cloudService.getAudioFiles().pipe(
+      map(serverFiles => {
+      return serverFiles.audioFileResponse;
+    })
+    );
+  }
+
   public getCategories(): Observable<any> {
     let categories = ['speaker', 'headphone', 'watch', 'phone'];
     return of(categories);
@@ -99,22 +111,21 @@ export class SampleLicensingMarketService {
     return combineLatest(
       this.getProducts(),
       filterForm.valueChanges
+        .pipe(
+          startWith(this.initialFilters),
+          debounceTime(400)
+        )
+    )
       .pipe(
-        startWith(this.initialFilters),
-        debounceTime(400)
+        switchMap(([products, filterData]) => {
+          return this.filterProducts(products, filterData);
+        })
       )
-    )
-    .pipe(
-      switchMap(([products, filterData]) => {
-        return this.filterProducts(products, filterData);
-      })
-    )
-
   }
   /*
   * If your data set is too big this may raise performance issue.
   * You should implement server side filtering instead.
-  */ 
+  */
   private filterProducts(products: Product[], filterData): Observable<Product[]> {
     let filteredProducts = products.filter(p => {
       let isMatch: Boolean;
@@ -137,8 +148,8 @@ export class SampleLicensingMarketService {
       }
       // Category filter
       if (
-        filterData.category === p.category 
-        || !filterData.category 
+        filterData.category === p.category
+        || !filterData.category
         || filterData.category === 'all'
       ) {
         match.caterory = true;
@@ -147,7 +158,7 @@ export class SampleLicensingMarketService {
       }
       // Price filter
       if (
-        p.price.sale >= filterData.minPrice 
+        p.price.sale >= filterData.minPrice
         && p.price.sale <= filterData.maxPrice
       ) {
         match.price = true;
@@ -155,17 +166,17 @@ export class SampleLicensingMarketService {
         match.price = false;
       }
       // Rating filter
-      if(
-        p.ratings.rating >= filterData.minRating 
+      if (
+        p.ratings.rating >= filterData.minRating
         && p.ratings.rating <= filterData.maxRating
       ) {
         match.rating = true;
       } else {
         match.rating = false;
       }
-      
-      for(let m in match) {
-        if(!match[m]) return false;
+
+      for (let m in match) {
+        if (!match[m]) return false;
       }
 
       return true;

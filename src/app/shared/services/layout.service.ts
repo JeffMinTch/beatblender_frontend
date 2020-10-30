@@ -43,19 +43,19 @@ export class LayoutService {
     this.setAppLayout(
       // ******** SET YOUR LAYOUT OPTIONS HERE *********
       {
-        navigationPos: 'side', // side, top
+        navigationPos: 'top', // side, top
         sidebarStyle: 'full', // full, compact, closed
         sidebarColor: 'slate', // http://demos.ui-lib.com/egret-doc/#egret-colors
         sidebarCompactToggle: false, // applied when "sidebarStyle" is "compact"
         dir: 'ltr', // ltr, rtl
         useBreadcrumb: true,
         topbarFixed: false,
-        footerFixed: false,
+        footerFixed: true,
         topbarColor: 'white', // http://demos.ui-lib.com/egret-doc/#egret-colors
         footerColor: 'slate', // http://demos.ui-lib.com/egret-doc/#egret-colors
         matTheme: 'egret-navy', // egret-blue, egret-navy, egret-light-purple, egret-dark-purple, egret-dark-pink
         breadcrumb: 'simple', // simple, title
-        perfectScrollbar: true,
+        perfectScrollbar: false,
       }
     );
   }

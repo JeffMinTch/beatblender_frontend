@@ -77,6 +77,10 @@
     .main-footer {
       background: $color500 !important;
       color: $foreground500 !important;
+      .player-icon {
+        background: $color500;
+        color: $foreground500;
+      }
     }
   }
   

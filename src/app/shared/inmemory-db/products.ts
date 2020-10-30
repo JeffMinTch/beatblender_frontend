@@ -30,7 +30,7 @@ export class ProductDB {
         '../../../../assets/images/products/speaker-2.jpg'
       ],
       'badge': {
-        'text': '20% off',
+        'text': 'NEW SAMPLE',
         'color': '#0D47A1'
       }
     },
@@ -64,7 +64,7 @@ export class ProductDB {
         '../../../../assets/images/products/speaker-2.jpg'
       ],
       'badge': {
-        'text': 'Sale',
+        'text': 'HYPED SAMPLE',
         'color': '#DD2C00'
       }
     },
@@ -100,7 +100,7 @@ export class ProductDB {
         '../../../../assets/images/products/headphone-4.jpg'
       ],
       'badge': {
-        'text': '-40%',
+        'text': '-40% PRICE DROP',
         'color': '#0288D1'
       }
     },
