@@ -64,6 +64,8 @@
       }
     }
   }
+
+
   // Header backgrounds
   // .topbar-#{''+$colorName+''} {
   //   .topbar.mat-toolbar {
@@ -72,17 +74,22 @@
   //   }
   // }
 
-  // Footer background
-  .footer-#{''+$colorName+''} {
-    .main-footer {
-      background: $color500 !important;
-      color: $foreground500 !important;
-      .player-icon {
-        background: $color500;
-        color: $foreground500;
-      }
+  .toolbar-bg, .toolbar-bg-bottom {
+    background: $color500;
+  }
+
+  
+
+  .shop-wrap {
+    input {
+      color: $color500;
+    }
+    .artist-name {
+      color: $color500;
     }
   }
+
+  
   
 
   // Generate classes for each color shades

@@ -17,9 +17,9 @@ export const FormsRoutes: Routes = [
       component: RichTextEditorComponent,
       data: { title: 'Editor', breadcrumb: 'EDITOR' }
     }, {
-      path: 'upload',
+      path: 'upload-audio',
       component: FileUploadComponent,
-      data: { title: 'Upload', breadcrumb: 'UPLOAD' }
+      data: { title: 'Upload Audio', breadcrumb: 'Upload Audio' }
     }, {
       path: 'wizard',
       component: WizardComponent,

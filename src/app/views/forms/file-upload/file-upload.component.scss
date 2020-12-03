@@ -1,0 +1,27 @@
+// .dz-file-over {
+//     border: dotted 3px rgb(12, 12, 90);
+// }
+
+
+
+.sample-info {
+    > mat-card-title {
+        font-size: 1.2rem;
+        .file-type {
+            // background: white;
+            // border-radius: 4px;
+            // margin-left: auto;
+            // padding: 2px 8px;
+        }
+    }
+}
+
+.samples-form {
+    width: 100%;
+    img {
+        border-radius: 50%;
+        height: 100%;
+        width: auto;
+    }
+}
+

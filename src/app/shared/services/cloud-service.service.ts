@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { of, Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+import { map, share } from 'rxjs/operators';
+import { SampleSearchQuery } from '../models/sample-search-query.model';
 
 @Injectable({
   providedIn: 'root'
@@ -149,7 +151,7 @@ export class CloudService {
   getAudioFiles(): Observable<any> {
     // return of(this.audioFiles);
 
-    return this.httpClient.get(this.audioFilesUrl);
+    return this.httpClient.get(this.audioFilesUrl).pipe(share());
 
   }
 
@@ -166,13 +168,13 @@ export class CloudService {
     bpmMinMax: string[],
     yearMinMax: string[]
   ): Observable<any> {
-    
+
     const formData: FormData = new FormData();
 
     for (let i = 0; i < genres.length; i++) {
       formData.append('genres', genres[i]);
     }
-    
+
     for (let i = 0; i < regions.length; i++) {
       formData.append('regions', regions[i]);
     }
@@ -184,7 +186,7 @@ export class CloudService {
     for (let i = 0; i < songKeys.length; i++) {
       formData.append('songKeys', songKeys[i]);
     }
-   
+
     for (let i = 0; i < bpmMinMax.length; i++) {
       formData.append('bpmMinMax', bpmMinMax[i]);
     }
@@ -197,13 +199,18 @@ export class CloudService {
   }
 
 
-  searchMusicByInput(searchString: string): Observable<any> {
+  searchAudioByFormInput(searchString: string): Observable<any> {
     const formData: FormData = new FormData();
     formData.append('searchString', searchString);
     return this.httpClient.post(this.searchMusicByInputUrl, formData);
+    
+    // .pipe(
+    //   share(),
+    //   map((data: any) => data.sampleSearchQueries)
+    // );
   }
 
-  searchSingleAudio(sampleId: number):Observable<any> {
+  searchSingleAudio(sampleId: number): Observable<any> {
     const formData: FormData = new FormData();
     formData.append('sampleId', JSON.stringify(sampleId));
     return this.httpClient.post(this.searchSingleAudioUrl, formData);
@@ -211,33 +218,33 @@ export class CloudService {
 
   searchMultipleAudio(sampleIds: Array<number>): Observable<any> {
     const formData: FormData = new FormData();
-    for(let i = 0; i < sampleIds.length; i++) {
+    for (let i = 0; i < sampleIds.length; i++) {
       formData.append("sampleIds", JSON.stringify(sampleIds[i]));
     }
     return this.httpClient.post(this.searchMultipleAudioUrl, formData);
   }
 
-  downloadBasicLicense(userName: string, sampleID: number):Observable<any> {
+  downloadBasicLicense(userName: string, sampleID: number): Observable<any> {
     const formData: FormData = new FormData();
     formData.append("userName", userName);
     // formData.append("fileName", fileName);
     formData.append("sampleID", JSON.stringify(sampleID));
-    return this.httpClient.post(this.downloadBasicLicenseUrl ,formData);
+    return this.httpClient.post(this.downloadBasicLicenseUrl, formData);
   }
 
-  downloadFullLicense(sampleID: number):Observable<any> {
+  downloadFullLicense(sampleID: number): Observable<any> {
     const formData: FormData = new FormData();
     // formData.append("userName", userName);
     formData.append("sampleID", JSON.stringify(sampleID));
-    return this.httpClient.post(this.downloadFullLicenseUrl ,formData);
+    return this.httpClient.post(this.downloadFullLicenseUrl, formData);
   }
 
   getBasicUserData(userID: string): Observable<any> {
     const formData: FormData = new FormData();
-    formData.append("userID",userID);
+    formData.append("userID", userID);
     return this.httpClient.post(this.basicUserDataUrl, formData);
   }
-  
+
 
 }
 

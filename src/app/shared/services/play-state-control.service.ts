@@ -1,7 +1,8 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import { Sample } from '../models/sample.model';
 import { CurrentFile } from '../models/current-file.model';
 import { ComponentCommunicationService } from './component-communication.service';
+import { BehaviorSubject, Subject } from 'rxjs';
 
 
 const PLAY_STATE_KEY= 'PlayState';
@@ -12,25 +13,42 @@ const CURRENT_FILE = 'currentFile';
 @Injectable({
   providedIn: 'root'
 })
-export class PlayStateControlService {
+export class PlayStateControlService implements OnDestroy {
 
   private currentFile: CurrentFile;
   private playState=false;
-  private idCurrentPlayElement: string=null;
+  private idCurrentPlayElement: number=null;
 
   constructor(private componentCommunicationService: ComponentCommunicationService) { }
-
+  
+  
+  public playStateServiceDestroyed$: Subject<void> = new Subject<void>();
   private historyAudioFiles: Array<Sample> = [];
-
-  public savePlayState(playState: boolean) {
-    this.playState = playState;
-  }
-
+  
+  // public savePlayState(playState: boolean) {
+  //   this.playState = playState;
+  //   this.playStateSubject.next(this.playState);
+  // }
+  
   public getPlayState():boolean {
     return this.playState;
   }
-
   
+  private playStateSubject = new BehaviorSubject<boolean>(false);
+  playState$ = this.playStateSubject.asObservable();
+  emitPlayState(playState: boolean) {
+    this.playStateSubject.next(playState);
+  }
+  
+  private currentSampleIDSubject = new BehaviorSubject<number>(0);
+  currentSampleID$ = this.currentSampleIDSubject.asObservable();
+  emitCurrentSampleID(currentSampleID: number) {
+    this.currentSampleIDSubject.next(currentSampleID);
+  }
+  
+  ngOnDestroy(): void {
+    this.playStateServiceDestroyed$.next();
+  }
   // public savePlayState(playState: boolean) {
   //   window.sessionStorage.removeItem(PLAY_STATE_KEY);
   //   window.sessionStorage.setItem(PLAY_STATE_KEY, JSON.stringify(playState));
@@ -42,14 +60,13 @@ export class PlayStateControlService {
   //   return JSON.parse(playStateAsString);
   // }
 
-  public saveIDCurrentPlayElement(id: string) {
-    this.idCurrentPlayElement = id;
-    // window.sessionStorage.removeItem(ID_CURRENT_PLAY_ELEMENT);
-    // window.sessionStorage.setItem(ID_CURRENT_PLAY_ELEMENT, id);
-  }
+  // public saveIDCurrentPlayElement(id: number) {
+  //   this.idCurrentPlayElement = id;
+  //   this.emitCurrentSampleID(this.idCurrentPlayElement);
+  // }
 
 
-  public getIDCurrentPlayElement(): string {
+  public getIDCurrentPlayElement(): number {
     return this.idCurrentPlayElement;
     // let idCurrentPlayElement = sessionStorage.getItem(ID_CURRENT_PLAY_ELEMENT);
     
@@ -60,7 +77,6 @@ export class PlayStateControlService {
       
     //   return "[ERROR]: in playStateControlService";
     // }
-    
   }
 
   

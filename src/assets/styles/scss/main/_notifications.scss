@@ -4,6 +4,38 @@
   }
 }
 
+// .shop-filters-wrap {
+//   margin-top: 7px;
+//   padding: 0 0.5rem 0 0.333rem;
+
+
+.mat-expansion-panel {
+
+  .mat-expansion-panel-body {
+    padding: 0 0 0 24px;
+  }
+  .product-categories {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    max-height: 250px;
+    li {
+      cursor: pointer;
+      padding: 5px;
+      text-transform: capitalize;
+    }
+  }
+  .genres {
+    li {
+      width: 50%;
+      max-width: 50%;
+      float: left;
+      padding: 5px 0;
+    }
+  }
+}
+// }
+
 .notification-list {
   min-width: 240px;
 }

@@ -9,11 +9,12 @@
   .rightside-content-hold {
     display: flex;
     flex-direction: column;
-    flex-grow: 1;
+    // flex-grow: 1;
+    // height: calc(100vh - 112px);
     padding: 0.333333rem;
     overflow-x: hidden;
     position: relative;
-    min-height: 450px;
+    // min-height: 450px;
   }
 }
 
@@ -177,7 +178,7 @@
     // margin: 0 auto;
     padding-left: 15px;
     padding-right: 15px;
-    padding-top: 48px;
+    // padding-top: 48px;
   }
   .sidebar-panel {
     overflow: hidden;

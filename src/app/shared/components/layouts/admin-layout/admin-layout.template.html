@@ -31,8 +31,7 @@
         *ngIf="layoutConf.navigationPos === 'side'"
         [notificPanel]="notificationPanel">
       </app-header-side>
-
-      <div class="rightside-content-hold" id="rightside-content-hold" [perfectScrollbar]="scrollConfig" [disabled]="!layoutConf.topbarFixed || !layoutConf.perfectScrollbar">
+      <div class="rightside-content-hold z-1" [ngStyle]="{'height' : layoutConf.footerFixed ? 'calc(100vh - 103px)' : 'calc(100vh - 53px)'}" id="rightside-content-hold" [perfectScrollbar]="scrollConfig" [disabled]="!layoutConf.topbarFixed || !layoutConf.perfectScrollbar">
         <!-- View Loader -->
         <div class="view-loader" *ngIf="isModuleLoading" style="position:fixed;"
         fxLayout="column" fxLayoutAlign="center center">
@@ -47,11 +46,12 @@
         <div class="container-dynamic">
           <router-outlet></router-outlet>
         </div>
-        <span class="m-auto" *ngIf="!layoutConf.footerFixed"></span>
-        <app-footer *ngIf="!layoutConf.footerFixed" style="margin: 0 -.33rem -.33rem"></app-footer>
+        <!-- <span class="m-auto" *ngIf="!layoutConf.footerFixed"></span> -->
+        <!-- <app-footer *ngIf="!layoutConf.footerFixed" style="margin: 0 -.33rem -.33rem;"></app-footer> -->
       </div>
-      <span class="m-auto" *ngIf="layoutConf.footerFixed"></span>
-      <app-footer *ngIf="layoutConf.footerFixed"></app-footer>
+      <!-- <span class="m-auto" *ngIf="layoutConf.footerFixed"></span> -->
+      <app-footer *ngIf="layoutConf.footerFixed" class="box-shadow-top" style="z-index: 10;"></app-footer>
+      <div *ngIf="!layoutConf.footerFixed" id="waveform" style="visibility: hidden;"></div>
     </div>
     <!-- View overlay for mobile navigation -->
     <div class="sidebar-backdrop"
@@ -62,7 +62,7 @@
 
     <!-- Notificaation bar -->
     <mat-sidenav #notificationPanel mode="over" class="" position="end">
-      <div class="nofication-panel" fxLayout="column">
+      <div class="nofication-panel" fxLayout="column" fxFlex="300px">
         <app-notifications [notificPanel]="notificationPanel"></app-notifications>
       </div>
     </mat-sidenav>

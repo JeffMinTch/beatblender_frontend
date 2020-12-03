@@ -1,4 +1,4 @@
-import { Injectable, ViewChild, ElementRef, Renderer2, RendererFactory2, ChangeDetectorRef } from '@angular/core';
+import { Injectable, ViewChild, ElementRef, Renderer2, RendererFactory2, ChangeDetectorRef, OnDestroy, OnInit } from '@angular/core';
 import { Subject, Observable, BehaviorSubject, Subscription } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import * as moment from "moment";
@@ -12,39 +12,59 @@ import CursorPlugin from 'wavesurfer.js/dist/plugin/wavesurfer.cursor.js';
 import TimelinePlugin from 'wavesurfer.js/dist/plugin/wavesurfer.timeline.js';
 import { AudioState } from '../models/audio-state.model';
 import { ComponentCommunicationService } from './component-communication.service';
+import { MatSliderChange } from '@angular/material/slider';
 
 @Injectable({
   providedIn: 'root'
 })
-export class AudioService {
+export class AudioService implements OnDestroy {
 
+  public audioServiceDestroyed$: Subject<void> = new Subject<void>(); 
   private subjectAudioFile = new Subject<Array<any>>();
   audioFileEmitted$ = this.subjectAudioFile.asObservable();
   audioFileSubscription: Subscription;
-
+  currentTime: number;
+  duration: number;
+  private _playState: boolean;
+  
+  
 
   constructor(
     private compComService: ComponentCommunicationService, 
     private playStateControlService: PlayStateControlService,
     // public changeDetectorRef: ChangeDetectorRef
     ) {
-    this.audioFileSubscription = this.audioFileEmitted$.subscribe(audioContainerArray => {
-      let file = audioContainerArray[0];
-      let index = audioContainerArray[1];
-      const currentFile = this.playStateControlService.getCurrentFile();
-      if (currentFile.index === audioContainerArray[1]) {
-        this.play();
-      } else {
-        this.playStateControlService.updateCurrentFile(file, index);
-        // this.wavesurfer.destroy();
-        // this.createWavesurferObj();
-        this.loadPlayAudio(audioContainerArray[0].userName, audioContainerArray[0].url);
-      }
+      // this.createWavesurferObj();
+    // this.audioFileSubscription = this.audioFileEmitted$.subscribe(audioContainerArray => {
+    //   let file = audioContainerArray[0];
+    //   let index = audioContainerArray[1];
+    //   const currentFile = this.playStateControlService.getCurrentFile();
+    //   if (currentFile.index === audioContainerArray[1]) {
+    //     this.play();
+    //   } else {
+    //     this.playStateControlService.updateCurrentFile(file, index);
+    //     // this.wavesurfer.destroy();
+    //     // this.createWavesurferObj();
+    //     this.loadPlayAudio(audioContainerArray[0].userName, audioContainerArray[0].url);
+    //   }
+    // });
+
+    this.playStateControlService.playState$.pipe(
+      takeUntil(this.playStateControlService.playStateServiceDestroyed$)
+    ).subscribe((playState: boolean) => {
+      this.playState = playState;
+      // this.changeDetectorRef.detectChanges();
     });
+  }
+  
+  ngOnDestroy(): void {
+    this.audioServiceDestroyed$.next();
   }
 
   
-  wavesurfer;
+  public wavesurfer;
+  
+  public isPlayerReady = false;
   primaryColor: string = window.getComputedStyle(document.documentElement).getPropertyValue('--primary');
   whiteColor: string = window.getComputedStyle(document.documentElement).getPropertyValue('--white');
   whiteSuperColor: string = window.getComputedStyle(document.documentElement).getPropertyValue('--white-super');
@@ -72,27 +92,34 @@ export class AudioService {
     this.wavesurfer.pause();
   }
 
+  stop() {
+    this.wavesurfer.stop();
+    
+  }
+
+  
+
   createWavesurferObj() {
     // this.wavesurfer = null;
     this.wavesurfer = WaveSurfer.create({
       container: '#waveform',
-      barWidth: 4,
+      barWidth: 3,
       // barRadius: 3,
       hideScrollbar: true,
       cursorWidth: 1,
       // scrollParent: true,
-      barGap: 3,
-      barHeight: 1,
+      barGap: 2,
+      barHeight: 1.5,
       // // container: '#waveform',
       backend: 'WebAudio',
-      height: 40,
+      height: 40, 
       fillParent: true,
       // backgroundColor: this.themeLightColor,
       // // progressColor: '#03a9f4',
-      progressColor: 'yellow',
+      progressColor: '#051136',
       responsive: true,
       // waveColor: 'transparent',
-      waveColor: 'whitesmoke',
+      waveColor: 'rgb(202,202,202)',
       // zoom: 50,
       // cursorColor: '#efefef',
       cursorColor: 'transparent',
@@ -108,7 +135,7 @@ export class AudioService {
         // }),
         CursorPlugin.create({
           // plugin options ...
-          color: '#efefef',
+          color: 'pink',
           showTime: true,
           style: 'dashed',
           followCursorY: true
@@ -116,16 +143,46 @@ export class AudioService {
 
       ]
     });
+    this.wavesurfer.on('seek', () => {
+      console.log('AudioTrack Paused');
+      // this.wavesurfer.setCurrentTime(0);
+      // this.playStateControlService.savePlayState(false);
+      // // this.changeDetectorRef.markForCheck()
+      if(this.playState) {
+        this.play();
+      }
+      // this.emitAudioState({
+      //   status: "finish",
+      //   currentTime: 0,
+      //   duration: 0
+      // });
+    });
+
+    this.wavesurfer.on('pause', () => {
+      console.log('AudioTrack Paused');
+      // this.wavesurfer.setCurrentTime(0);
+      // this.playStateControlService.savePlayState(false);
+      
+      // // this.changeDetectorRef.markForCheck()
+      // this.emitAudioState({
+      //   status: "finish",
+      //   currentTime: 0,
+      //   duration: 0
+      // });
+    });
 
     this.wavesurfer.on('finish', () => {
       console.log('AudioTrack FInished');
-      this.wavesurfer.setCurrentTime(0);
-      this.playStateControlService.savePlayState(false);
+      // this.playStateControlService.savePlayState(false);
+      this.playStateControlService.emitPlayState(false);
+      setTimeout(()=> {
+        this.wavesurfer.setCurrentTime(0);
+      }, 100)
       // this.changeDetectorRef.markForCheck()
       this.emitAudioState({
         status: "finish",
         currentTime: 0,
-        duration: 0
+        duration: 100
       });
     });
     this.wavesurfer.on("audioprocess", (mycurrentTime: number) => {
@@ -134,7 +191,7 @@ export class AudioService {
 
         this.emitAudioState({
           status: "playing",
-          currentTime: mycurrentTime,
+          currentTime: this.wavesurfer.getCurrentTime(),
           duration: this.wavesurfer.getDuration() as number
         });
         this.counter=0;
@@ -142,13 +199,16 @@ export class AudioService {
 
     });
     this.wavesurfer.on("ready", () => {
+      this.isPlayerReady = true;
       this.compComService.emitAudioLoaded();
-      if(this.playStateControlService.getPlayState()) {
+      if(this.playState) {
 
         this.play();
       }
       
     });
+
+    console.log(this.wavesurfer);
 
   }
 
@@ -158,6 +218,7 @@ export class AudioService {
   
 
   loadAudio(userName, url) {
+    this.isPlayerReady = false;
    let load =  this.wavesurfer.load(`http://localhost:8080/api/samplepool/downloadFile/${userName}/${url}`); 
   }
 
@@ -169,8 +230,14 @@ export class AudioService {
     return this.wavesurfer.getMute();
   }
 
-  loadPlayAudio(userName, url) {    
+  loadPlayAudio(userName, url): void {
+    this.isPlayerReady = false;    
     this.wavesurfer.load(`http://localhost:8080/api/samplepool/downloadFile/${userName}/${url}`); 
+  }
+
+  loadBlob(file): void {
+    this.isPlayerReady = false;
+    this.wavesurfer.loadBlob(file);
   }
 
   seekTo(percent: number) {
@@ -179,6 +246,10 @@ export class AudioService {
 
   getDuration() {
     return this.wavesurfer.getDuration();
+  }
+
+  getCurrentTime() {
+    return this.wavesurfer.getCurrentTime();
   }
 
   toggle = false;
@@ -192,6 +263,8 @@ export class AudioService {
 
     }
   }
+
+  
 
 
 
@@ -217,6 +290,14 @@ export class AudioService {
     audioContainerArray.push(audioFile);
     audioContainerArray.push(index);
     this.subjectAudioFile.next(audioContainerArray);
+  }
+
+  set playState(playState: boolean){
+    this._playState = playState;
+  }
+
+  get playState(): boolean {
+    return this._playState;
   }
 
   

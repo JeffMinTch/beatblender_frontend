@@ -1,10 +1,15 @@
+import { takeUntil } from 'rxjs/operators';
+import { ComponentCommunicationService } from './../../services/component-communication.service';
+import { SampleLicensingMarketService } from './../../../views/sample-licensing-market/sample-licensing-market.service';
 import { PlayStateControlService } from './../../services/play-state-control.service';
-import { Subscription } from 'rxjs';
+import { Subscription, Observable } from 'rxjs';
 import { AudioService } from './../../services/audio.service';
-import { Component, OnInit, AfterViewInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
 import { Sample } from 'app/shared/models/sample.model';
 import { CurrentFile } from 'app/shared/models/current-file.model';
 import { AudioState } from 'app/shared/models/audio-state.model';
+import { map, share } from 'rxjs/operators';
+import { createTrue } from 'typescript';
 
 @Component({
   selector: 'app-footer',
@@ -13,164 +18,156 @@ import { AudioState } from 'app/shared/models/audio-state.model';
 })
 export class FooterComponent implements OnInit, AfterViewInit {
 
+  private samples: Sample[];
+  private currentSampleID: number;
   isMuted: boolean = false;
   audioStateSubscription: Subscription;
+  sampleSubscription: Subscription;
+  // samples$: Observable<Sample[]>;
+  audioLoadCompleteSubscription: Subscription;
+
   constructor(
     private audioService: AudioService,
     public playStateControlService: PlayStateControlService,
-    public changeDetectorRef: ChangeDetectorRef
-  ) {
-    
-    this.audioStateSubscription = this.audioService.audioState$.subscribe((state: AudioState) => {
+    public changeDetectorRef: ChangeDetectorRef,
+    public sampleLicensingMarketService: SampleLicensingMarketService,
+    private componentCommunicationService: ComponentCommunicationService,
+    ) {
+
+    this.audioStateSubscription = this.audioService.audioState$.pipe(
+      takeUntil(this.audioService.audioServiceDestroyed$)
+    ).subscribe((state: AudioState) => {
       switch (state.status) {
         case "finish":
-          // this.currentTime = state.currentTime;
-          // this.changeToPlayViewFromContents();
-          // this.playStateControlService.savePlayState(false);
-          // this.componentCommunicationService.emitChangeFromPlayer(this.playStateControlService.getPlayState());
           this.changeDetectorRef.detectChanges();
           break;
         case "playing":
-          // this.currentTime = state.currentTime;
-          // this.duration = state.duration;
-          // this.changeDetectorRef.detectChanges();
           break;
       }
     });
-    // this.subscription = componentCommunicationService.changeEmitted$.subscribe(
-    //   receivedPlayState => {
-    //     this.playStateControlService.savePlayState(receivedPlayState);
-    //     this.manageMusicPlayerVisibility();
-    //   });
 
-    // this.audioLoadCompleteSubscription = this.componentCommunicationService.audioLoadCompleteEvent$.subscribe(() => {
-    //   this.duration = this.audioService.getDuration();
-    //   this.changeDetectorRef.detectChanges();
-    // });
+    this.audioLoadCompleteSubscription = this.componentCommunicationService.audioLoadCompleteEvent$.pipe(
+      takeUntil(this.audioService.audioServiceDestroyed$)
+    ).subscribe(() => {
+      this.changeDetectorRef.detectChanges();
+    });
+
+    this.sampleLicensingMarketService.samples$.pipe(
+      takeUntil(this.sampleLicensingMarketService.sampleLicensingMarketDestroyed$)
+    ).subscribe((samples: Sample[]) => {
+      this.samples = samples;
+      // this.changeDetectorRef.detectChanges();
+
+    });
+
+   
+
+    this.playStateControlService.currentSampleID$.pipe(
+      takeUntil(this.playStateControlService.playStateServiceDestroyed$)
+    ).subscribe((currentSampleID: number) => {
+      this.currentSampleID = currentSampleID;
+      // this.changeDetectorRef.detectChanges();
+    });
   }
 
   ngOnInit() {
   }
 
   ngAfterViewInit() {
-    this.audioService.createWavesurferObj();
 
+  }
+
+  play() {
+    // this.playStateControlService.savePlayState(true);
+    this.playStateControlService.emitPlayState(true);
+    this.audioService.play();
+    this.changeDetectorRef.detectChanges();
+  }
+
+  pause() {
+    // this.playStateControlService.savePlayState(false);
+    this.playStateControlService.emitPlayState(false);
+    this.audioService.pause();
+    this.changeDetectorRef.detectChanges();
+  }
+
+  isSamples(): boolean {
+    if (this.sampleLicensingMarketService.getSamples()) {
+      return false;
+    } else {
+      return true;
+    }
   }
 
   previousNext(buttonName) {
-    // const myRange: ElementRef<any> = this.myRange;
-    // this.renderer.setProperty(myRange, 'value', 0);
-    // this.componentCommunicationService.emitPreviousNextTrack(buttonName);
+    let newActiveSampleIndex: number;
+    const activeSampleIndex: number = this.samples.findIndex(sample => sample.sampleID === this.currentSampleID);
+    switch (buttonName) {
+      case 'prev':
+        newActiveSampleIndex = activeSampleIndex - 1;
+        break;
+      case 'next':
+        newActiveSampleIndex = activeSampleIndex + 1;
+        break;
+    }
+    this.loadAudio(this.samples[newActiveSampleIndex].id, this.samples[newActiveSampleIndex].audioFile);
+    this.playStateControlService.emitCurrentSampleID(this.samples[newActiveSampleIndex].sampleID);
+    // this.playStateControlService.saveIDCurrentPlayElement(this.samples[newActiveSampleIndex].sampleID);
+    this.changeDetectorRef.detectChanges();
   }
 
-  changeToPlayView(event) {
-
-    // this.playStateControlService.savePlayState(false);
-    // this.componentCommunicationService.emitChangeFromPlayer(this.playStateControlService.getPlayState());
-    // let pauseButton = event.currentTarget;
-    // let playButton = pauseButton.previousSibling;
-    // pauseButton.classList.add('disable-active');
-    // playButton.classList.remove('disable-active');
-    // this.audioService.pause();
-
+  findSampleIndex(samples: Sample[]): number {
+    const activeSample: Sample = samples.find(sample => sample.sampleID === this.playStateControlService.getIDCurrentPlayElement())
+    const activeSampleIndex: number = samples.findIndex(sample => sample === activeSample);
+    return activeSampleIndex;
   }
 
-
-  changeToPauseView(event) {
-
-    // this.playStateControlService.savePlayState(true);
-    // this.componentCommunicationService.emitChangeFromPlayer(this.playStateControlService.getPlayState());  //this.playStateValueFromPlayer
-    // let playButton = event.currentTarget;
-    // let pauseButton = playButton.nextSibling;
-    // playButton.classList.add('disable-active');
-    // pauseButton.classList.remove('disable-active');
-    // this.audioService.play();
-
+  loadAudio(userName: string, sampleName: string):void {
+    this.audioService.loadAudio(userName, sampleName);
   }
 
-  isFirstPlaying() {
-    // return this.playStateControlService.getCurrentFile().index === 0;
-  }
-
-  isLastPlaying() {
-    // return this.playStateControlService.getCurrentFile().index === this.audioFiles.length -1;
-  }
-
-  toggleMute() {
-    const muteStatus = this.audioService.toggleMute();
-    if (this.audioService.getMute()) {
-      this.isMuted = true;
+  isFirst(): boolean {
+    if (this.samples) {
+      if (this.samples.findIndex(sample => sample.sampleID === this.currentSampleID)===0) {
+        return true;
+      } else {
+        return false;
+      }
     } else {
-      this.isMuted = false;
+      return true;
     }
-    console.log("Mute Status: " + muteStatus);
-  }
-
-  changeToPauseViewFromContents() {
-    let playButton = document.querySelector('.player-play-icon');
-    let pauseButton = document.querySelector('.player-pause-icon');
-
-    if (playButton.classList.contains('disable-active') === false) {
-      playButton.classList.add('disable-active');
-    }
-    if (pauseButton.classList.contains('disable-active') === true) {
-      pauseButton.classList.remove('disable-active');
-    }
-  }
-
-  changeToPlayViewFromContents() {
-
-    let playButton = document.querySelector('.player-play-icon');
-    let pauseButton = document.querySelector('.player-pause-icon');
-
-    if (playButton.classList.contains('disable-active')) {
-      playButton.classList.remove('disable-active');
-    }
-
-    if (pauseButton.classList.contains('disable-active') === false) {
-      pauseButton.classList.add('disable-active');
-    }
-
-  }
-
-  manageMusicPlayerVisibility() {
-    if (this.playStateControlService.getPlayState()) {
-      this.changeToPauseViewFromContents();
-    } else {
-      this.changeToPlayViewFromContents();
-    }
-  }
-
-  populateArtistWindow(firstFile: Sample) {
-
-    //populate artist data after page load in artist window
-    // if (Object.keys(this.playStateControlService.getCurrentFile()).length > 0) {
-
-    //   const file: CurrentFile = this.playStateControlService.getCurrentFile();
-    //   this.displayArtistWindow(file);
-
+    // if (this.sampleLicensingMarketService.getSamples()) {
+    //   const activeSampleIndex: number = this.findSampleIndex(this.sampleLicensingMarketService.getSamples());
+    //   return activeSampleIndex === 0;
     // } else {
-
-    //   const file: AudioFile = firstFile;
-    //   //if current file doesnt yet exist, display artist data of first element in files array 
-    //   this.renderer.setProperty(this.soundbarTitleImg.nativeElement, 'src', file.img);
-    //   this.renderer.setProperty(this.soundbarArtistName.nativeElement, 'innerHTML', file.artist);
-    //   this.renderer.setProperty(this.soundbarAudioTitle.nativeElement, 'innerHTML', file.title);
-
+    //   return false;
     // }
   }
 
-  displayArtistWindow(currentFile: CurrentFile) {
-
-    //display artist data of current file in the right bottom artist window 
-    // this.renderer.setProperty(this.soundbarTitleImg.nativeElement, 'src', currentFile.file.img);
-    // this.renderer.setProperty(this.soundbarArtistName.nativeElement, 'innerHTML', currentFile.file.artist);
-    // this.renderer.setProperty(this.soundbarAudioTitle.nativeElement, 'innerHTML', currentFile.file.title);
-
+  isLast():boolean {
+    if(this.samples) {
+      if(this.samples.findIndex(sample => sample.sampleID === this.currentSampleID) === this.samples.length -1) {
+        return true;
+      } else {
+        return false;
+      }
+    } else {
+      return true;
+    }
   }
 
+  getMute(): boolean {
+    if (this.audioService.isPlayerReady) {
+      return this.audioService.getMute();
+    } else {
+      return false;
+    }
+  }
 
-
-
+  toggleMute() {
+    if (this.audioService.isPlayerReady) {
+      this.audioService.toggleMute();
+    }
+  }
 
 }

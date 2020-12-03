@@ -1,16 +1,15 @@
+import { LayoutService } from './../../../shared/services/layout.service';
+import { SampleSearchQuery } from 'app/shared/models/sample-search-query.model';
 import { ComponentCommunicationService } from './../../../shared/services/component-communication.service';
 import { AudioService } from './../../../shared/services/audio.service';
-import { takeUntil } from 'rxjs/operators';
+import { delay, share, takeUntil } from 'rxjs/operators';
 import { StateManagerService } from './../../../shared/services/state-manager.service';
 import { PlayStateControlService } from './../../../shared/services/play-state-control.service';
-import { QueryList, ViewChildren, Renderer2, AfterViewInit, ChangeDetectorRef } from '@angular/core';
-import { CloudService } from './../../../shared/services/cloud-service.service';
-import { filter, withLatestFrom } from 'rxjs/operators';
+import { QueryList, ViewChildren, Renderer2, AfterViewInit, ChangeDetectorRef, AfterViewChecked, ChangeDetectionStrategy, ViewEncapsulation, HostListener, OnDestroy } from '@angular/core';
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatSidenav } from '@angular/material/sidenav';
 import { Product } from '../../../shared/models/product.model';
-// import { SampleLicensingMarketService, CartItem } from '../../shop/shop.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { egretAnimations } from 'app/shared/animations/egret-animations';
 import { AppLoaderService } from 'app/shared/services/app-loader/app-loader.service';
@@ -18,16 +17,20 @@ import { Observable, Subscription, BehaviorSubject } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { CartItem, SampleLicensingMarketService } from '../sample-licensing-market.service';
 import { Sample } from 'app/shared/models/sample.model';
-import { rendererTypeName } from '@angular/compiler';
 import { AudioState } from 'app/shared/models/audio-state.model';
-import { MatSlider } from '@angular/material/slider';
+import { MatSlider, MatSliderChange } from '@angular/material/slider';
+import { CloudService } from 'app/shared/services/cloud-service.service';
+import { MatAutocomplete, MatAutocompleteTrigger } from '@angular/material/autocomplete';
+import { MatOption, MatOptionSelectionChange } from '@angular/material/core';
+import { SidenavContent } from 'app/shared/models/sidenav-content.model';
 
 
 @Component({
   selector: 'app-basic-licenses',
   templateUrl: './basic-licenses.component.html',
-  // styleUrls: ['./basic-licenses.component.scss'],
-  animations: [egretAnimations]
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  animations: [egretAnimations],
+  encapsulation: ViewEncapsulation.None
 })
 export class BasicLicensesComponent implements OnInit, AfterViewInit {
 
@@ -35,210 +38,334 @@ export class BasicLicensesComponent implements OnInit, AfterViewInit {
   public viewMode: string = 'grid-view';
   public currentPage: any;
   @ViewChild(MatSidenav) private sideNav: MatSidenav;
-  @ViewChildren('audioSlider', { read: MatSlider }) private sliders: QueryList<MatSlider>;
+  @ViewChildren('audioSlider', { read: MatSlider }) private audioSliders: QueryList<MatSlider>;
   @ViewChild('featuredImage', { static: false, read: ElementRef }) private featuredImage: ElementRef;
-  @ViewChildren('playButton', { read: ElementRef }) private playButtons: QueryList<ElementRef>;
+  @ViewChildren('.mat-slider-track-background', { read: ElementRef }) private matSliderTrackBackground: QueryList<ElementRef>;
+  @ViewChild('searchInput', { static: false, read: ElementRef }) private searchInput: ElementRef;
+  @ViewChild('searchInputTrigger', { static: false, read: MatAutocompleteTrigger }) private matSearchInputTrigger: MatAutocompleteTrigger;
+  @ViewChild('auto', { static: false, read: MatAutocomplete }) private matAutoComplete: MatAutocomplete;
 
+
+  private _playState: boolean;
+  private _currentSampleID: number;
   public products$: Observable<Product[]>;
-  public samples$: Observable<Sample[]>;
-  // sampleSubscription: Subscription;
   public categories$: Observable<any>;
+  public genres$: Observable<string[]>;
   public activeCategory: string = 'all';
+  public activeGenre: string ='all';
+  // public activeGenre: string ='all;'
   public filterForm: FormGroup;
-  public cart: CartItem[];
-  public cartData: any;
-  samplesSubscription: Subscription;
-  private audioStateSubscription: Subscription;
-  samples: Sample[];
+  public sampleSearchQueries: SampleSearchQuery[];
+  public selectedSearchOption: MatOption = null;
   currentTime: number;
   duration: number;
 
+  selectedGenres: string[];
+  selectedRegions: string[];
+  selectedTrackTypes: string[];
+  selectedSongKeys: string[];
+
+  // public genreList: string[] = ['Blues', 'Classical', 'Country', 'Electronic', 'Hip Hop/Rap', 'Jazz', 'Latin', 'Pop', 'RnB/Soul', 'Reggea', 'Rock', 'Spoken Word'];
+  public regionList: string[] = ['Northern Europe', 'Western Europe', 'Southern Europe', 'Eastern Europe', 'Middle East', 'Caribbean', 'Oceania, Pacific', 'Southern Africa', 'Northern Africa', 'Western Africa', 'Eastern Africa', 'South Asia/India', 'East Asia', 'North America', 'South America', 'Central America'];
+  public trackTypeList: string[] = ['Accordion', 'Bass', 'Drum', 'Edits', 'Flute', 'FX track', 'Guitar', 'Horns', 'Instrumental', 'Keyborads', 'Master', 'Percussion', 'Shruti Box', 'Sound FX', 'Strings', 'Vocals', 'Whistle'];
+  public songKeyList: string[] = ['A major', 'A minor', 'A flat major', 'A flat minor', 'B major', 'B minor', 'B flat major', 'B flat minor', 'C major', 'C minor', 'D major', 'D minor', 'D flat major', 'D flat minor', 'E major', 'E minor', 'E flat major', 'E flat minor', 'F major', 'F minor', 'G major', 'G minor', 'G flat major', 'G flat minor'];
+  public bpmMinMaxValues: string[];
+  public yearMinMaxValues: string[];
+
+
+  public mockCategories: string [] = ["Trending", "New", "Low Sample Price", "Bargain", "High Option Price", "Trending", "Bargain", "Low Sample Price", "New"]
+  public mockColors: string [] = ["grey", "brown", "violet", "yellow", "red", "blue", "green", "orange", "pink"]
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event) {
+    this.matSearchInputTrigger.closePanel();    
+  }
+
   constructor(
-    private sampleLicensingMarketService: SampleLicensingMarketService,
+    public sampleLicensingMarketService: SampleLicensingMarketService,
     public playStateControlService: PlayStateControlService,
-    private stateManagerService: StateManagerService,
-    private compCommService: ComponentCommunicationService,
     private audioService: AudioService,
+    private cloudService: CloudService,
     private fb: FormBuilder,
     private snackBar: MatSnackBar,
     private loader: AppLoaderService,
-    private renderer: Renderer2,
-    private changeDetectorRef: ChangeDetectorRef
-
+    private changeDetectorRef: ChangeDetectorRef,
   ) {
-    this.audioStateSubscription = this.audioService.audioState$.subscribe((state: AudioState) => {
+    
+
+    this.sampleLicensingMarketService.samples$.pipe(
+      map((samples: Sample[]) => {
+        this.loader.close();
+        (this.searchInput.nativeElement as HTMLInputElement).value = '';
+        this.matSearchInputTrigger.closePanel();
+        this.selectedSearchOption = null;
+        if(this.playState) {
+          this.playStateControlService.emitPlayState(false);
+        }
+        this.audioService.loadPlayAudio(samples[0].id, samples[0].audioFile);
+
+        return samples;
+      }),
+      takeUntil(this.sampleLicensingMarketService.sampleLicensingMarketDestroyed$),
+    ).subscribe((samples: Sample[]) => {
+      this.initCurrentFile(samples[0].sampleID);
+    });
+
+    this.audioService.audioState$.pipe(takeUntil(this.audioService.audioServiceDestroyed$)).subscribe((state: AudioState) => {
       switch (state.status) {
         case "finish":
-          this.currentTime = state.currentTime;
-          // this.changeToPlayViewFromContents();
-          // this.playStateControlService.savePlayState(false);
-          // this.componentCommunicationService.emitChangeFromPlayer(this.playStateControlService.getPlayState());
           this.changeDetectorRef.detectChanges();
           break;
         case "playing":
-          this.currentTime = state.currentTime;
-          this.duration = state.duration;
-          this.changeDetectorRef.detectChanges();
           break;
       }
     });
-    // this.compCommService.audioLoadCompleteEvent$.subscribe(()=> {
-    //   this.audioService.loadPlayAudio(this.samples[0].id, this.samples[0].audioFile);
-    // })
+
+    this.sampleLicensingMarketService.getAudioFiles().pipe(
+      share(),
+    ).subscribe((samples: Sample[]) => {
+      this.sampleLicensingMarketService.samples$.next(samples);
+    });
 
   }
-
+  
   ngOnInit() {
     this.categories$ = this.sampleLicensingMarketService.getCategories();
+    this.genres$ = this.sampleLicensingMarketService.getGenres();
     this.buildFilterForm(this.sampleLicensingMarketService.initialFilters);
-
+    
     setTimeout(() => {
+      this.audioService.createWavesurferObj();
+    });
+
+    this.audioService.audioState$.pipe(
+      takeUntil(this.audioService.audioServiceDestroyed$)
+    ).subscribe((state: AudioState) => {
+      this.changeDetectorRef.detectChanges();
+    });
+
+    this.playStateControlService.playState$.pipe(
+      takeUntil(this.playStateControlService.playStateServiceDestroyed$)
+    ).subscribe((playState: boolean) => {
+      this.playState = playState;
+      // this.changeDetectorRef.detectChanges();
+    });
+
+    this.playStateControlService.currentSampleID$.pipe(
+      takeUntil(this.playStateControlService.playStateServiceDestroyed$)
+    ).subscribe((currentSampleID: number) => {
+      this.currentSampleID = currentSampleID;
+      // this.changeDetectorRef.detectChanges();
+    });
+    // setTimeout(() => {
+      // });
+    }
+    
+    
+    ngAfterViewInit(): void {
+      // this.layoutService.layoutConf.footerFixed = true;
       this.loader.open();
-    });
+      // throw new Error('Method not implemented.');
+    }
+    
+    // ngOnDestroy(): void {
+    //   this.playStateControlService.emitPlayState(false);
+    // }
+    
+  // changeGenres(genres) {
+  //   if (genres.length === 0) {
+  //     this.selectedGenres = this.genreList;
+  //   } else {
+  //     this.selectedGenres = genres;
+  //   }
+  // }
 
-    this.samples$ = this.sampleLicensingMarketService.getAudioFiles().pipe(
-      map(audioFileResponse => {
-        this.loader.close();
-        // this.stateManagerService.initCurrentFile();
-        this.audioService.loadPlayAudio(audioFileResponse[0].id, audioFileResponse[0].audioFile);
-        console.log(audioFileResponse);
-        // for(let i = 0; i < audioFileResponse.length; i++) {
-        //   audioFileResponse[i].id = i.toString();
-        // }
+  changeRegions(regions) {
+    if (regions.length === 0) {
+      this.selectedRegions = this.regionList;
+    } else {
+      this.selectedRegions = regions;
 
-        return audioFileResponse;
-      })
-    );
-    this.samples$.subscribe((samples) => {
-      this.samples = samples;
-      console.log(samples[0].sampleID);
-      // this.initCurrentFile();
-    });
-    // this.sampleLicensingMarketService.getAudioFiles().subscribe(data => {
-    //   console.log(data);
-    //   this.loader.close();
-    // })
-    // this.products$ = this.sampleLicensingMarketService
-    //   .getFilteredProduct(this.filterForm)
-    //   .pipe(
-    //     map(products => {
-    //       this.loader.close();
-    //       return products;
-    //     })
-    //   );
-    this.getCart();
-    this.cartData = this.sampleLicensingMarketService.cartData;
+    }
+  }
+
+  changeTrackTypes(trackTypes) {
+    if (trackTypes.length === 0) {
+      this.selectedTrackTypes = this.trackTypeList;
+    } else {
+      this.selectedTrackTypes = trackTypes;
+    }
+  }
+
+  changeSongKeys(songKeys) {
+    if (songKeys.length === 0) {
+      this.selectedSongKeys = this.songKeyList;
+    } else {
+      this.selectedSongKeys = songKeys;
+    }
   }
 
 
-  ngAfterViewInit(): void {
-    this.samples$.subscribe((audioFileResponse)=> {
-      this.initCurrentFile();
-      console.log(this.sliders);
-    });
-
-  }
-
-  ngOnDestroy() {
-
-  }
-  getCart() {
-    this.sampleLicensingMarketService
-      .getCart()
-      .subscribe(cart => {
-        this.cart = cart;
-      })
-  }
-  addToCart(product) {
-    let cartItem: CartItem = {
-      product: product,
-      data: {
-        quantity: 1
-      }
-    };
-    this.sampleLicensingMarketService
-      .addToCart(cartItem)
-      .subscribe(cart => {
-        this.cart = cart;
-        this.snackBar.open('Product added to cart', 'OK', { duration: 4000 });
-      })
-  }
 
   buildFilterForm(filterData: any = {}) {
     this.filterForm = this.fb.group({
       search: [''],
       category: ['all'],
+      genre: ['all'],
       minPrice: [filterData.minPrice],
       maxPrice: [filterData.maxPrice],
       minRating: [filterData.minRating],
       maxRating: [filterData.maxRating]
     })
   }
+
   setActiveCategory(category) {
     this.activeCategory = category;
     this.filterForm.controls['category'].setValue(category)
+  }
+
+  setActiveGenre(genre: string) {
+    this.activeGenre = genre;
+    this.filterForm.controls['genre'].setValue(genre)
   }
 
   toggleSideNav() {
     this.sideNav.opened = !this.sideNav.opened;
   }
 
-  togglePlayPause(sample: Sample) {
-    console.log(sample.id);
-    console.log('playState' + this.playStateControlService.getPlayState())
-    if (this.playStateControlService.getPlayState() && this.playStateControlService.getIDCurrentPlayElement() === JSON.stringify(sample.sampleID)) {
-      this.playStateControlService.savePlayState(false);
-      this.audioService.pause();
-      // this.audioService.pause();
-      // this.removeClassCurrentPlayElement();
-    } else if (this.playStateControlService.getPlayState() && this.playStateControlService.getIDCurrentPlayElement() !== JSON.stringify(sample.sampleID)) {
-
-      this.audioService.loadPlayAudio(sample.id, sample.audioFile);
-      this.removeClassCurrentPlayElement();
-      this.addClassCurrentPlayElement(JSON.stringify(sample.sampleID));
-    } else if (!this.playStateControlService.getPlayState() && this.playStateControlService.getIDCurrentPlayElement() === JSON.stringify(sample.sampleID)) {
-      // this.removeClassCurrentPlayElement();
-      // this.addClassCurrentPlayElement(id);
+  play(isCurrentSample: boolean, sampleID: number, sampleOwnerID: string, sampleName: string): void {
+    if (isCurrentSample) {
+      this.playStateControlService.emitPlayState(true);
       this.audioService.play();
-      this.playStateControlService.savePlayState(true);
+      console.log('play yes');
     } else {
-      this.audioService.loadPlayAudio(sample.id, sample.audioFile);
-      this.playStateControlService.savePlayState(true);
-      this.removeClassCurrentPlayElement();
-      this.addClassCurrentPlayElement(JSON.stringify(sample.sampleID));
+      this.playStateControlService.emitPlayState(true);
+      this.audioService.loadPlayAudio(sampleOwnerID, sampleName);
+      // setTimeout(() => {
+        this.playStateControlService.emitCurrentSampleID(sampleID);
+      // });
+      console.log('play no');
     }
-    // this.audioService.emitAudioFile();
-    // this.playerViewService.changeCurrentPlayElement(event);
   }
 
-  initCurrentFile() {
-    if (Object.keys(this.playStateControlService.getCurrentFile()).length === 0) {
-      console.log(this.samples);
-      this.playStateControlService.saveIDCurrentPlayElement(this.samples[0].sampleID);
-      // this.playStateControlService.updateCurrentFile(this.samples[0], 0);
+  pause(isCurrentSample: boolean, sampleID: number, sampleOwnerID: string, sampleName: string): void {
+    if (isCurrentSample) {
+      this.playStateControlService.emitPlayState(false);
+      this.audioService.pause();
+      console.log('pause yes');
+    } else {
+      this.playStateControlService.emitCurrentSampleID(sampleID);
+      this.audioService.loadPlayAudio(sampleOwnerID, sampleName);
+      console.log('pause no');
+      
     }
-    console.log(this.playButtons.toArray());
-    setTimeout(() => {
-      this.addClassCurrentPlayElement(JSON.stringify(this.samples[0].sampleID));
-    }, 0);
+
   }
 
-  removeClassCurrentPlayElement() {
-    console.log(this.playButtons.find(b => b.nativeElement.classList.contains('current-play-element')));
-    const playButton: ElementRef = this.playButtons.find((b) => (b.nativeElement as HTMLElement).classList.contains('current-play-element'));
-    this.renderer.removeClass(playButton.nativeElement, 'current-play-element');
-  }
-
-  addClassCurrentPlayElement(id: string) {
-    console.log(this.playButtons);
-    const playButton: ElementRef = this.playButtons.find((b) =>
-      // const bool: boolean = b.nativeElement.id === id;
-      b.nativeElement.id === id);
-    this.renderer.addClass(playButton.nativeElement, 'current-play-element');
-    this.playStateControlService.saveIDCurrentPlayElement(id);
+  initCurrentFile(sampleID: number) {
+    // this.playStateControlService.saveIDCurrentPlayElement(sampleID);
+    this.playStateControlService.emitCurrentSampleID(sampleID);
   }
 
 
+  getCurrentTime(): number {
+    if (this.audioService.isPlayerReady) {
+      // this.changeDetectorRef.markForCheck();
+      return this.audioService.getCurrentTime();
+    } else {
+      return 0;
+    }
+  }
+
+  getDuration(): number {
+    if (this.audioService.isPlayerReady) {
+      // this.changeDetectorRef.markForCheck();
+      return this.audioService.getDuration();
+    } else {
+      return 100;
+    }
+  }
+
+  currentTimeFallback(): number {
+    return 0;
+  }
+
+  durationFallback(): number {
+    return 100;
+  }
+
+  onSliderChangeEnd(changeEvent: MatSliderChange) {
+    this.audioService.seekTo(changeEvent.source.percent);
+
+  }
+
+
+  searchMusicByFormInput(searchString: string) {
+    this.sampleLicensingMarketService.searchAudioByFormInput(searchString);
+  }
+
+  searchMusicByFormSubmit(searchString: string) {
+    if (searchString.length === 0) {
+      return;
+    }
+    this.blurSearchInput();
+    const sampleIDs: Array<number> = [];
+    this.sampleLicensingMarketService.sampleSearchQueries.forEach((query) => {
+      sampleIDs.push(query.id);
+    });
+    this.loader.open();
+    this.sampleLicensingMarketService.searchMusicByFormSubmit(sampleIDs);
+  }
+
+
+  searchSingleAudio(sampleID: number) {
+    this.blurSearchInput();
+    const sampleIDs: Array<number> = [];
+    sampleIDs.push(sampleID);
+    this.loader.open();
+    this.sampleLicensingMarketService.searchMusicByFormSubmit(sampleIDs);
+  }
+
+
+  blurSearchInput() {
+    this.searchInput.nativeElement.blur();
+  }
+
+  changeSelectedSample(event: MatOptionSelectionChange, sampleID: number) {
+    //angular bug fix. Event fires multiple times: https://github.com/angular/components/issues/4094
+    if (event.source.selected) {
+      this.selectedSearchOption = event.source;
+    }
+  }
+
+  get playState(): boolean {
+    return this._playState;
+  }
+
+  get currentSampleID(): number {
+    return this._currentSampleID;
+  }
+
+  set playState(playState: boolean) {
+    this._playState = playState;
+  }
+
+  set currentSampleID(currentSampleID: number) {
+    this._currentSampleID = currentSampleID;
+  }
+
+  public displaySearchQuery(sampleSearchQuery: SampleSearchQuery): string {
+    if(sampleSearchQuery) {
+      return sampleSearchQuery.sampleTitle + " " + "(" + sampleSearchQuery.artistName + ")";
+
+    } else {
+      return '';
+    }
+  }
+
+  public openFilter() {
+    this.sampleLicensingMarketService.toggleFilter$.next({toggleState: true, apply: SidenavContent.Filter});
+  }
 
 
 }

@@ -82,6 +82,16 @@ export class NavigationService {
       ]
     },
     {
+      name: 'Upload Audio',
+      type: 'dropDown',
+      tooltip: 'Upload Audio',
+      icon: 'publish',
+      state: 'forms',
+      sub: [
+        { name: 'Upload Audio', state: 'upload-audio'}
+      ]
+    },
+    {
       name: 'DOC',
       type: 'extLink',
       tooltip: 'Documentation',

@@ -1,5 +1,5 @@
 .header-topnav {
-  position: fixed;
+  position: sticky;
   margin: 0;
   padding: 0;
   background-color: #ffffff;
@@ -11,9 +11,15 @@
   }
   .topbar-branding {
     float: left;
-    height: 48px;
-    padding: 8px;
-    margin: 0 8px;
+    // height: 48px;
+    padding: 2px 16px;
+    margin: 4px 8px 4px 17px;
+    border-right: 2px solid rgba(202, 202, 202, 1);
+    font-family: monospace;
+    letter-spacing: 4px;
+    font-weight: 700;
+    font-size: 24px;
+    // border-radius: 50%;
     img {
       height: 100%;
       width: auto;
@@ -23,6 +29,11 @@
     // margin-left: -19px;
     display: flex;
     align-items: center;
+    height: 48px;
+    
+    .trigger-text-container {
+      min-width: 150px;
+    }
   }
   .header-topnav-right {
     float: right;

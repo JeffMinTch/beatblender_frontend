@@ -50,7 +50,7 @@
 		display: inline-block;
 	}
 	
-	a, label {
+	a:not(.profile-menu-trigger), label {
 		display: flex;
 		flex-direction: row;
 		align-items: center;

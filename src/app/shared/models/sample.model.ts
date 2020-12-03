@@ -30,6 +30,6 @@ export interface Sample {
     songKey: string,
     region: string,
     audioDescription: string,
-    sampleID: string,
+    sampleID: number,
     samplePrice: string
 }

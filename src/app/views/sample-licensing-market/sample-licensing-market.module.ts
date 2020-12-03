@@ -1,3 +1,4 @@
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
@@ -59,6 +60,7 @@ import { FullLicensesComponent } from './full-licenses/full-licenses.component';
     MatSnackBarModule,
     MatListModule,
     MatSidenavModule,
+    MatAutocompleteModule,
     StarRatingModule.forRoot(),
     NgxPaginationModule,
     NgxDatatableModule,
@@ -66,7 +68,9 @@ import { FullLicensesComponent } from './full-licenses/full-licenses.component';
     SharedDirectivesModule
   ],
   declarations: [HowItWorksComponent, BasicLicensesComponent, FullLicensesComponent],
-  providers: [SampleLicensingMarketService]
+  providers: [
+    // SampleLicensingMarketService
+  ]
 })
 export class SampleLicensingMarketModule {
 

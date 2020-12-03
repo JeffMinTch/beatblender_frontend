@@ -3,7 +3,7 @@ import { RouterModule } from '@angular/router';
 import { SharedMaterialModule } from '../shared-material.module';
 import { TranslateModule } from '@ngx-translate/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { SearchModule } from '../search/search.module';
 import { SharedPipesModule } from '../pipes/shared-pipes.module';
@@ -36,6 +36,22 @@ import { BottomSheetShareComponent } from './bottom-sheet-share/bottom-sheet-sha
 import { EgretExampleViewerComponent } from './example-viewer/example-viewer.component';
 import { EgretExampleViewerTemplateComponent } from './example-viewer-template/example-viewer-template.component';
 import { EgretNotifications2Component } from './egret-notifications2/egret-notifications2.component';
+import { MatSliderModule } from '@angular/material/slider';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatRippleModule } from '@angular/material/core';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatInputModule } from '@angular/material/input';
+import { MatListModule } from '@angular/material/list';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatSelectModule } from '@angular/material/select';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatTabsModule } from '@angular/material/tabs';
 
 
 const components = [
@@ -63,8 +79,9 @@ const components = [
 
 @NgModule({
   imports: [
-CommonModule,
+    CommonModule,
     FormsModule,
+    ReactiveFormsModule,
     RouterModule,
     TranslateModule,
     FlexLayoutModule,
@@ -72,7 +89,26 @@ CommonModule,
     SearchModule,
     SharedPipesModule,
     SharedDirectivesModule,
-    SharedMaterialModule
+    SharedMaterialModule,
+    MatSliderModule,
+    FlexLayoutModule,
+    MatIconModule,
+    MatButtonModule,
+    MatCardModule,
+    MatMenuModule,
+    MatSlideToggleModule,
+    MatChipsModule,
+    MatCheckboxModule,
+    MatRadioModule,
+    MatRippleModule,
+    MatTabsModule,
+    MatInputModule,
+    MatSelectModule,
+    MatSliderModule,
+    MatExpansionModule,
+    MatSnackBarModule,
+    MatListModule
+
   ],
   declarations: components,
   // entryComponents: [AppComfirmComponent, AppLoaderComponent, BottomSheetShareComponent],

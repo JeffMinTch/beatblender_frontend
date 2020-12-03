@@ -1,4 +1,5 @@
 import { Injectable, Renderer2 } from '@angular/core';
+import { Router, RouterEvent, NavigationEnd } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 import { getQueryParam } from '../helpers/url.helper';
 import { ThemeService } from './theme.service';
@@ -39,7 +40,20 @@ export class LayoutService {
   public currentRoute: string;
   public fullWidthRoutes = ['shop'];
 
-  constructor(private themeService: ThemeService) {
+  constructor(private themeService: ThemeService, private router: Router) {
+
+    this.router.events.subscribe((routerEvent: RouterEvent) => {
+      if(routerEvent instanceof NavigationEnd) {
+        switch(routerEvent.url) {
+          case '/sample-licensing-market/basic-licenses':
+            this.layoutConf.footerFixed = true;
+            break;
+          default:
+            this.layoutConf.footerFixed = false;
+        }
+      }
+    });
+
     this.setAppLayout(
       // ******** SET YOUR LAYOUT OPTIONS HERE *********
       {
@@ -114,4 +128,6 @@ export class LayoutService {
   isSm() {
     return window.matchMedia(`(max-width: 959px)`).matches;
   }
+
+  
 }

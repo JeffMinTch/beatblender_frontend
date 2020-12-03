@@ -1,3 +1,11 @@
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
+import { EgretSideNavToggleDirective } from './../../shared/directives/egret-side-nav-toggle.directive';
+import { SharedDirectivesModule } from 'app/shared/directives/shared-directives.module';
+import { EgretSidebarTogglerDirective } from './../../shared/components/egret-sidebar/egret-sidebar.component';
+import { MatSidenavModule } from '@angular/material/sidenav';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -12,7 +20,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatRadioModule } from '@angular/material/radio';
-import { MatStepperModule } from '@angular/material/stepper';
+import { MatStepperModule, MatVerticalStepper } from '@angular/material/stepper';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { QuillModule } from 'ngx-quill';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
@@ -30,6 +38,7 @@ import { WizardComponent } from './wizard/wizard.component';
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
+    MatSidenavModule,
     MatInputModule,
     MatListModule,
     MatCardModule,
@@ -39,14 +48,26 @@ import { WizardComponent } from './wizard/wizard.component';
     MatRadioModule,
     MatCheckboxModule,
     MatButtonModule,
+    MatSelectModule,
+    MatFormFieldModule,
+    MatChipsModule,
+    MatAutocompleteModule,
+    MatStepperModule,
+    // MatInputModule,
     MatIconModule,
     MatStepperModule,
     FlexLayoutModule,
     QuillModule,
     NgxDatatableModule,
     FileUploadModule,
-    RouterModule.forChild(FormsRoutes)
+    RouterModule.forChild(FormsRoutes),
+    SharedDirectivesModule
   ],
-  declarations: [BasicFormComponent, RichTextEditorComponent, FileUploadComponent, WizardComponent]
+  declarations: [
+    BasicFormComponent, 
+    RichTextEditorComponent, 
+    FileUploadComponent, 
+    WizardComponent,
+  ]
 })
 export class AppFormsModule { }

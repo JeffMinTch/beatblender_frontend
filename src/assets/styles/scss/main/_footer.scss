@@ -1,6 +1,7 @@
 .main-footer {
   // padding: 0 0.667rem;
-  height: 64px;
+  height: 55px;
+  // transition: height 1s;
   > div {
     display: flex;
     flex-direction: row;
@@ -65,6 +66,7 @@
       display: grid;
       grid-template-columns: 64px auto;
       > img {
+        object-fit: cover;
         width: auto;
         height: 100%;
       }

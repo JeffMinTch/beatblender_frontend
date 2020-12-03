@@ -1,184 +1,242 @@
 <div>
-    <mat-sidenav-container>
-      <mat-sidenav EgretSideNavToggle class="shop-sidebar">
-        <div class="shop-filters-wrap">
-          <form [formGroup]="filterForm">
-            <mat-accordion multi="true">
-              <!-- Categories -->
-              <mat-expansion-panel expanded="true">
-                <mat-expansion-panel-header>
-                  <mat-panel-title>
-                    Categories
-                  </mat-panel-title>
-                </mat-expansion-panel-header>
-                <ul class="product-categories">
-                  <li [ngClass]="{'fw-500': 'all' === activeCategory}" (click)="setActiveCategory('all')">All</li>
-                  <li *ngFor="let c of categories$ | async" [ngClass]="{'fw-500': c === activeCategory}" (click)="setActiveCategory(c)">{{c}}</li>
-                </ul>
-              </mat-expansion-panel>
-              <!-- Price -->
-              <mat-expansion-panel>
-                <mat-expansion-panel-header>
-                  <mat-panel-title>
-                    Price
-                  </mat-panel-title>
-                </mat-expansion-panel-header>
-                <p class="m-0">Min: {{filterForm.controls['minPrice']['value'] || 20 | currency:'USD'}}</p>
-                <mat-slider class="full-width mb-16 pl-0" [formControl]="filterForm.controls['minPrice']" [thumbLabel]="true" [max]="filterForm.controls['maxPrice']?.value - 5"
-                  [min]="20"></mat-slider>
-    
-                <p class="m-0">Max: {{filterForm.controls['maxPrice']['value'] || 40 | currency:'USD'}}</p>
-                <mat-slider class="full-width pl-0" [formControl]="filterForm.controls['maxPrice']" [thumbLabel]="true" [max]="50" [min]="filterForm.controls['minPrice']?.value + 5"></mat-slider>
-              </mat-expansion-panel>
-              <!-- Ratings -->
-              <mat-expansion-panel>
-                <mat-expansion-panel-header>
-                  <mat-panel-title>
-                    Ratings
-                  </mat-panel-title>
-                </mat-expansion-panel-header>
-                <p class="m-0">Min: {{filterForm.controls['minRating']['value'] || 1}}</p>
-                <mat-slider class="full-width mb-16" [formControl]="filterForm.controls['minRating']" [thumbLabel]="true" [max]="filterForm.controls['maxRating']?.value - 1"
-                  [min]="1"></mat-slider>
-    
-                <p class="m-0">Max: {{filterForm.controls['maxRating']['value'] || 5}}</p>
-                <mat-slider class="full-width mb-16" [formControl]="filterForm.controls['maxRating']" [thumbLabel]="true" [max]="5" [min]="filterForm.controls['minRating']?.value + 1"></mat-slider>
-              </mat-expansion-panel>
-            </mat-accordion>
-          </form>
-        </div>
-      </mat-sidenav>
-      <div class="shop-wrap" fxLayout="row wrap">
-        <!-- Filters -->
-        <!-- Right side -->
-        <div class="full-width">
-          <!-- Search Form -->
-          <div fxLayout="row" fxLayout.lt-sm="column" class="shop-top-toolbar">
-            <button mat-icon-button class="mr-16" (click)="toggleSideNav()"><mat-icon>short_text</mat-icon> </button>
+  <mat-sidenav-container>
+    <mat-sidenav EgretSideNavToggle class="shop-sidebar">
+      <div class="shop-filters-wrap">
+        <form [formGroup]="filterForm">
+          <h2 class="title pb-16 pl-16">Welcome to Sample Licensing Market!</h2>
+          <p class="pl-16 pb-8">
+            Let us introduce you to the BeatBlender Sample Licensing Market. Worldwide the first market to purchase
+            commercial royalities for quality samples whithout spending a dime.
+          </p>
+          <h3 class="title pb-16 pl-16">This doesn't sounds possible...</h3>
+          <p class="pl-16 pb-8">
+            Because there wasn't a licensing system like this before on the market. Due to the our innovative licensing
+            system is BeatBlender the most producer-friendly platform that ever existet. Its use leads to a free
+            sampling and producing culture.
+          </p>
+          <h3 class="title pb-16 pl-16">What are you?</h3>
+          <p class="pl-16 pb-8">
+            BeatBlending is a invitation to join the movement of a free sampling culture, where every musician benefits
+            from contributing to and retrieving resources from this platform. That's our guarantee!
+          </p>
+
+          <h3 class="title pb-16 pl-16">Lorem ipsum dolor sit?</h3>
+          <p class="pl-16 pb-8">
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sapiente eveniet dolore voluptatem ipsam dolorem
+            non molestias architecto fugit vitae rerum.
+          </p>
+
+          <h3 class="title pb-16 pl-16">Lorem ipsum dolor sit amet?</h3>
+          <p class="pl-16 pb-8">
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Reprehenderit error praesentium eius nemo placeat
+            nulla maxime necessitatibus nihil, molestiae quos accusantium, aliquam ab natus a cumque dignissimos
+            doloremque quasi vitae.
+          </p>
+
+          <h3 class="title pb-16 pl-16">Lorem ipsum dolor sit amet consectetur?</h3>
+          <p class="pl-16 pb-8">
+            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Veniam expedita exercitationem dignissimos
+            veritatis similique vel.
+          </p>
+
+        </form>
+      </div>
+    </mat-sidenav>
+    <!-- <div class="toolbar-bg toolbar-bg-top"></div>
+    <div class="toolbar-bg toolbar-bg-bottom"></div> -->
+    <div class="shop-wrap" fxLayout="row wrap">
+      <!-- Filters -->
+      <!-- Right side -->
+      <div class="full-width">
+        <!-- Search Form -->
+        <div fxLayout="row" fxLayout.lt-sm="column" class="shop-top-toolbar">
+          <div class="wrap">
+            <button mat-raised-button class="mr-16" (click)="toggleSideNav()">
+              <mat-icon>short_text</mat-icon>
+            </button>
             <div class="product-search-wrap">
-              <form [formGroup]="filterForm">
-                <input type="text" name="searchProduct" placeholder="find samples..." class="product-search default-bg full-width" [formControl]="filterForm.controls['search']">
+              <form [formGroup]="filterForm"
+                (ngSubmit)="selectedSearchOption === null ? searchMusicByFormSubmit(searchInput.value) : searchSingleAudio(selectedSearchOption.value.id)">
+                <input #searchInput #searchInputTrigger="matAutocompleteTrigger" type="text" name="searchProduct"
+                  [matAutocomplete]="auto" (input)="searchMusicByFormInput(searchInput.value)"
+                  placeholder="find by samples, artists or tags..."
+                  class="product-search default-bg full-width mat-box-shadow" autocapitalize="false" autocomplete="off"
+                  [formControl]="filterForm.controls['search']" spellcheck="false">
+                <!-- Used displayWith here with filter function; see https://stackoverflow.com/questions/44234290/how-to-display-using-displaywith-in-autocomplete-material2 -->
+                <mat-autocomplete #auto="matAutocomplete" [displayWith]="displaySearchQuery">
+                  <mat-option
+                    *ngFor="let sampleSearchQuery of sampleLicensingMarketService.sampleSearchQueries$ | async"
+                    (onSelectionChange)="changeSelectedSample($event, sampleSearchQuery?.id)"
+                    [value]="sampleSearchQuery" class="search-query-option pl-0">
+                    <div fxLayout="row" class="option-layout">
+                      <img fxFlex="48px" [src]="sampleSearchQuery?.imageDownloadUri" alt="">
+                      <div fxFlex="auto" fxLayout="column" fxLayoutAlign="center" class="pl-16">
+                        <span class="text-muted">{{sampleSearchQuery?.sampleTitle}}</span>
+                        <span class=""><span class="text-muted">by</span> {{sampleSearchQuery?.artistName}}</span>
+                      </div>
+                    </div>
+                    {{sampleSearchQuery?.sampleTitle}}
+                  </mat-option>
+                </mat-autocomplete>
               </form>
             </div>
-            <!-- View change buttons and cart -->
-            <span fxFlex></span>
-            <div [fxHide.lt-md]="true">
+          </div>
+          <!-- View change buttons and cart -->
+          <!-- <span fxFlex></span> -->
+          <!-- <div [fxHide.lt-md]="true">
               <button mat-icon-button [color]="viewMode === 'list-view' ? 'primary' : ''" (click)="viewMode = 'list-view'">
                 <mat-icon>format_list_bulleted</mat-icon>
               </button>
               <button mat-icon-button [color]="viewMode === 'grid-view' ? 'primary' : ''" (click)="viewMode = 'grid-view'">
                 <mat-icon>apps</mat-icon>
               </button>
-            </div>
-            <span fxFlex="20px"></span>
-            <button mat-raised-button color="primary" routerLink="/shop/cart">
-              <mat-icon>shopping_cart</mat-icon> Cart ({{cartData.itemCount}})
-            </button>
-          </div>
-          <!-- Products container -->
-          <div class="product-container" 
-          [ngClass]="{'list-view': viewMode === 'list-view'}">
-            <!-- Product Box -->
-            <div  
-            class="product-wrap" 
-            *ngFor="let sample of samples$ | async | paginate: { itemsPerPage: 12, currentPage: currentPage }; let i = index;"
+            </div> -->
+          <span fxFlex="20px"></span>
+          <button mat-raised-button color="primary" (click)="openFilter()">
+            <!-- <mat-icon>audiotrack</mat-icon> Sample Watchlist ({{cartData.itemCount}}) -->
+            <mat-icon>filter_list</mat-icon> Apply Filter
+
+          </button>
+        </div>
+        <!-- Products container -->
+        <div class="product-container" [ngClass]="{'list-view': viewMode === 'list-view'}">
+          <!-- Product Box -->
+          <div fxLayout="row" class="product-wrap"
+            *ngFor="let sample of (sampleLicensingMarketService.samples$ | async) | paginate: { itemsPerPage: 12, currentPage: currentPage }; let i = index;"
             [@animate]="{value:'*',params:{delay: (i*100)+'ms', y:'100px'}}">
-              <div class="product-inner default-bg">
-                <!-- <div *ngIf="product?.badge?.text" class="product-badge mat-elevation-z7" [ngStyle]="{background: product?.badge?.color || '#f44336'}">
+            <div fxLayout="column" class="product-inner default-bg px-8 py-16">
+              <!-- <div *ngIf="product?.badge?.text" class="product-badge mat-elevation-z7" [ngStyle]="{background: product?.badge?.color || '#f44336'}">
                   <span>{{product?.badge?.text}}</span>
                 </div> -->
-                <div #featuredImage class="featured-img">
-                    <!-- [routerLink]="['/shop/products/', product._id]" -->
-                    <img [src]="sample.imageDownLoadUri" alt="">
-                    <div class="slider-container" fxLayout="row" fxLayoutAlign="center center">
-                          <mat-slider #audioSlider thumbLabel="false" class="slider" min="0" step="0.02" max="100" value="50">
-                          </mat-slider>
-                    </div>
-                    <button #playButton [attr.id]="sample?.sampleID" class="play-button" fxLayout="row" fxLayoutAlign="center center" (click)="togglePlayPause(sample)">
-                      <mat-icon>{{playButton.classList.contains('current-play-element') && playStateControlService.getPlayState() ? 'pause' : 'play_arrow'}}</mat-icon>
-                    </button>
-                </div>
-                <!-- <div class="info-wrap p-16">
-                  <div class="main-info">
-                    <h3 class="title" [routerLink]="['/shop/products/', product._id]">{{product.name}}</h3>
-                    <p class="text-muted p-line">{{product?.subtitle}}</p>
-                    <p class="text-muted p-line">
-                      <strong>Category:</strong> {{product?.category}}</p>
-                    <p class="text-muted p-line">
-                      <strong>Tags:</strong>
-                      <span *ngFor="let t of product.tags">{{t}} </span>
-                    </p>
-                    <p class="text-muted p-line">
-                      <strong>Available Formats:</strong>
-                      <span>mp3, </span>
-                      <span>wav</span>
-                    </p>
-                  </div>
-                  <div class="actions">
-                    <div class="price-rating">
-                      <div class="price">
-                        <span>FLP{{product?.price?.sale}}</span>
-                        <del class="text-muted">{{product?.price?.previous}}FLP</del>
-                      </div>
-    
-                    </div>
-                    <div class="add-to-cart">
-                      <span fxFlex></span>
-                      <button mat-icon-button (click)="addToCart(product)">
-                        <mat-icon>library_add</mat-icon>
-                      </button>
-                    </div>
-                  </div>
-                  <span fxFlex></span>
-                      <button mat-raised-button color="primary" (click)="addToCart(product)">
-                        Download Sample
-                      </button>
+              <div class="mat-box-shadow player-widget" fxLayout="row" fxLayoutAlign="space-between">
+                <!-- [routerLink]="['/shop/products/', product._id]" -->
+                <!-- <div fxLayout="row" fxLayoutAlign="center center" class="category">
                 </div> -->
-                <!-- Visible when viewMode === list-view -->
-                <div class="more-info-wrap p-16" *ngIf="viewMode === 'list-view'">
-                  <div class="more-info">
-                    <div class="more-actions mb-16">
-                      <div class="product-rating">
-                        <star-rating [starType]="'svg'" [readOnly]="true" [size]="'medium'" [staticColor]="'ok'" [rating]="4.63"></star-rating>
-                        <small class="text-muted">(140)</small>
-                      </div>
-                      <span fxFlex></span>
-                      <button mat-icon-button>
-                        <mat-icon>playlist_add</mat-icon>
-                      </button>
-                      <button mat-icon-button>
-                        <mat-icon>favorite</mat-icon>
-                      </button>
+                <img [src]="sample?.imageDownLoadUri" alt="">
+                <div fxFlex="1 1 auto" class="slider-container" fxLayout="row" fxLayoutAlign="center center">
+                  <!-- <mat-slider #audioSlider thumbLabel="true" class="slider" min="0"
+                    [max]="sample?.sampleID === (playStateControlService.currentSampleID$ | async) ? getDuration() : durationFallback()"
+                    [value]="sample?.sampleID === (playStateControlService.currentSampleID$ | async) ? getCurrentTime() : currentTimeFallback()"
+                    step="0.02" (input)="onSliderChangeEnd($event)"
+                    [disabled]="sample?.sampleID !== (playStateControlService.currentSampleID$ | async)">
+                  </mat-slider> -->
+                  <!-- [value]="getValue(sample?.sampleID)"
+                            [max]="getMax(sample?.sampleID)" -->
+                  <!-- value="0"
+                          max="100"  -->
+                </div>
+                <!-- style="font-size: 32px;" -->
+                <button mat-button class="play-button fs-32" fxLayout="row" fxLayoutAlign="center center"
+                  (click)="playState ? pause(sample?.sampleID === currentSampleID, sample?.sampleID, sample?.id, sample?.audioFile) : play(sample?.sampleID === currentSampleID, sample?.sampleID, sample?.id, sample?.audioFile)">
+                  <mat-icon inline="true"
+                    [ngStyle]="{color: sample?.sampleID === (playStateControlService.currentSampleID$ | async) ? '#304156' : 'rgb(202, 202, 202)'}">
+                    {{sample?.sampleID === (playStateControlService.currentSampleID$ | async) && (playStateControlService.playState$ | async) ? 'pause' : 'play_arrow'}}
+                  </mat-icon>
+                </button>
+                <!-- <button mat-raised-button>Download</button> -->
+                <!-- <button *ngIf="(playStateControlService.playState$ | async)" class="play-button" fxLayout="row" fxLayoutAlign="center center" (click)="pause()">
+                      <mat-icon [ngStyle]="{color: sample?.sampleID === (playStateControlService.currentSampleID$ | async) ? '#304156' : 'rgb(202, 202, 202)'}">{{sample?.sampleID === (playStateControlService.currentSampleID$ | async) && (playStateControlService.playState$ | async) ? 'pause' : 'play_arrow'}}</mat-icon>
+                    </button> -->
+              </div>
+              <div class="info-wrap p-16">
+                <div class="main-info">
+                  <h3 class="title">{{sample?.sampleTitle}}</h3>
+                  <p class="text-muted p-line">by <span class="artist-name">{{sample?.artistName}}</span></p>
+                  <p class="text-muted p-line">
+                    <strong>Category:</strong> {{sample?.genre}}</p>
+                  <p class="text-muted p-line">
+                    <strong>Tags:</strong>
+                    <!-- <span-list aria-label="Fish selection"> -->
+                    <span>#{{sample?.trackType}}</span>
+                    <span>#{{sample?.region}}</span>
+                    <span>#{{sample?.songKey}}</span>
+                    <span>#Dmoll</span>
+
+                    <!-- </span-list> -->
+                    <!-- <span *ngFor="let t of ">{{sample?.sampleTitle}} </span> -->
+                  </p>
+                  <p class="text-muted p-line">
+                    <strong>Available Formats:</strong>
+                    <!-- <mat-chip-list aria-label="Fish selection"> -->
+                    <!-- <mat-chip>mp3</mat-chip> -->
+                    <!-- <mat-chip>wav</mat-chip> -->
+                    <!-- <mat-chip color="primary" selected>Primary fish</mat-chip> -->
+                    <!-- <mat-chip color="accent" selected>Accent fish</mat-chip> -->
+                    <!-- </mat-chip-list> -->
+                    <span>mp3</span>
+                    <span>wav</span>
+                  </p>
+                </div>
+                <div class="actions">
+                  <div class="price-rating">
+                    <div class="price">
+                      <span>LEP{{sample?.samplePrice}}</span>
+                      <del class="text-muted">{{sample?.samplePrice}}LEP</del>
                     </div>
-    
-                    <div>
-                      <ul>
-                        <li>
-                          <mat-icon>check</mat-icon> Heavy duty</li>
-                        <li>
-                          <mat-icon>check</mat-icon> Water resistance</li>
-                        <li>
-                          <mat-icon>check</mat-icon> Clean design</li>
-                        <li>
-                          <mat-icon>check</mat-icon> High quality raw materials</li>
-                      </ul>
-                    </div>
-    
+                  </div>
+                  <div class="add-to-cart">
+                    <span fxFlex></span>
+                    <button mat-icon-button>
+                      <mat-icon>library_add</mat-icon>
+                    </button>
                   </div>
                 </div>
-    
+                <span fxFlex></span>
               </div>
+              <button fxFlex="50px" mat-raised-button class="full-width">
+                Download Sample
+              </button>
+              <!-- <mat-divider></mat-divider> -->
+              <!-- Visible when viewMode === list-view -->
+              <div class="more-info-wrap p-16" *ngIf="viewMode === 'list-view'">
+                <div class="more-info">
+                  <div class="more-actions mb-16">
+                    <div class="product-rating">
+                      <star-rating [starType]="'svg'" [readOnly]="true" [size]="'medium'" [staticColor]="'ok'"
+                        [rating]="4.63"></star-rating>
+                      <small class="text-muted">(140)</small>
+                    </div>
+                    <span fxFlex></span>
+                    <button mat-icon-button>
+                      <mat-icon>playlist_add</mat-icon>
+                    </button>
+                    <button mat-icon-button>
+                      <mat-icon>favorite</mat-icon>
+                    </button>
+                  </div>
+
+                  <div>
+                    <ul>
+                      <li>
+                        <mat-icon>check</mat-icon> Heavy duty
+                      </li>
+                      <li>
+                        <mat-icon>check</mat-icon> Water resistance
+                      </li>
+                      <li>
+                        <mat-icon>check</mat-icon> Clean design
+                      </li>
+                      <li>
+                        <mat-icon>check</mat-icon> High quality raw materials
+                      </li>
+                    </ul>
+                  </div>
+
+                </div>
+              </div>
+
             </div>
-            <!-- End Product -->
-    
-            <div class="products-pagination">
-              <pagination-controls (pageChange)="currentPage = $event"></pagination-controls>
-            </div>
-    
           </div>
-          <!-- End Products container -->
+          <!-- End Product -->
+
+          <div class="products-pagination">
+            <pagination-controls (pageChange)="currentPage = $event"></pagination-controls>
+          </div>
+
         </div>
-    
+        <!-- End Products container -->
       </div>
-    </mat-sidenav-container>
-  </div>
+
+    </div>
+  </mat-sidenav-container>
+</div>

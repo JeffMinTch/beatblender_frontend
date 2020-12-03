@@ -1,8 +1,74 @@
-<div class="text-center mat-bg-primary pt-16 pb-16">
-  <h6 class="m-0">Notifications</h6>
-</div>
-<mat-nav-list class="notification-list" role="list">
-  <!-- Notification item -->
+<!-- <div class="text-center mat-bg-primary pt-16 pb-16"> -->
+  <h2 class="m-0 pl-16 pb-16">Apply Filter</h2>
+<!-- </div> -->
+<mat-accordion multi="false">
+  <!-- Categories -->
+  <mat-expansion-panel expanded="true" style="box-shadow: none;">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        Categories
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <!-- <mat-select [formControl]="genres" multiple (selectionChange)="changeGenres($event.value)"> -->
+    <!-- <mat-option *ngFor="let genre of genreList" [value]="genre">{{genre}}</mat-option> -->
+    <!-- </mat-select> -->
+    <ul class="product-categories">
+      <li [ngClass]="{'fw-500': 'all' === activeCategory}" (click)="setActiveCategory('all')">All</li>
+      <li *ngFor="let c of categories$ | async" [ngClass]="{'fw-500': c === activeCategory}"
+        (click)="setActiveCategory(c)">{{c}}</li>
+    </ul>
+
+  </mat-expansion-panel>
+
+  <mat-expansion-panel expanded="true" style="box-shadow: none;">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        Genres
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <!-- <mat-select [formControl]="genres" multiple (selectionChange)="changeGenres($event.value)"> -->
+    <!-- <mat-option *ngFor="let genre of genreList" [value]="genre">{{genre}}</mat-option> -->
+    <!-- </mat-select> -->
+    <!-- (click)="setActiveCategory('all')" -->
+    <!-- (click)="setActiveGenres('all')" -->
+    <ul class="product-categories genres">
+      <li [ngClass]="{'fw-500': 'all' === activeGenre}" (click)="setActiveGenre('all')">All</li>
+      <li *ngFor="let genre of genres$ | async" [ngClass]="{'fw-500': genre === activeGenre}"
+        (click)="setActiveGenre(genre)">{{genre}}</li>
+    </ul>
+  </mat-expansion-panel>
+  <!-- Price -->
+  <mat-expansion-panel expanded="true" style="box-shadow: none;">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        Price
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <p class="m-0">Min: {{filterForm.controls['minPrice']['value'] || 20 | currency:'USD'}}</p>
+    <mat-slider class="full-width mb-16 pl-0" [formControl]="filterForm.controls['minPrice']"
+      [thumbLabel]="true" [max]="filterForm.controls['maxPrice']?.value - 5" [min]="20"></mat-slider>
+
+    <p class="m-0">Max: {{filterForm.controls['maxPrice']['value'] || 40 | currency:'USD'}}</p>
+    <mat-slider class="full-width pl-0" [formControl]="filterForm.controls['maxPrice']" [thumbLabel]="true"
+      [max]="50" [min]="filterForm.controls['minPrice']?.value + 5"></mat-slider>
+  </mat-expansion-panel>
+  <!-- Ratings -->
+  <mat-expansion-panel expanded="true" style="box-shadow: none;">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        Ratings
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <p class="m-0">Min: {{filterForm.controls['minRating']['value'] || 1}}</p>
+    <mat-slider class="full-width mb-16" [formControl]="filterForm.controls['minRating']" [thumbLabel]="true"
+      [max]="filterForm.controls['maxRating']?.value - 1" [min]="1"></mat-slider>
+
+    <p class="m-0">Max: {{filterForm.controls['maxRating']['value'] || 5}}</p>
+    <mat-slider class="full-width mb-16" [formControl]="filterForm.controls['maxRating']" [thumbLabel]="true"
+      [max]="5" [min]="filterForm.controls['minRating']?.value + 1"></mat-slider>
+  </mat-expansion-panel>
+</mat-accordion>
+<!-- <mat-nav-list class="notification-list" role="list">
   <mat-list-item *ngFor="let n of notifications" class="notific-item" role="listitem" routerLinkActive="open">
     <mat-icon [color]="n.color" class="notific-icon mr-16">{{n.icon}}</mat-icon>
     <a [routerLink]="[n.route || '/dashboard']">
@@ -12,7 +78,9 @@
       </div>
     </a>
   </mat-list-item>
-</mat-nav-list>
+</mat-nav-list> -->
+  <!-- Notification item -->
+
 <div class="text-center mt-16" *ngIf="notifications.length">
-  <small><a href="#" (click)="clearAll($event)">Clear all notifications</a></small>
+  <small><a href="#" (click)="clearAll($event)">Reset All Filters</a></small>
 </div>

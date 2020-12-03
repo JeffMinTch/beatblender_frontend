@@ -1,3 +1,4 @@
+import { SidenavToggleDirective } from './sidenav-toggle.directive';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
@@ -17,10 +18,11 @@ const directives = [
   AppDropdownDirective,
   DropdownAnchorDirective,
   DropdownLinkDirective,
+  SidenavToggleDirective,
   EgretSideNavToggleDirective,
   EgretSidenavHelperDirective,
   EgretSidenavTogglerDirective,
-  EgretHighlightDirective
+  EgretHighlightDirective,
 ]
 
 @NgModule({

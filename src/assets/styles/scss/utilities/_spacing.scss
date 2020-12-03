@@ -99,6 +99,21 @@ $utilities: map-merge((
     class: pl,
     values: $spaces
   ),
+  "border-radius": (
+    property: border-radius,
+    class: br,
+    values: $spaces
+  ),
+  "line-height": (
+    property: line-height,
+    class: lh,
+    values: $spaces
+  ),
+  "font-size": (
+    property: font-size,
+    class: fs,
+    values: $spaces
+  )
 ), $utilities);
 
 

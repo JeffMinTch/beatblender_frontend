@@ -1,3 +1,5 @@
+import { MatSidenav } from '@angular/material/sidenav';
+import { SampleLicensingMarketService } from './../../../../views/sample-licensing-market/sample-licensing-market.service';
 import { Component, OnInit, AfterViewInit, ViewChild, HostListener, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { 
   Router, 
@@ -13,12 +15,18 @@ import { ThemeService } from '../../../services/theme.service';
 import { LayoutService } from '../../../services/layout.service';
 import { filter } from 'rxjs/operators';
 import { JwtAuthService } from '../../../services/auth/jwt-auth.service';
+import { SidenavContent } from 'app/shared/models/sidenav-content.model';
+
+
+
 
 @Component({
   selector: 'app-admin-layout',
   templateUrl: './admin-layout.template.html',
 })
 export class AdminLayoutComponent implements OnInit, AfterViewInit {
+  
+  @ViewChild('notificationPanel', { static: false, read: MatSidenav}) private notificationPanel: MatSidenav;
   public isModuleLoading: Boolean = false;
   private moduleLoaderSub: Subscription;
   private layoutConfSub: Subscription;
@@ -34,7 +42,8 @@ export class AdminLayoutComponent implements OnInit, AfterViewInit {
     public themeService: ThemeService,
     private layout: LayoutService,
     private cdr: ChangeDetectorRef,
-    private jwtAuth: JwtAuthService
+    private jwtAuth: JwtAuthService,
+    private sampleLicensingMarketService: SampleLicensingMarketService
   ) {
     // Check Auth Token is valid
     this.jwtAuth.checkTokenIsValid().subscribe();
@@ -70,6 +79,17 @@ export class AdminLayoutComponent implements OnInit, AfterViewInit {
         this.isModuleLoading = false;
       }
     });
+
+    this.sampleLicensingMarketService.toggleFilter$.subscribe((data) => {
+      switch(data.apply) {
+        case SidenavContent.Filter: 
+          if(data.toggleState && !this.notificationPanel.opened) {
+            this.notificationPanel.open();
+          }
+      }
+    });
+
+    
   }
   @HostListener('window:resize', ['$event'])
   onResize(event) {

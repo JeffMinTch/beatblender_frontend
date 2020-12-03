@@ -1,13 +1,13 @@
-import { Directive, Host, Self, Optional, OnDestroy, OnInit, SkipSelf } from '@angular/core';
-import { MediaChange, MediaObserver } from "@angular/flex-layout";
-import { Subscription } from "rxjs";
+import { Directive, Host, Optional, Self } from '@angular/core';
+import { MediaChange, MediaObserver } from '@angular/flex-layout';
 import { MatSidenav } from '@angular/material/sidenav';
-
+import { Subscription } from 'rxjs';
 
 @Directive({
-  selector: '[EgretSideNavToggle]'
+  selector: '[appSidenavToggle]'
 })
-export class EgretSideNavToggleDirective implements OnInit, OnDestroy {
+export class SidenavToggleDirective {
+
   isMobile;
   screenSizeWatcher: Subscription;
   constructor(
@@ -46,5 +46,4 @@ export class EgretSideNavToggleDirective implements OnInit, OnDestroy {
       this.updateSidenav();
     });
   }
-
 }
