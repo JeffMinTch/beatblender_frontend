@@ -55,10 +55,10 @@ export class NavigationService {
       name: 'App - Navigation'
     },
     {
-      name: 'DASHBOARD',
+      name: 'Music',
       type: 'dropDown',
       tooltip: 'Dashboard',
-      svgIcon: 'ulb_server',
+      icon: 'music_note',
       state: 'dashboard',
       sub: [
         { name: 'Default', state: 'default' },
@@ -69,15 +69,15 @@ export class NavigationService {
       ]
     },
     {
-      name: 'Get Sample Licenses',
+      name: 'Audio Licenses',
       type: 'dropDown',
       tooltip: 'Sample Market',
       icon: 'storefront',
       state: 'sample-licensing-market',
       sub: [
+        {name: 'How it works', state: 'how-it-works'},
         {name: 'Basic Licenses', state: 'basic-licenses'},
         {name: 'Full Licenses', state: 'full-licenses'},
-        {name: 'How To Get A License', state: 'how-it-works'}
         // {name: 'Upload Your Samples', state: 'upload-samples'}
       ]
     },

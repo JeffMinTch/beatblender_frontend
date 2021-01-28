@@ -1,6 +1,7 @@
 <footer class="main-footer">
   <div class="container-dynamic d-flex">
     <div class="toolbar" fxLayout="row" fxLayoutAlign="center center">
+      
       <div class="player" fxLayout="row nowrap">
         <!-- <ng-container *ngFor="let sample of sampleLicensingMarketService.samples$ | async; let i = index"> -->
           <!-- *ngIf="sample?.sampleID === (playStateControlService.currentSampleID$ | async)"  -->
@@ -56,7 +57,7 @@
             </button>
           <!-- </ng-container> -->
       </div>
-      <div class="player-tools" fxLayout="row nowrap" fxLayoutALign="center center">
+      <div class="player-tools" fxFlex style="background: red;" fxLayout="row nowrap" fxLayoutALign="start center">
         <button mat-icon-button (click)="toggleMute()" [disabled]="sampleLicensingMarketService.samplesLoading$ | async" type="button" mat-icon-button
             onclick="this.blur()" class="mute-button" style="">
             <mat-icon inline="true" class="mute-icon" aria-hidden="false" aria-label="Example home icon">{{getMute() ? 'volume_off' : 'volume_mute'}}</mat-icon>
@@ -71,10 +72,10 @@
     </div>
     <ng-container *ngFor="let sample of sampleLicensingMarketService.samples$ | async">
     <div  *ngIf="sample?.sampleID === (playStateControlService.currentSampleID$ | async)" class="current-audio-container">
-        <img [src]="sample?.imageDownLoadUri" alt="">
+        <img src="{{'http://localhost:9090/api/web/public/media/image/' + sample?.sampleID}}" alt="">
         <div class="current-audio-info" fxLayout="column">
           <span>{{sample?.artistName}}</span>
-          <span>{{sample?.sampleTitle}}</span>
+          <span>{{sample?.title}}</span>
         </div>
       </div>
     </ng-container>

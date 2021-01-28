@@ -1,3 +1,4 @@
+import { environment } from 'environments/environment';
 import { Injectable, ViewChild, ElementRef, Renderer2, RendererFactory2, ChangeDetectorRef, OnDestroy, OnInit } from '@angular/core';
 import { Subject, Observable, BehaviorSubject, Subscription } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -101,6 +102,9 @@ export class AudioService implements OnDestroy {
 
   createWavesurferObj() {
     // this.wavesurfer = null;
+    if(this.wavesurfer) {
+      this.wavesurfer.destroy();
+    }
     this.wavesurfer = WaveSurfer.create({
       container: '#waveform',
       barWidth: 3,
@@ -137,7 +141,7 @@ export class AudioService implements OnDestroy {
           // plugin options ...
           color: 'pink',
           showTime: true,
-          style: 'dashed',
+          style: 'solid',
           followCursorY: true
         })
 
@@ -164,11 +168,11 @@ export class AudioService implements OnDestroy {
       // this.playStateControlService.savePlayState(false);
       
       // // this.changeDetectorRef.markForCheck()
-      // this.emitAudioState({
-      //   status: "finish",
-      //   currentTime: 0,
-      //   duration: 0
-      // });
+      this.emitAudioState({
+        status: "finish",
+        currentTime: 0,
+        duration: 0
+      });
     });
 
     this.wavesurfer.on('finish', () => {
@@ -217,9 +221,11 @@ export class AudioService implements OnDestroy {
   }
   
 
-  loadAudio(userName, url) {
+  loadAudio(sampleID):void {
     this.isPlayerReady = false;
-   let load =  this.wavesurfer.load(`http://localhost:8080/api/samplepool/downloadFile/${userName}/${url}`); 
+    this.wavesurfer.load(`http://localhost:9090/api/web/public/media/audio/${sampleID}`);
+
+  //  let load =  this.wavesurfer.load(`http://localhost:9090/api/samplepool/downloadFile/${userName}/${fileName}`); 
   }
 
   toggleMute() {
@@ -230,9 +236,10 @@ export class AudioService implements OnDestroy {
     return this.wavesurfer.getMute();
   }
 
-  loadPlayAudio(userName, url): void {
+  loadPlayAudio(sampleID): void {
     this.isPlayerReady = false;    
-    this.wavesurfer.load(`http://localhost:8080/api/samplepool/downloadFile/${userName}/${url}`); 
+    this.wavesurfer.load(`http://localhost:9090/api/web/public/media/audio/${sampleID}`);
+    // this.wavesurfer.load(`http://localhost:9090/api/samplepool/downloadFile/${userName}/${fileName}`); 
   }
 
   loadBlob(file): void {

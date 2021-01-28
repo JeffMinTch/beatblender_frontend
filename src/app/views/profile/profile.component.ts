@@ -1,3 +1,4 @@
+import { UserInfo } from 'angular-oauth2-oidc';
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { JwtAuthService } from "app/shared/services/auth/jwt-auth.service";
@@ -10,7 +11,7 @@ import { Observable } from 'rxjs';
 })
 export class ProfileComponent implements OnInit {
   activeView: string = "overview";
-  user: Observable<User>;
+  userInfo: Observable<UserInfo>;
   // Doughnut
   doughnutChartColors: any[] = [
     {
@@ -49,6 +50,6 @@ export class ProfileComponent implements OnInit {
 
   ngOnInit() {
     this.activeView = this.router.snapshot.params["view"];
-    this.user = this.jwtAuth.user$;
+    this.userInfo = this.jwtAuth.user$;
   }
 }

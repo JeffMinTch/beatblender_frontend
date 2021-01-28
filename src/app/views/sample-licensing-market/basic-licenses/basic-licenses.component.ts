@@ -1,3 +1,5 @@
+import { LocalStoreService } from './../../../shared/services/local-store.service';
+import { JwtAuthService } from 'app/shared/services/auth/jwt-auth.service';
 import { LayoutService } from './../../../shared/services/layout.service';
 import { SampleSearchQuery } from 'app/shared/models/sample-search-query.model';
 import { ComponentCommunicationService } from './../../../shared/services/component-communication.service';
@@ -23,6 +25,7 @@ import { CloudService } from 'app/shared/services/cloud-service.service';
 import { MatAutocomplete, MatAutocompleteTrigger } from '@angular/material/autocomplete';
 import { MatOption, MatOptionSelectionChange } from '@angular/material/core';
 import { SidenavContent } from 'app/shared/models/sidenav-content.model';
+import { HttpErrorResponse } from '@angular/common/http';
 
 
 @Component({
@@ -47,7 +50,7 @@ export class BasicLicensesComponent implements OnInit, AfterViewInit {
 
 
   private _playState: boolean;
-  private _currentSampleID: number;
+  private _currentSampleID: string;
   public products$: Observable<Product[]>;
   public categories$: Observable<any>;
   public genres$: Observable<string[]>;
@@ -90,19 +93,28 @@ export class BasicLicensesComponent implements OnInit, AfterViewInit {
     private snackBar: MatSnackBar,
     private loader: AppLoaderService,
     private changeDetectorRef: ChangeDetectorRef,
+    private jwt: JwtAuthService,
+    private ls: LocalStoreService
   ) {
     
 
     this.sampleLicensingMarketService.samples$.pipe(
-      map((samples: Sample[]) => {
-        this.loader.close();
-        (this.searchInput.nativeElement as HTMLInputElement).value = '';
-        this.matSearchInputTrigger.closePanel();
-        this.selectedSearchOption = null;
-        if(this.playState) {
-          this.playStateControlService.emitPlayState(false);
-        }
-        this.audioService.loadPlayAudio(samples[0].id, samples[0].audioFile);
+      map((samples: Array<Sample>) => {
+        this.audioService.createWavesurferObj();
+        // if(!this.audioService.wavesurfer) {
+        // }
+        // this.audioService.createWavesurferObj();
+        // this.audioService.wavesurfer.on("ready", () => {
+          this.loader.close();
+          (this.searchInput.nativeElement as HTMLInputElement).value = '';
+          this.matSearchInputTrigger.closePanel();
+          this.selectedSearchOption = null;
+          if(this.playState) {
+            this.playStateControlService.emitPlayState(false);
+          }
+          this.audioService.loadPlayAudio(samples[0].sampleID);
+          // this.audioService.wavesurfer.un("ready");
+        // });
 
         return samples;
       }),
@@ -118,14 +130,26 @@ export class BasicLicensesComponent implements OnInit, AfterViewInit {
           break;
         case "playing":
           break;
+        case "pause":
+          this.changeDetectorRef.detectChanges();
+          break;
       }
     });
+      this.sampleLicensingMarketService.getAudioFiles().pipe(
+        share(),
+      ).subscribe((samples: Sample[]) => {
+        this.sampleLicensingMarketService.samples$.next(samples);
 
-    this.sampleLicensingMarketService.getAudioFiles().pipe(
-      share(),
-    ).subscribe((samples: Sample[]) => {
-      this.sampleLicensingMarketService.samples$.next(samples);
-    });
+      }, (error) => {
+        if(error instanceof HttpErrorResponse) {
+          if(error.status===401) {
+            this.ls.clear();
+            this.jwt.signin();
+          }
+        }
+        console.log(error);
+      });
+
 
   }
   
@@ -134,9 +158,11 @@ export class BasicLicensesComponent implements OnInit, AfterViewInit {
     this.genres$ = this.sampleLicensingMarketService.getGenres();
     this.buildFilterForm(this.sampleLicensingMarketService.initialFilters);
     
-    setTimeout(() => {
-      this.audioService.createWavesurferObj();
-    });
+    // setTimeout(() => {
+    //   // if(!this.audioService.wavesurfer) {
+    //     this.audioService.createWavesurferObj();
+    //   // }
+    // });
 
     this.audioService.audioState$.pipe(
       takeUntil(this.audioService.audioServiceDestroyed$)
@@ -153,7 +179,7 @@ export class BasicLicensesComponent implements OnInit, AfterViewInit {
 
     this.playStateControlService.currentSampleID$.pipe(
       takeUntil(this.playStateControlService.playStateServiceDestroyed$)
-    ).subscribe((currentSampleID: number) => {
+    ).subscribe((currentSampleID: string) => {
       this.currentSampleID = currentSampleID;
       // this.changeDetectorRef.detectChanges();
     });
@@ -233,14 +259,14 @@ export class BasicLicensesComponent implements OnInit, AfterViewInit {
     this.sideNav.opened = !this.sideNav.opened;
   }
 
-  play(isCurrentSample: boolean, sampleID: number, sampleOwnerID: string, sampleName: string): void {
+  play(isCurrentSample: boolean, sampleID: string): void {
     if (isCurrentSample) {
       this.playStateControlService.emitPlayState(true);
       this.audioService.play();
       console.log('play yes');
     } else {
       this.playStateControlService.emitPlayState(true);
-      this.audioService.loadPlayAudio(sampleOwnerID, sampleName);
+      this.audioService.loadPlayAudio(sampleID);
       // setTimeout(() => {
         this.playStateControlService.emitCurrentSampleID(sampleID);
       // });
@@ -248,21 +274,21 @@ export class BasicLicensesComponent implements OnInit, AfterViewInit {
     }
   }
 
-  pause(isCurrentSample: boolean, sampleID: number, sampleOwnerID: string, sampleName: string): void {
+  pause(isCurrentSample: boolean, sampleID: string): void {
     if (isCurrentSample) {
       this.playStateControlService.emitPlayState(false);
       this.audioService.pause();
       console.log('pause yes');
     } else {
       this.playStateControlService.emitCurrentSampleID(sampleID);
-      this.audioService.loadPlayAudio(sampleOwnerID, sampleName);
+      this.audioService.loadPlayAudio(sampleID);
       console.log('pause no');
       
     }
 
   }
 
-  initCurrentFile(sampleID: number) {
+  initCurrentFile(sampleID: string) {
     // this.playStateControlService.saveIDCurrentPlayElement(sampleID);
     this.playStateControlService.emitCurrentSampleID(sampleID);
   }
@@ -342,7 +368,7 @@ export class BasicLicensesComponent implements OnInit, AfterViewInit {
     return this._playState;
   }
 
-  get currentSampleID(): number {
+  get currentSampleID(): string {
     return this._currentSampleID;
   }
 
@@ -350,7 +376,7 @@ export class BasicLicensesComponent implements OnInit, AfterViewInit {
     this._playState = playState;
   }
 
-  set currentSampleID(currentSampleID: number) {
+  set currentSampleID(currentSampleID: string) {
     this._currentSampleID = currentSampleID;
   }
 

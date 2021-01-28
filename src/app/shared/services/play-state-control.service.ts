@@ -17,7 +17,7 @@ export class PlayStateControlService implements OnDestroy {
 
   private currentFile: CurrentFile;
   private playState=false;
-  private idCurrentPlayElement: number=null;
+  private idCurrentPlayElement: string=null;
 
   constructor(private componentCommunicationService: ComponentCommunicationService) { }
   
@@ -40,9 +40,9 @@ export class PlayStateControlService implements OnDestroy {
     this.playStateSubject.next(playState);
   }
   
-  private currentSampleIDSubject = new BehaviorSubject<number>(0);
+  private currentSampleIDSubject = new BehaviorSubject<string>("");
   currentSampleID$ = this.currentSampleIDSubject.asObservable();
-  emitCurrentSampleID(currentSampleID: number) {
+  emitCurrentSampleID(currentSampleID: string) {
     this.currentSampleIDSubject.next(currentSampleID);
   }
   
@@ -66,7 +66,7 @@ export class PlayStateControlService implements OnDestroy {
   // }
 
 
-  public getIDCurrentPlayElement(): number {
+  public getIDCurrentPlayElement(): string {
     return this.idCurrentPlayElement;
     // let idCurrentPlayElement = sessionStorage.getItem(ID_CURRENT_PLAY_ELEMENT);
     

@@ -5,6 +5,7 @@ import { ThemeService } from '../../../shared/services/theme.service';
 import { TranslateService } from '@ngx-translate/core';
 import { LayoutService } from '../../services/layout.service';
 import { JwtAuthService } from 'app/shared/services/auth/jwt-auth.service';
+import { OAuthService } from 'angular-oauth2-oidc';
 
 @Component({
   selector: 'app-header-top',
@@ -30,7 +31,9 @@ export class HeaderTopComponent implements OnInit, OnDestroy {
     public themeService: ThemeService,
     public translate: TranslateService,
     private renderer: Renderer2,
-    public jwtAuth: JwtAuthService
+    public jwtAuth: JwtAuthService,
+    private oauthService: OAuthService
+
   ) { }
 
   ngOnInit() {
@@ -76,5 +79,25 @@ export class HeaderTopComponent implements OnInit, OnDestroy {
     this.layout.publishLayoutChange({
       sidebarStyle: 'closed'
     })
+  }
+  isAuth(): boolean {
+    if(this.oauthService.hasValidAccessToken()) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+  public logoff() {
+    this.oauthService.logOut();
+  }
+
+  login(): void {
+    this.oauthService.initLoginFlow();
+  }
+
+  getRole():string {
+    if(this.jwtAuth.getRole()) {
+      return this.jwtAuth.getRole();
+    }
   }
 }

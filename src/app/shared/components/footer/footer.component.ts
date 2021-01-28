@@ -18,8 +18,8 @@ import { createTrue } from 'typescript';
 })
 export class FooterComponent implements OnInit, AfterViewInit {
 
-  private samples: Sample[];
-  private currentSampleID: number;
+  private samples: Array<Sample>;
+  private currentSampleID: string;
   isMuted: boolean = false;
   audioStateSubscription: Subscription;
   sampleSubscription: Subscription;
@@ -64,7 +64,7 @@ export class FooterComponent implements OnInit, AfterViewInit {
 
     this.playStateControlService.currentSampleID$.pipe(
       takeUntil(this.playStateControlService.playStateServiceDestroyed$)
-    ).subscribe((currentSampleID: number) => {
+    ).subscribe((currentSampleID: string) => {
       this.currentSampleID = currentSampleID;
       // this.changeDetectorRef.detectChanges();
     });
@@ -110,7 +110,7 @@ export class FooterComponent implements OnInit, AfterViewInit {
         newActiveSampleIndex = activeSampleIndex + 1;
         break;
     }
-    this.loadAudio(this.samples[newActiveSampleIndex].id, this.samples[newActiveSampleIndex].audioFile);
+    this.loadAudio(this.samples[newActiveSampleIndex].sampleID);
     this.playStateControlService.emitCurrentSampleID(this.samples[newActiveSampleIndex].sampleID);
     // this.playStateControlService.saveIDCurrentPlayElement(this.samples[newActiveSampleIndex].sampleID);
     this.changeDetectorRef.detectChanges();
@@ -122,8 +122,8 @@ export class FooterComponent implements OnInit, AfterViewInit {
     return activeSampleIndex;
   }
 
-  loadAudio(userName: string, sampleName: string):void {
-    this.audioService.loadAudio(userName, sampleName);
+  loadAudio(sampleID: string):void {
+    this.audioService.loadAudio(sampleID);
   }
 
   isFirst(): boolean {

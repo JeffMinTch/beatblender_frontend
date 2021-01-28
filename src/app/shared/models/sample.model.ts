@@ -1,35 +1,29 @@
-// import { AudioFile } from './audio-file.model';
-import { SampleDetails } from "./sample-details.model";
-
-// export interface AudioFile {
+// export interface Sample {
+//     queuePosition: number,
 //     id: string,
-//     url: string,
-//     img: string,
-//     title: string,
-//     artist: string,
-//     // length: string
-//     userName: string,
-//     samplePrice: number,
+//     artistName: string,
+//     sampleTitle: string,
+//     audioFile: string,
+//     sampleImage: string,
+//     audioFileDownLoadUri: string,
+//     imageDownLoadUri: string,
+//     genre: string,
+//     trackType: string,
+//     songKey: string,
+//     region: string,
+//     audioDescription: string,
 //     sampleID: number,
-//     sampleDetails: SampleDetails,
-    
+//     samplePrice: string
 // }
-
-
 export interface Sample {
-    queuePosition: number,
-    id: string,
-    artistName: string,
-    sampleTitle: string,
-    audioFile: string,
-    sampleImage: string,
-    audioFileDownLoadUri: string,
-    imageDownLoadUri: string,
-    genre: string,
-    trackType: string,
-    songKey: string,
-    region: string,
-    audioDescription: string,
-    sampleID: number,
-    samplePrice: string
+    sampleID: string;
+    title: string;
+    genre: string;
+    tempo: number;
+    moods: Array<string>;
+    tags: Array<string>;
+    audioFileName: string,
+    imageFileName: string;
+    lep: number;
+    artistName: string;
 }

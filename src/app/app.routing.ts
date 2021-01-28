@@ -28,11 +28,12 @@ export const rootRouterConfig: Routes = [
   {
     path: '',
     component: AdminLayoutComponent,
-    canActivate: [AuthGuard],
+    // canActivate: [AuthGuard],
     children: [
       {
         path: 'dashboard',
         loadChildren: () => import('./views/dashboard/dashboard.module').then(m => m.DashboardModule),
+        canActivate: [AuthGuard],
         data: { title: 'Dashboard', breadcrumb: 'DASHBOARD'}
       },
       {

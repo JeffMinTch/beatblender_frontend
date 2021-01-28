@@ -272,7 +272,7 @@
                 </div>
               </div>
               <div>
-                <button mat-raised-button [disabled]="!(formsSubject | async)?.get(item).controls['descriptionForm'].valid" matStepperNext>Next</button>
+                <button mat-raised-button [disabled]="!(formsSubject | async)?.get(item).controls['descriptionForm'].valid" matStepperNext (click)="upload(item)">Next</button>
               </div>
 
 
@@ -486,9 +486,9 @@
         <mat-progress-bar class="" color="primary" mode="determinate" [value]="uploader.progress">
         </mat-progress-bar>
       </div>
-
+	<!-- [disabled]="!uploader.getNotUploadedItems().length" -->
       <button mat-raised-button color="primary" class="mx-4" (click)="uploader.uploadAll()"
-        [disabled]="!uploader.getNotUploadedItems().length">Upload all</button>
+        >Upload all</button>
 
       <button mat-raised-button color="accent" class="mx-4" (click)="uploader.cancelAll()"
         [disabled]="!uploader.isUploading">Cancel all</button>

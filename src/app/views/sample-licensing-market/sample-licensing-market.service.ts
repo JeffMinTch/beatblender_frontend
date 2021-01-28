@@ -1,3 +1,4 @@
+import { AudioWebService } from './../../shared/services/web-services/audio-web.service';
 import { CloudService } from './../../shared/services/cloud-service.service';
 import { Injectable, OnDestroy } from '@angular/core';
 import { FormGroup } from '@angular/forms';
@@ -61,7 +62,10 @@ export class SampleLicensingMarketService implements OnDestroy {
   public cartData = {
     itemCount: 0
   }
-  constructor(private cloudService: CloudService) {
+  constructor(
+    private cloudService: CloudService,
+    private audioWebService: AudioWebService
+    ) {
     // this.samples$ = this.getAudioFiles().pipe(
     //   share(),
     // );
@@ -139,13 +143,13 @@ export class SampleLicensingMarketService implements OnDestroy {
     return of(product)
   }
 
-  public getAudioFiles(): Observable<Sample[]> {
+  public getAudioFiles(): Observable<Array<Sample>> {
     this.emitSamplesLoading(true);
-    return this.cloudService.getAudioFiles().pipe(
+    return this.audioWebService.getAudioFiles().pipe(
       map(serverFiles => {
         console.log(serverFiles.audioFileResponse);
         this.emitSamplesLoading(false);
-        return serverFiles.audioFileResponse;
+        return serverFiles;
       })
     );
   }

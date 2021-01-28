@@ -1,3 +1,4 @@
+import { AuthConfigModule } from './../config/auth.config.module';
 // import { StateManagerService } from './shared/services/state-manager.service';
 import { NgModule, ErrorHandler, APP_INITIALIZER } from '@angular/core';
 import { RouterModule } from '@angular/router';
@@ -42,6 +43,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
 
 @NgModule({
   imports: [
+    AuthConfigModule,
     BrowserModule,
     BrowserAnimationsModule,
     SharedModule,
@@ -55,7 +57,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
       }
     }),
     InMemoryWebApiModule.forRoot(InMemoryDataService, { passThruUnknownUrl: true}),
-    RouterModule.forRoot(rootRouterConfig, { useHash: false })
+    RouterModule.forRoot(rootRouterConfig, { useHash: false }),
   ],
   declarations: [AppComponent],
   providers: [

@@ -7,5 +7,30 @@ import { config } from "config";
 
 export const environment = {
   production: false,
-  apiURL: config.apiUrl
+  apiURL: config.webApi,
+  // Source: https://github.com/bbachi/keycloak-todos/blob/master/src/environments/environment.ts
+  keycloak: {
+    // Url of the Identity Provider
+    issuer: 'http://localhost:8080/auth/realms/beatblender',
+
+    // URL of the SPA to redirect the user to after login
+    redirectUri: window.location.origin + '/sample-licensing-market/basic-licenses',
+
+    // The SPA's id. 
+    // The SPA is registerd with this id at the auth-serverß
+    clientId: 'spa-beatblender',
+
+    responseType: 'code',
+    // set the scope for the permissions the client should request
+    // The first three are defined by OIDC.
+    scope: 'openid profile email offline_access',
+    // Remove the requirement of using Https to simplify the demo
+    // THIS SHOULD NOT BE USED IN PRODUCTION
+    // USE A CERTIFICATE FOR YOUR IDP
+    // IN PRODUCTION
+    requireHttps: false,
+    // at_hash is not present in JWT token
+    showDebugInformation: true,
+    disableAtHashCheck: true
+  }
 };

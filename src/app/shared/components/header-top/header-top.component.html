@@ -50,7 +50,7 @@
       <!-- End Navigation -->
       
       <!-- Language Switcher -->
-      <section fxLayout="row" fxLayoutAlign="center center" class="full-height" style="border-left: 2px solid rgb(202,202,202);">
+      <section fxLayout="row" fxLayoutAlign="center center" class="full-height">
         <!-- <mat-select 
         *ngIf="!layoutConf.isMobile"
         placeholder=""
@@ -100,13 +100,17 @@
           <span class="notification-number mat-bg-warn">3</span>
         </button>
         <!-- Top left user menu -->
-        <a fxLayout="row" class="profile-menu-trigger full-height px-16" style="border-left: 2px solid rgb(202,202,202);" [matMenuTriggerFor]="accountMenu"
+        <button class="br-0" *ngIf="!isAuth()" mat-button (click)="login()">
+          <mat-icon inline="true">login</mat-icon>
+          Login
+        </button>
+        <a *ngIf="isAuth()" fxLayout="row" class="profile-menu-trigger full-height px-16" [matMenuTriggerFor]="accountMenu"
         
         >
         <!-- [matRippleRadius]="radius" -->
         <!-- [matRippleColor]="color" -->
           <div fxLayout="column" class="trigger-text-container py-2 px-8">
-            <span class="fs-12 lh-12 mt-auto">Maximilian Mintchev</span>
+            <span class="fs-12 lh-12 mt-auto">{{getRole()}}</span>
             <span class="fs-12 lh-12 mb-auto">LEP-Balance: 12 <i><strong>LEP</strong></i></span>
           </div>
           <div fxLayout="row" fxFlex="48px" fxLayoutAlign="center center" class="">
@@ -126,7 +130,7 @@
             <mat-icon>notifications_off</mat-icon>
             <span>Disable alerts</span>
           </button>
-          <button mat-menu-item (click)="jwtAuth.signout()">
+          <button mat-menu-item (click)="logoff()">
             <mat-icon>exit_to_app</mat-icon>
             <span>Sign out</span>
           </button>

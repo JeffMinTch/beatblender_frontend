@@ -1,9 +1,11 @@
+// import { environment } from './../../../environments/environment.prod';
+import { config } from './../../../config';
 import { Injectable } from '@angular/core';
 import { of, Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { map, share } from 'rxjs/operators';
 import { SampleSearchQuery } from '../models/sample-search-query.model';
-
+import { environment } from 'environments/environment'
 @Injectable({
   providedIn: 'root'
 })
@@ -11,8 +13,9 @@ export class CloudService {
 
   constructor(private httpClient: HttpClient) { }
 
-  SAMPLEPOOL_API = "http://localhost:8080/api/samplepool";
-  audioFilesUrl = this.SAMPLEPOOL_API + '/public/audioFiles';
+  private samplesHome = config.webApi.baseUrl + config.webApi.audioPath.public.root + config.webApi.audioPath.public.samplesHome;
+  SAMPLEPOOL_API = environment.apiURL;
+  audioFilesUrl = environment.apiURL + '/public/audioFiles';
   searchMusicUrl = this.SAMPLEPOOL_API + '/public/searchMusic';
   searchMusicByInputUrl = this.SAMPLEPOOL_API + '/public/searchMusicByInput';
   searchSingleAudioUrl = this.SAMPLEPOOL_API + '/public/searchSingleAudio';
@@ -150,7 +153,7 @@ export class CloudService {
 
   getAudioFiles(): Observable<any> {
     // return of(this.audioFiles);
-
+    
     return this.httpClient.get(this.audioFilesUrl).pipe(share());
 
   }

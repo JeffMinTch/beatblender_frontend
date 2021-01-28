@@ -46,7 +46,7 @@ export class AdminLayoutComponent implements OnInit, AfterViewInit {
     private sampleLicensingMarketService: SampleLicensingMarketService
   ) {
     // Check Auth Token is valid
-    this.jwtAuth.checkTokenIsValid().subscribe();
+    this.jwtAuth.checkTokenIsValid();
 
     // Close sidenav after route change in mobile
     this.routerEventSub = router.events.pipe(filter(event => event instanceof NavigationEnd))
