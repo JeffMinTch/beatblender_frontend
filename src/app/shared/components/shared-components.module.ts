@@ -5,7 +5,6 @@ import { TranslateModule } from '@ngx-translate/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
-import { SearchModule } from '../search/search.module';
 import { SharedPipesModule } from '../pipes/shared-pipes.module';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { SharedDirectivesModule } from '../directives/shared-directives.module';
@@ -19,7 +18,6 @@ import { HeaderTopComponent } from './header-top/header-top.component';
 import { SidebarTopComponent } from './sidebar-top/sidebar-top.component';
 
 // ONLY FOR DEMO
-import { CustomizerComponent } from './customizer/customizer.component';
 
 // ALWAYS REQUIRED 
 import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
@@ -30,11 +28,7 @@ import { FooterComponent } from './footer/footer.component';
 import { BreadcrumbComponent } from './breadcrumb/breadcrumb.component';
 import { AppComfirmComponent } from '../services/app-confirm/app-confirm.component';
 import { AppLoaderComponent } from '../services/app-loader/app-loader.component';
-import { ButtonLoadingComponent } from './button-loading/button-loading.component';
 import { EgretSidebarComponent, EgretSidebarTogglerDirective } from './egret-sidebar/egret-sidebar.component';
-import { BottomSheetShareComponent } from './bottom-sheet-share/bottom-sheet-share.component';
-import { EgretExampleViewerComponent } from './example-viewer/example-viewer.component';
-import { EgretExampleViewerTemplateComponent } from './example-viewer-template/example-viewer-template.component';
 import { EgretNotifications2Component } from './egret-notifications2/egret-notifications2.component';
 import { MatSliderModule } from '@angular/material/slider';
 import { MatIconModule } from '@angular/material/icon';
@@ -67,14 +61,9 @@ const components = [
   AppComfirmComponent,
   AppLoaderComponent,
   EgretNotifications2Component,
-  CustomizerComponent,
-  ButtonLoadingComponent,
   EgretSidebarComponent,
   FooterComponent,
   EgretSidebarTogglerDirective,
-  BottomSheetShareComponent,
-  EgretExampleViewerComponent,
-  EgretExampleViewerTemplateComponent
 ]
 
 @NgModule({
@@ -86,7 +75,6 @@ const components = [
     TranslateModule,
     FlexLayoutModule,
     PerfectScrollbarModule,
-    SearchModule,
     SharedPipesModule,
     SharedDirectivesModule,
     SharedMaterialModule,

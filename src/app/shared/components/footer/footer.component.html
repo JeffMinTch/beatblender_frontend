@@ -12,7 +12,7 @@
           type="button"
           mat-icon-button 
           onclick="this.blur()">
-            <mat-icon class="skip-previous player-icon" aria-hidden="false" aria-label="skip previous track">skip_previous</mat-icon>
+            <mat-icon class="skip-previous player-icon" aria-hidden="false" aria-label="skip previous track">skip_previous_outline</mat-icon>
           </button>
         <!-- </ng-container> -->
         <button *ngIf="!(playStateControlService.playState$ | async)" 
@@ -25,7 +25,7 @@
           <mat-icon
             class="player-icon" aria-hidden="false"
             aria-label="Example home icon">
-            play_arrow
+            play_arrow_outline
           </mat-icon>
         </button>
         <!-- <ng-template #pause> -->
@@ -57,7 +57,7 @@
             </button>
           <!-- </ng-container> -->
       </div>
-      <div class="player-tools" fxFlex style="background: red;" fxLayout="row nowrap" fxLayoutALign="start center">
+      <div class="player-tools" fxFlex fxLayout="row nowrap" fxLayoutALign="start center">
         <button mat-icon-button (click)="toggleMute()" [disabled]="sampleLicensingMarketService.samplesLoading$ | async" type="button" mat-icon-button
             onclick="this.blur()" class="mute-button" style="">
             <mat-icon inline="true" class="mute-icon" aria-hidden="false" aria-label="Example home icon">{{getMute() ? 'volume_off' : 'volume_mute'}}</mat-icon>

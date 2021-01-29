@@ -5,19 +5,17 @@ import { SampleSearchQuery } from 'app/shared/models/sample-search-query.model';
 import { ComponentCommunicationService } from './../../../shared/services/component-communication.service';
 import { AudioService } from './../../../shared/services/audio.service';
 import { delay, share, takeUntil } from 'rxjs/operators';
-import { StateManagerService } from './../../../shared/services/state-manager.service';
 import { PlayStateControlService } from './../../../shared/services/play-state-control.service';
 import { QueryList, ViewChildren, Renderer2, AfterViewInit, ChangeDetectorRef, AfterViewChecked, ChangeDetectionStrategy, ViewEncapsulation, HostListener, OnDestroy } from '@angular/core';
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatSidenav } from '@angular/material/sidenav';
-import { Product } from '../../../shared/models/product.model';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { egretAnimations } from 'app/shared/animations/egret-animations';
 import { AppLoaderService } from 'app/shared/services/app-loader/app-loader.service';
 import { Observable, Subscription, BehaviorSubject } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { CartItem, SampleLicensingMarketService } from '../sample-licensing-market.service';
+import { SampleLicensingMarketService } from '../sample-licensing-market.service';
 import { Sample } from 'app/shared/models/sample.model';
 import { AudioState } from 'app/shared/models/audio-state.model';
 import { MatSlider, MatSliderChange } from '@angular/material/slider';
@@ -33,12 +31,13 @@ import { HttpErrorResponse } from '@angular/common/http';
   templateUrl: './basic-licenses.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   animations: [egretAnimations],
+  // tslint:disable-next-line:use-component-view-encapsulation
   encapsulation: ViewEncapsulation.None
 })
 export class BasicLicensesComponent implements OnInit, AfterViewInit {
 
   public isSideNavOpen: boolean;
-  public viewMode: string = 'grid-view';
+  public viewMode = 'grid-view';
   public currentPage: any;
   @ViewChild(MatSidenav) private sideNav: MatSidenav;
   @ViewChildren('audioSlider', { read: MatSlider }) private audioSliders: QueryList<MatSlider>;
@@ -51,11 +50,10 @@ export class BasicLicensesComponent implements OnInit, AfterViewInit {
 
   private _playState: boolean;
   private _currentSampleID: string;
-  public products$: Observable<Product[]>;
   public categories$: Observable<any>;
   public genres$: Observable<string[]>;
-  public activeCategory: string = 'all';
-  public activeGenre: string ='all';
+  public activeCategory = 'all';
+  public activeGenre = 'all';
   // public activeGenre: string ='all;'
   public filterForm: FormGroup;
   public sampleSearchQueries: SampleSearchQuery[];
@@ -68,6 +66,7 @@ export class BasicLicensesComponent implements OnInit, AfterViewInit {
   selectedTrackTypes: string[];
   selectedSongKeys: string[];
 
+  // tslint:disable-next-line:max-line-length
   // public genreList: string[] = ['Blues', 'Classical', 'Country', 'Electronic', 'Hip Hop/Rap', 'Jazz', 'Latin', 'Pop', 'RnB/Soul', 'Reggea', 'Rock', 'Spoken Word'];
   public regionList: string[] = ['Northern Europe', 'Western Europe', 'Southern Europe', 'Eastern Europe', 'Middle East', 'Caribbean', 'Oceania, Pacific', 'Southern Africa', 'Northern Africa', 'Western Africa', 'Eastern Africa', 'South Asia/India', 'East Asia', 'North America', 'South America', 'Central America'];
   public trackTypeList: string[] = ['Accordion', 'Bass', 'Drum', 'Edits', 'Flute', 'FX track', 'Guitar', 'Horns', 'Instrumental', 'Keyborads', 'Master', 'Percussion', 'Shruti Box', 'Sound FX', 'Strings', 'Vocals', 'Whistle'];
@@ -76,12 +75,12 @@ export class BasicLicensesComponent implements OnInit, AfterViewInit {
   public yearMinMaxValues: string[];
 
 
-  public mockCategories: string [] = ["Trending", "New", "Low Sample Price", "Bargain", "High Option Price", "Trending", "Bargain", "Low Sample Price", "New"]
-  public mockColors: string [] = ["grey", "brown", "violet", "yellow", "red", "blue", "green", "orange", "pink"]
+  public mockCategories: string [] = ['Trending', 'New', 'Low Sample Price', 'Bargain', 'High Option Price', 'Trending', 'Bargain', 'Low Sample Price', 'New'];
+  public mockColors: string [] = ['grey', 'brown', 'violet', 'yellow', 'red', 'blue', 'green', 'orange', 'pink'];
 
   @HostListener('window:resize', ['$event'])
   onResize(event) {
-    this.matSearchInputTrigger.closePanel();    
+    this.matSearchInputTrigger.closePanel();
   }
 
   constructor(
@@ -96,10 +95,10 @@ export class BasicLicensesComponent implements OnInit, AfterViewInit {
     private jwt: JwtAuthService,
     private ls: LocalStoreService
   ) {
-    
+
 
     this.sampleLicensingMarketService.samples$.pipe(
-      map((samples: Array<Sample>) => {
+      map((samples: Sample[]) => {
         this.audioService.createWavesurferObj();
         // if(!this.audioService.wavesurfer) {
         // }
@@ -109,7 +108,7 @@ export class BasicLicensesComponent implements OnInit, AfterViewInit {
           (this.searchInput.nativeElement as HTMLInputElement).value = '';
           this.matSearchInputTrigger.closePanel();
           this.selectedSearchOption = null;
-          if(this.playState) {
+          if (this.playState) {
             this.playStateControlService.emitPlayState(false);
           }
           this.audioService.loadPlayAudio(samples[0].sampleID);
@@ -125,12 +124,12 @@ export class BasicLicensesComponent implements OnInit, AfterViewInit {
 
     this.audioService.audioState$.pipe(takeUntil(this.audioService.audioServiceDestroyed$)).subscribe((state: AudioState) => {
       switch (state.status) {
-        case "finish":
+        case 'finish':
           this.changeDetectorRef.detectChanges();
           break;
-        case "playing":
+        case 'playing':
           break;
-        case "pause":
+        case 'pause':
           this.changeDetectorRef.detectChanges();
           break;
       }
@@ -141,8 +140,8 @@ export class BasicLicensesComponent implements OnInit, AfterViewInit {
         this.sampleLicensingMarketService.samples$.next(samples);
 
       }, (error) => {
-        if(error instanceof HttpErrorResponse) {
-          if(error.status===401) {
+        if (error instanceof HttpErrorResponse) {
+          if (error.status === 401) {
             this.ls.clear();
             this.jwt.signin();
           }
@@ -152,12 +151,12 @@ export class BasicLicensesComponent implements OnInit, AfterViewInit {
 
 
   }
-  
+
   ngOnInit() {
     this.categories$ = this.sampleLicensingMarketService.getCategories();
     this.genres$ = this.sampleLicensingMarketService.getGenres();
     this.buildFilterForm(this.sampleLicensingMarketService.initialFilters);
-    
+
     // setTimeout(() => {
     //   // if(!this.audioService.wavesurfer) {
     //     this.audioService.createWavesurferObj();
@@ -186,18 +185,18 @@ export class BasicLicensesComponent implements OnInit, AfterViewInit {
     // setTimeout(() => {
       // });
     }
-    
-    
+
+
     ngAfterViewInit(): void {
       // this.layoutService.layoutConf.footerFixed = true;
       this.loader.open();
       // throw new Error('Method not implemented.');
     }
-    
+
     // ngOnDestroy(): void {
     //   this.playStateControlService.emitPlayState(false);
     // }
-    
+
   // changeGenres(genres) {
   //   if (genres.length === 0) {
   //     this.selectedGenres = this.genreList;
@@ -242,17 +241,17 @@ export class BasicLicensesComponent implements OnInit, AfterViewInit {
       maxPrice: [filterData.maxPrice],
       minRating: [filterData.minRating],
       maxRating: [filterData.maxRating]
-    })
+    });
   }
 
   setActiveCategory(category) {
     this.activeCategory = category;
-    this.filterForm.controls['category'].setValue(category)
+    this.filterForm.controls['category'].setValue(category);
   }
 
   setActiveGenre(genre: string) {
     this.activeGenre = genre;
-    this.filterForm.controls['genre'].setValue(genre)
+    this.filterForm.controls['genre'].setValue(genre);
   }
 
   toggleSideNav() {
@@ -283,7 +282,7 @@ export class BasicLicensesComponent implements OnInit, AfterViewInit {
       this.playStateControlService.emitCurrentSampleID(sampleID);
       this.audioService.loadPlayAudio(sampleID);
       console.log('pause no');
-      
+
     }
 
   }
@@ -335,7 +334,7 @@ export class BasicLicensesComponent implements OnInit, AfterViewInit {
       return;
     }
     this.blurSearchInput();
-    const sampleIDs: Array<number> = [];
+    const sampleIDs: number[] = [];
     this.sampleLicensingMarketService.sampleSearchQueries.forEach((query) => {
       sampleIDs.push(query.id);
     });
@@ -346,7 +345,7 @@ export class BasicLicensesComponent implements OnInit, AfterViewInit {
 
   searchSingleAudio(sampleID: number) {
     this.blurSearchInput();
-    const sampleIDs: Array<number> = [];
+    const sampleIDs: number[] = [];
     sampleIDs.push(sampleID);
     this.loader.open();
     this.sampleLicensingMarketService.searchMusicByFormSubmit(sampleIDs);
@@ -358,7 +357,7 @@ export class BasicLicensesComponent implements OnInit, AfterViewInit {
   }
 
   changeSelectedSample(event: MatOptionSelectionChange, sampleID: number) {
-    //angular bug fix. Event fires multiple times: https://github.com/angular/components/issues/4094
+    // angular bug fix. Event fires multiple times: https://github.com/angular/components/issues/4094
     if (event.source.selected) {
       this.selectedSearchOption = event.source;
     }
@@ -381,8 +380,8 @@ export class BasicLicensesComponent implements OnInit, AfterViewInit {
   }
 
   public displaySearchQuery(sampleSearchQuery: SampleSearchQuery): string {
-    if(sampleSearchQuery) {
-      return sampleSearchQuery.sampleTitle + " " + "(" + sampleSearchQuery.artistName + ")";
+    if (sampleSearchQuery) {
+      return sampleSearchQuery.sampleTitle + ' ' + '(' + sampleSearchQuery.artistName + ')';
 
     } else {
       return '';

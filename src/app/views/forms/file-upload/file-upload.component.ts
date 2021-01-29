@@ -39,7 +39,7 @@ export class FileUploadComponent implements OnInit, OnDestroy {
     private uploadUrl: string;
     public uploader: FileUploader;
     public imageUploader: FileUploader;
-    public hasBaseDropZoneOver: boolean = true;
+    public hasBaseDropZoneOver = true;
     console = console;
     formData = {};
     public formsMap: Map<FileItem, FormGroup>;
@@ -80,7 +80,7 @@ export class FileUploadComponent implements OnInit, OnDestroy {
             authToken: 'Bearer ' + jwt.getJwtToken(),
             allowedMimeType: ['audio/wav', 'audio/mp3', 'audio/mpeg'],
             allowedFileType: ['audio'],
-            //500 MB max
+            // 500 MB max
             maxFileSize: 500 * 1024 * 1024
         };
 
@@ -88,7 +88,7 @@ export class FileUploadComponent implements OnInit, OnDestroy {
             url: this.uploadUrl,
             allowedMimeType: ['image/jpeg', 'image/png', 'image/gif'],
             allowedFileType: ['image'],
-            //100 MB max
+            // 100 MB max
             maxFileSize: 100 * 1024 * 1024
         };
         this.uploader = new FileUploader(this.uploadOptions);
@@ -157,9 +157,9 @@ export class FileUploadComponent implements OnInit, OnDestroy {
             console.log(((this.fileItemForm.controls['image'] as FormGroup).controls['file'].value as FileItem)._file);
             console.log('Yuhee');
           // tslint:disable-next-line:max-line-length
-            formData.append("audioUnitType", "Sample");
-            formData.append("artistAlias", "The Beatles");
-            formData.append('sampleImage', ((this.fileItemForm.controls['image'] as FormGroup).controls['file'].value as FileItem)._file); //note comma separating key and value
+            formData.append('audioUnitType', 'Sample');
+            formData.append('artistAlias', 'The Beatles');
+            formData.append('sampleImage', ((this.fileItemForm.controls['image'] as FormGroup).controls['file'].value as FileItem)._file); // note comma separating key and value
             // formData.append('someField2', 'testValue1');
             const formGroup: FormGroup = this.formsMap.get(fileItem);
             formData.append('genre', (formGroup.controls['descriptionForm'] as FormGroup).controls['genre'].value as string);

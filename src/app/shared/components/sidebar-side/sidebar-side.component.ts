@@ -4,7 +4,6 @@ import { ThemeService } from "../../services/theme.service";
 import { Subscription } from "rxjs";
 import { ILayoutConf, LayoutService } from "app/shared/services/layout.service";
 import { JwtAuthService } from "app/shared/services/auth/jwt-auth.service";
-import { StripesDirective } from "app/directives/stripes.directive";
 
 @Component({
   selector: "app-sidebar-side",

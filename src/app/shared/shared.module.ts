@@ -1,6 +1,3 @@
-import { CloudService } from './services/cloud-service.service';
-import { OktaAuthService } from '@okta/okta-angular';
-import { StateManagerService } from './services/state-manager.service';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
@@ -32,9 +29,6 @@ import { SharedDirectivesModule } from './directives/shared-directives.module';
     UserRoleGuard,
     AppConfirmService,
     AppLoaderService,
-    // StateManagerService,
-    // OktaAuthService,
-    // CloudService
   ],
   exports: [
     SharedComponentsModule,

@@ -4,7 +4,6 @@ import { NgModule, ErrorHandler, APP_INITIALIZER } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { BrowserModule, HAMMER_GESTURE_CONFIG } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { StateManagerService} from './shared/services/state-manager.service'
 // import { GestureConfig } from '@angular/material/core';
 import { 
   PerfectScrollbarModule, 
@@ -23,9 +22,6 @@ import { AppComponent } from './app.component';
 import { HttpClient, HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
-import { ErrorHandlerService } from './shared/services/error-handler.service';
-import { TokenInterceptor } from './shared/interceptors/token.interceptor';
-import { StripesDirective } from './directives/stripes.directive';
 
 
 // AoT requires an exported function for factories
@@ -61,7 +57,6 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   ],
   declarations: [AppComponent],
   providers: [
-    { provide: ErrorHandler, useClass: ErrorHandlerService },
     // { provide: HAMMER_GESTURE_CONFIG, useClass: GestureConfig },
     { provide: PERFECT_SCROLLBAR_CONFIG, useValue: DEFAULT_PERFECT_SCROLLBAR_CONFIG },
     // REQUIRED IF YOU USE JWT AUTHENTICATION
