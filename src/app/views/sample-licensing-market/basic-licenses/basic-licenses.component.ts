@@ -61,6 +61,11 @@ export class BasicLicensesComponent implements OnInit, AfterViewInit {
   currentTime: number;
   duration: number;
 
+  page: number = 1;
+  pageSize: number = 12;
+  sortBy: string = 'title';
+  count=0;
+
   selectedGenres: string[];
   selectedRegions: string[];
   selectedTrackTypes: string[];
@@ -134,11 +139,17 @@ export class BasicLicensesComponent implements OnInit, AfterViewInit {
           break;
       }
     });
-      this.sampleLicensingMarketService.getAudioFiles().pipe(
-        share(),
-      ).subscribe((samples: Sample[]) => {
-        this.sampleLicensingMarketService.samples$.next(samples);
+    this.retrieveSamples();
+  }
 
+  public retrieveSamples(): void {
+    const params = this.getRequestParams(this.sortBy, this.page, this.pageSize);
+      this.sampleLicensingMarketService.getAudioFiles(params).pipe(
+        share(),
+      ).subscribe((response) => {
+        const { samples, totalItems } = response;
+        this.count = totalItems;
+        this.sampleLicensingMarketService.samples$.next(samples);
       }, (error) => {
         if (error instanceof HttpErrorResponse) {
           if (error.status === 401) {
@@ -148,8 +159,6 @@ export class BasicLicensesComponent implements OnInit, AfterViewInit {
         }
         console.log(error);
       });
-
-
   }
 
   ngOnInit() {
@@ -363,6 +372,8 @@ export class BasicLicensesComponent implements OnInit, AfterViewInit {
     }
   }
 
+  
+
   get playState(): boolean {
     return this._playState;
   }
@@ -390,6 +401,27 @@ export class BasicLicensesComponent implements OnInit, AfterViewInit {
 
   public openFilter() {
     this.sampleLicensingMarketService.toggleFilter$.next({toggleState: true, apply: SidenavContent.Filter});
+  }
+
+  handlePageChange(event: number) {
+    this.page = event;
+    this.retrieveSamples();
+  }
+
+  public getRequestParams(sortBy: string, page: number, pageSize: number) {
+    const params = {};
+    if (sortBy) {
+      params['sortBy'] = sortBy;
+    }
+
+    if (page) {
+      params['page'] = page - 1;
+    }
+
+    if (pageSize) {
+      params['pageSize'] = pageSize;
+    }
+    return params;
   }
 
 

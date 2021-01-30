@@ -57,13 +57,13 @@ export class SampleLicensingMarketService implements OnDestroy {
     this.samplesLoading$.next(value);
   }
   
-  public getAudioFiles(): Observable<Array<Sample>> {
+  public getAudioFiles(params): Observable<any> {
     this.emitSamplesLoading(true);
-    return this.audioWebService.getAudioFiles().pipe(
-      map(serverFiles => {
-        console.log(serverFiles.audioFileResponse);
+    return this.audioWebService.getAudioFiles(params).pipe(
+      map(response => {
+        // console.log(response.audioFileResponse);
         this.emitSamplesLoading(false);
-        return serverFiles;
+        return response;
       })
     );
   }

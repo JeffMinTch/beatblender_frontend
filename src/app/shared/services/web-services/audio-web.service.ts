@@ -18,8 +18,8 @@ export class AudioWebService {
     private findOneApi: string = this.PUBLIC_AUDIO + environment.apiURL.audioPath.public.searchSingleAudio;
     private findMultipleApi: string = this.PUBLIC_AUDIO + environment.apiURL.audioPath.public.searchMultipleAudio;
 
-    getAudioFiles(): Observable<any> {
-    return this.httpClient.get(this.samplesHomeApi).pipe(share());
+    getAudioFiles(params): Observable<any> {
+    return this.httpClient.get(this.samplesHomeApi, { params }).pipe(share());
   }
 
   searchAudioByFormInput(searchString: string): Observable<any> {

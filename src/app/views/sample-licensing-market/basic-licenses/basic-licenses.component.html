@@ -102,7 +102,7 @@
         <div class="product-container" [ngClass]="{'list-view': viewMode === 'list-view'}">
           <!-- Product Box -->
           <div fxLayout="row" class="product-wrap"
-            *ngFor="let sample of (sampleLicensingMarketService.samples$ | async) | paginate: { itemsPerPage: 12, currentPage: currentPage }; let i = index;"
+            *ngFor="let sample of (sampleLicensingMarketService.samples$ | async) | paginate: { itemsPerPage: pageSize, currentPage: page, totalItems: count }; let i = index;"
             [@animate]="{value:'*',params:{delay: (i*100)+'ms', y:'100px'}}">
             <div fxLayout="column" class="product-inner default-bg px-8 py-16 full-width">
               <!-- <div *ngIf="product?.badge?.text" class="product-badge mat-elevation-z7" [ngStyle]="{background: product?.badge?.color || '#f44336'}">
@@ -244,9 +244,9 @@
           <!-- End Product -->
 
           <div class="products-pagination">
-            <pagination-controls (pageChange)="currentPage = $event"></pagination-controls>
+            <!-- <pagination-controls (pageChange)="currentPage = $event"></pagination-controls> -->
+            <pagination-controls (pageChange)="handlePageChange($event)"></pagination-controls>
           </div>
-
         </div>
         <!-- End Products container -->
       </div>
