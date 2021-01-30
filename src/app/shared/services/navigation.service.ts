@@ -55,7 +55,7 @@ export class NavigationService {
       name: 'App - Navigation'
     },
     {
-      name: 'Music',
+      name: 'All Music',
       type: 'dropDown',
       tooltip: 'Dashboard',
       icon: 'music_note',

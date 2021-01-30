@@ -99,7 +99,7 @@
           </button>
         </div>
         <!-- Products container -->
-        <div class="product-container" [ngClass]="{'list-view': viewMode === 'list-view'}">
+        <div class="product-container" fxLayout="row wrap" fxLayoutAlign="start start" [ngClass]="{'list-view': viewMode === 'list-view'}">
           <!-- Product Box -->
           <div fxLayout="row" class="product-wrap"
             *ngFor="let sample of (sampleLicensingMarketService.samples$ | async) | paginate: { itemsPerPage: pageSize, currentPage: page, totalItems: count }; let i = index;"

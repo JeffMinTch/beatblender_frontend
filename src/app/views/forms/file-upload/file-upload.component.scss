@@ -1,8 +1,14 @@
+@import '../../../../assets/styles/scss/variables';
 // .dz-file-over {
 //     border: dotted 3px rgb(12, 12, 90);
 // }
 
-
+.header {
+    font-weight: 300;
+    color: #FFFFFF;
+    background: #FFFFFF;
+    text-shadow: 2px 2px 0 $body-color, 2px -2px 0 $body-color, -2px 2px 0 $body-color, -2px -2px 0 $body-color, 2px 0px 0 $body-color, 0px 2px 0 $body-color, -2px 0px 0 $body-color, 0px -2px 0 $body-color;
+}
 
 .sample-info {
     > mat-card-title {

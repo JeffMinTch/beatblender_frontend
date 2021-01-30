@@ -161,7 +161,8 @@ $default-primary-palette: (
 $default-theme-primary: mat-palette($default-primary-palette, main, lighter, darker);
 
 $default-accent-palette: (
-  main: #ff8a48,
+  // #ffb7b7  
+main:#ff8a48,
   lighter: #ffdcc8,
   darker: #ff6d30,
   200: #ff8a48,

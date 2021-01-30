@@ -16,7 +16,7 @@
             </a>
             <div *ngIf="item.type === 'dropDown'" fxLayoutAlign="center center">
               <label matRipple for="drop-{{i}}" class="toggle"><mat-icon>{{item.icon}}</mat-icon> {{item.name | translate}}</label>
-              <a class="mat-elevation-z2"><mat-icon>{{item.icon}}</mat-icon> {{item.name | translate}}</a>
+              <a class="mat-elevation-z2 menu-item"><mat-icon>{{item.icon}}</mat-icon> {{item.name | translate}}</a>
               <input type="checkbox" id="drop-{{i}}" />
               <ul>
                 <li *ngFor="let itemLvL2 of item.sub; let j = index;" routerLinkActive="open">

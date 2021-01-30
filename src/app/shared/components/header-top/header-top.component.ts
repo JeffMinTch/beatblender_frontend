@@ -56,6 +56,7 @@ export class HeaderTopComponent implements OnInit, OnDestroy {
         sub: subItems
       })
       this.menuItems = mainItems
+      // console.log(this.menuItems);
     })
   }
   ngOnDestroy() {

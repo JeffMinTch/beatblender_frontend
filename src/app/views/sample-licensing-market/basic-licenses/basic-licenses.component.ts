@@ -62,7 +62,7 @@ export class BasicLicensesComponent implements OnInit, AfterViewInit {
   duration: number;
 
   page: number = 1;
-  pageSize: number = 12;
+  pageSize: number = 6;
   sortBy: string = 'title';
   count=0;
 
@@ -103,7 +103,7 @@ export class BasicLicensesComponent implements OnInit, AfterViewInit {
 
 
     this.sampleLicensingMarketService.samples$.pipe(
-      map((samples: Sample[]) => {
+      map((samples: Array<Sample>) => {
         this.audioService.createWavesurferObj();
         // if(!this.audioService.wavesurfer) {
         // }
@@ -123,7 +123,7 @@ export class BasicLicensesComponent implements OnInit, AfterViewInit {
         return samples;
       }),
       takeUntil(this.sampleLicensingMarketService.sampleLicensingMarketDestroyed$),
-    ).subscribe((samples: Sample[]) => {
+    ).subscribe((samples: Array<Sample>) => {
       this.initCurrentFile(samples[0].sampleID);
     });
 
@@ -147,6 +147,8 @@ export class BasicLicensesComponent implements OnInit, AfterViewInit {
       this.sampleLicensingMarketService.getAudioFiles(params).pipe(
         share(),
       ).subscribe((response) => {
+        console.log("Response");
+        console.log(response);
         const { samples, totalItems } = response;
         this.count = totalItems;
         this.sampleLicensingMarketService.samples$.next(samples);
@@ -404,6 +406,7 @@ export class BasicLicensesComponent implements OnInit, AfterViewInit {
   }
 
   handlePageChange(event: number) {
+    console.log(event);
     this.page = event;
     this.retrieveSamples();
   }

@@ -32,11 +32,11 @@ export class SampleLicensingMarketService implements OnDestroy {
   public toggleFilter$: BehaviorSubject<RightSidenavData> = new BehaviorSubject<RightSidenavData>({toggleState: false, apply: SidenavContent.Filter});
   public sampleLicensingMarketDestroyed$: Subject<void> = new Subject<void>();
   // public samples$: Observable<Sample[]>;
-  public samples$: Subject<Sample[]> = new Subject<Sample[]>();
+  public samples$: Subject<Array<Sample>> = new Subject<Array<Sample>>();
   public sampleSearchQueries$: Observable<any>;
 
   public sampleSearchQueries: SampleSearchQuery[];
-  private samples: Sample[];
+  private samples: Array<Sample>;
   public initialFilters = {
     minPrice: 10,
     maxPrice: 40,

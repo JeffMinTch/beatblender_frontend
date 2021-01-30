@@ -61,3 +61,36 @@
 @import "scss/views/views";
 
 
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: #fafafa;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: map-get($default-accent-palette, main);
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: map-get($default-accent-palette, darker);
+}
+
+::selection {
+    background: map-get($default-accent-palette, lighter) /* WebKit/Blink Browsers */
+  }
+  ::-moz-selection {
+    background: map-get($default-accent-palette, lighter); /* Gecko Browsers */
+  }
+
+
+//   @font-face {
+//     font-family: "Alba";
+//     src: url("./scss/fonts/typo-round/Typo_Round_Regular_Demo.otf") format("truetype"),
+//   }
+
