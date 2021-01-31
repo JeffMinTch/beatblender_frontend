@@ -1,7 +1,9 @@
+import { AudioWebService } from './../../../shared/services/web-services/audio-web.service';
 import { LocalStoreService } from './../../../shared/services/local-store.service';
 import { JwtAuthService } from 'app/shared/services/auth/jwt-auth.service';
 import { LayoutService } from './../../../shared/services/layout.service';
 import { SampleSearchQuery } from 'app/shared/models/sample-search-query.model';
+
 import { ComponentCommunicationService } from './../../../shared/services/component-communication.service';
 import { AudioService } from './../../../shared/services/audio.service';
 import { delay, share, takeUntil } from 'rxjs/operators';
@@ -13,7 +15,7 @@ import { MatSidenav } from '@angular/material/sidenav';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { egretAnimations } from 'app/shared/animations/egret-animations';
 import { AppLoaderService } from 'app/shared/services/app-loader/app-loader.service';
-import { Observable, Subscription, BehaviorSubject } from 'rxjs';
+import { Observable, Subscription, BehaviorSubject, Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { SampleLicensingMarketService } from '../sample-licensing-market.service';
 import { Sample } from 'app/shared/models/sample.model';
@@ -57,14 +59,18 @@ export class BasicLicensesComponent implements OnInit, AfterViewInit {
   // public activeGenre: string ='all;'
   public filterForm: FormGroup;
   public sampleSearchQueries: SampleSearchQuery[];
+  
+  
   public selectedSearchOption: MatOption = null;
   currentTime: number;
   duration: number;
+  public suggestions: Array<Sample>;
+  public suggestionsCount = 0; 
 
   page: number = 1;
   pageSize: number = 6;
   sortBy: string = 'title';
-  count=0;
+  count:number = 0;
 
   selectedGenres: string[];
   selectedRegions: string[];
@@ -79,9 +85,10 @@ export class BasicLicensesComponent implements OnInit, AfterViewInit {
   public bpmMinMaxValues: string[];
   public yearMinMaxValues: string[];
 
+  public suggestionsSubject$: Subject<Array<Sample>> = new Subject<Array<Sample>>();
 
-  public mockCategories: string [] = ['Trending', 'New', 'Low Sample Price', 'Bargain', 'High Option Price', 'Trending', 'Bargain', 'Low Sample Price', 'New'];
-  public mockColors: string [] = ['grey', 'brown', 'violet', 'yellow', 'red', 'blue', 'green', 'orange', 'pink'];
+  public mockCategories: string[] = ['Trending', 'New', 'Low Sample Price', 'Bargain', 'High Option Price', 'Trending', 'Bargain', 'Low Sample Price', 'New'];
+  public mockColors: string[] = ['grey', 'brown', 'violet', 'yellow', 'red', 'blue', 'green', 'orange', 'pink'];
 
   @HostListener('window:resize', ['$event'])
   onResize(event) {
@@ -92,34 +99,26 @@ export class BasicLicensesComponent implements OnInit, AfterViewInit {
     public sampleLicensingMarketService: SampleLicensingMarketService,
     public playStateControlService: PlayStateControlService,
     private audioService: AudioService,
-    private cloudService: CloudService,
     private fb: FormBuilder,
-    private snackBar: MatSnackBar,
     private loader: AppLoaderService,
     private changeDetectorRef: ChangeDetectorRef,
     private jwt: JwtAuthService,
-    private ls: LocalStoreService
+    private ls: LocalStoreService,
+    private audioWebService: AudioWebService
   ) {
 
 
     this.sampleLicensingMarketService.samples$.pipe(
       map((samples: Array<Sample>) => {
         this.audioService.createWavesurferObj();
-        // if(!this.audioService.wavesurfer) {
-        // }
-        // this.audioService.createWavesurferObj();
-        // this.audioService.wavesurfer.on("ready", () => {
-          this.loader.close();
-          (this.searchInput.nativeElement as HTMLInputElement).value = '';
-          this.matSearchInputTrigger.closePanel();
-          this.selectedSearchOption = null;
-          if (this.playState) {
-            this.playStateControlService.emitPlayState(false);
-          }
-          this.audioService.loadPlayAudio(samples[0].sampleID);
-          // this.audioService.wavesurfer.un("ready");
-        // });
-
+        this.loader.close();
+        (this.searchInput.nativeElement as HTMLInputElement).value = '';
+        this.matSearchInputTrigger.closePanel();
+        this.selectedSearchOption = null;
+        if (this.playState) {
+          this.playStateControlService.emitPlayState(false);
+        }
+        this.audioService.loadPlayAudio(samples[0].sampleID);
         return samples;
       }),
       takeUntil(this.sampleLicensingMarketService.sampleLicensingMarketDestroyed$),
@@ -140,39 +139,66 @@ export class BasicLicensesComponent implements OnInit, AfterViewInit {
       }
     });
     this.retrieveSamples();
+
+    this.suggestionsSubject$.subscribe((suggestions: Array<Sample>) => {
+      this.suggestions = suggestions;
+    });
   }
 
   public retrieveSamples(): void {
     const params = this.getRequestParams(this.sortBy, this.page, this.pageSize);
-      this.sampleLicensingMarketService.getAudioFiles(params).pipe(
-        share(),
-      ).subscribe((response) => {
-        console.log("Response");
-        console.log(response);
-        const { samples, totalItems } = response;
-        this.count = totalItems;
-        this.sampleLicensingMarketService.samples$.next(samples);
-      }, (error) => {
-        if (error instanceof HttpErrorResponse) {
-          if (error.status === 401) {
-            this.ls.clear();
-            this.jwt.signin();
-          }
+    this.sampleLicensingMarketService.getAudioFiles(params).pipe(
+      share(),
+    ).subscribe((response) => {
+      console.log("Response");
+      console.log(response);
+      const { samples, totalItems } = response;
+      this.count = totalItems;
+      this.sampleLicensingMarketService.samples$.next(samples);
+    }, (error) => {
+      if (error instanceof HttpErrorResponse) {
+        if (error.status === 401) {
+          this.ls.clear();
+          this.jwt.signin();
         }
-        console.log(error);
-      });
+      }
+      console.log(error);
+    });
   }
+
+  public retrieveSuggestions(searchString: string) {
+    const params = this.getRequestParams(this.sortBy, 1, this.pageSize);
+    params['searchString'] = searchString;
+    this.audioWebService.findBySearchString(params).subscribe((response) => {
+      this.suggestionsCount = response.totalItems;
+      console.log(response.samples);
+      this.suggestionsSubject$.next(response.samples);
+      // this.sampleSuggestions = response.samples;
+    });
+  }
+
+  public convertSuggestionsToSamples(sample?: Sample) {
+    
+    if(sample) {
+      const index = this.suggestions.indexOf(sample);
+      const removedSample: Array<Sample> = this.suggestions.splice(index, 1);
+      this.suggestions.unshift(removedSample[0]);
+    }
+    this.page = 1;
+    this.count = this.suggestionsCount;
+    console.log
+    this.sampleLicensingMarketService.samples$.next(this.suggestions);
+    // this.suggestions = new Array<Sample>();
+    this.suggestionsSubject$.next(new Array<Sample>());
+
+  }
+
+
 
   ngOnInit() {
     this.categories$ = this.sampleLicensingMarketService.getCategories();
     this.genres$ = this.sampleLicensingMarketService.getGenres();
     this.buildFilterForm(this.sampleLicensingMarketService.initialFilters);
-
-    // setTimeout(() => {
-    //   // if(!this.audioService.wavesurfer) {
-    //     this.audioService.createWavesurferObj();
-    //   // }
-    // });
 
     this.audioService.audioState$.pipe(
       takeUntil(this.audioService.audioServiceDestroyed$)
@@ -184,29 +210,23 @@ export class BasicLicensesComponent implements OnInit, AfterViewInit {
       takeUntil(this.playStateControlService.playStateServiceDestroyed$)
     ).subscribe((playState: boolean) => {
       this.playState = playState;
-      // this.changeDetectorRef.detectChanges();
     });
 
     this.playStateControlService.currentSampleID$.pipe(
       takeUntil(this.playStateControlService.playStateServiceDestroyed$)
     ).subscribe((currentSampleID: string) => {
       this.currentSampleID = currentSampleID;
-      // this.changeDetectorRef.detectChanges();
     });
-    // setTimeout(() => {
-      // });
-    }
+  }
 
 
-    ngAfterViewInit(): void {
-      // this.layoutService.layoutConf.footerFixed = true;
-      this.loader.open();
-      // throw new Error('Method not implemented.');
-    }
+  ngAfterViewInit(): void {
+    this.loader.open();
+  }
 
-    // ngOnDestroy(): void {
-    //   this.playStateControlService.emitPlayState(false);
-    // }
+  // ngOnDestroy(): void {
+  //   this.playStateControlService.emitPlayState(false);
+  // }
 
   // changeGenres(genres) {
   //   if (genres.length === 0) {
@@ -278,7 +298,7 @@ export class BasicLicensesComponent implements OnInit, AfterViewInit {
       this.playStateControlService.emitPlayState(true);
       this.audioService.loadPlayAudio(sampleID);
       // setTimeout(() => {
-        this.playStateControlService.emitCurrentSampleID(sampleID);
+      this.playStateControlService.emitCurrentSampleID(sampleID);
       // });
       console.log('play no');
     }
@@ -336,45 +356,47 @@ export class BasicLicensesComponent implements OnInit, AfterViewInit {
   }
 
 
-  searchMusicByFormInput(searchString: string) {
-    this.sampleLicensingMarketService.searchAudioByFormInput(searchString);
-  }
+  // searchMusicByFormInput(searchString: string) {
+  //   this.sampleLicensingMarketService.searchAudioByFormInput(searchString);
+  // }
 
-  searchMusicByFormSubmit(searchString: string) {
-    if (searchString.length === 0) {
-      return;
-    }
-    this.blurSearchInput();
-    const sampleIDs: number[] = [];
-    this.sampleLicensingMarketService.sampleSearchQueries.forEach((query) => {
-      sampleIDs.push(query.id);
-    });
-    this.loader.open();
-    this.sampleLicensingMarketService.searchMusicByFormSubmit(sampleIDs);
-  }
+  // searchMusicByFormSubmit(searchString: string) {
+  //   if (searchString.length === 0) {
+  //     return;
+  //   }
+  //   this.blurSearchInput();
+  //   const sampleIDs: number[] = [];
+  //   this.sampleLicensingMarketService.sampleSearchQueries.forEach((query) => {
+      
+  //     sampleIDs.push(query.id);
+  //   });
+  //   this.loader.open();
+  //   this.sampleLicensingMarketService.searchMusicByFormSubmit(sampleIDs);
+  // }
 
 
-  searchSingleAudio(sampleID: number) {
-    this.blurSearchInput();
-    const sampleIDs: number[] = [];
-    sampleIDs.push(sampleID);
-    this.loader.open();
-    this.sampleLicensingMarketService.searchMusicByFormSubmit(sampleIDs);
-  }
+  // searchSingleAudio(sampleID: number) {
+  //   this.blurSearchInput();
+  //   const sampleIDs: number[] = [];
+  //   sampleIDs.push(sampleID);
+  //   this.loader.open();
+  //   this.sampleLicensingMarketService.searchMusicByFormSubmit(sampleIDs);
+  // }
 
 
   blurSearchInput() {
     this.searchInput.nativeElement.blur();
   }
 
-  changeSelectedSample(event: MatOptionSelectionChange, sampleID: number) {
+  changeSelectedSample(event: MatOptionSelectionChange) {
     // angular bug fix. Event fires multiple times: https://github.com/angular/components/issues/4094
     if (event.source.selected) {
       this.selectedSearchOption = event.source;
+      console.log(this.selectedSearchOption.value);
     }
   }
 
-  
+
 
   get playState(): boolean {
     return this._playState;
@@ -391,10 +413,15 @@ export class BasicLicensesComponent implements OnInit, AfterViewInit {
   set currentSampleID(currentSampleID: string) {
     this._currentSampleID = currentSampleID;
   }
-
-  public displaySearchQuery(sampleSearchQuery: SampleSearchQuery): string {
-    if (sampleSearchQuery) {
-      return sampleSearchQuery.sampleTitle + ' ' + '(' + sampleSearchQuery.artistName + ')';
+  
+  public displaySample(sample: Sample): string {
+    
+    
+    if (sample) {
+      
+      return sample.title + ' ' + '(' + sample.artistName + ')';
+      
+      
 
     } else {
       return '';
@@ -402,7 +429,7 @@ export class BasicLicensesComponent implements OnInit, AfterViewInit {
   }
 
   public openFilter() {
-    this.sampleLicensingMarketService.toggleFilter$.next({toggleState: true, apply: SidenavContent.Filter});
+    this.sampleLicensingMarketService.toggleFilter$.next({ toggleState: true, apply: SidenavContent.Filter });
   }
 
   handlePageChange(event: number) {

@@ -82,11 +82,12 @@ export class HeaderTopComponent implements OnInit, OnDestroy {
     })
   }
   isAuth(): boolean {
-    if(this.oauthService.hasValidAccessToken()) {
-      return true;
-    } else {
-      return false;
-    }
+    return this.jwtAuth.isAuth();
+    // if(this.oauthService.hasValidAccessToken()) {
+    //   return true;
+    // } else {
+    //   return false;
+    // }
   }
   public logoff() {
     this.oauthService.logOut();

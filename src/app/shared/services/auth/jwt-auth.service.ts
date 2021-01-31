@@ -126,6 +126,14 @@ export class JwtAuthService {
       });
     });
   }
+  
+  isAuth(): boolean {
+    if(this.oauthService.hasValidAccessToken()) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 
   /*
     checkTokenIsValid is called inside constructor of

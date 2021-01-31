@@ -5,7 +5,7 @@ export const config = {
       public: {
         root: '/public/audio',
         samplesHome: '/samples-home',
-        searchMultipleAudio: '/search-multiple-audio',
+        findByString: '/find-by-string',
         searchSingleAudio: '/search-single-audio',
         searchMusicByInput: '/searchMusicByInput',
         filterSamples: '/filter-samples'

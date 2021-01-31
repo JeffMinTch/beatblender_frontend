@@ -68,39 +68,39 @@ export class SampleLicensingMarketService implements OnDestroy {
     );
   }
 
-  public searchAudioByFormInput(searchString: string): void {
-    this.sampleSearchQueries$ = this.audioWebService.searchAudioByFormInput(searchString).pipe(map((data: any) => data.sampleSearchQueries));
-    this.sampleSearchQueries$.subscribe((sampleSearchQueries: SampleSearchQuery[]) => {
-      this.sampleSearchQueries = sampleSearchQueries;
-    });
-  }
+  // public searchAudioByFormInput(searchString: string): void {
+  //   this.sampleSearchQueries$ = this.audioWebService.searchAudioByFormInput(searchString).pipe(map((data: any) => data.sampleSearchQueries));
+  //   this.sampleSearchQueries$.subscribe((sampleSearchQueries: SampleSearchQuery[]) => {
+  //     this.sampleSearchQueries = sampleSearchQueries;
+  //   });
+  // }
 
 
-  public searchMusicByFormSubmit(sampleIDs: Array<number>):void {
-    // this.samples$ = this.cloudService.searchMultipleAudio(sampleIDs).pipe(
-    //   map((data:any) => data.audioFileResponse),
-    //   delay(2000),
-    //   share()
-    // );
-    this.audioWebService.searchMultipleAudio(sampleIDs).pipe(
-      map((data:any) => data.audioFileResponse),
-      delay(2000),
-      share()
-    ).subscribe((samples: Sample[]) => {
-      this.samples$.next(samples);
-    });
-  }
+  // public searchMusicByFormSubmit(sampleIDs: Array<number>):void {
+  //   // this.samples$ = this.cloudService.searchMultipleAudio(sampleIDs).pipe(
+  //   //   map((data:any) => data.audioFileResponse),
+  //   //   delay(2000),
+  //   //   share()
+  //   // );
+  //   this.audioWebService.searchMultipleAudio(sampleIDs).pipe(
+  //     map((data:any) => data.audioFileResponse),
+  //     delay(2000),
+  //     share()
+  //   ).subscribe((samples: Array<Sample>) => {
+  //     this.samples$.next(samples);
+  //   });
+  // }
 
 
   public applyFilter() {
     
   }
 
-  getSamples(): Sample[] {
+  getSamples(): Array<Sample> {
     return this.samples;
   }
 
-  public getSamplesObservable(): Observable<Sample[]> {
+  public getSamplesObservable(): Observable<Array<Sample>> {
     return this.samples$;
   }
 

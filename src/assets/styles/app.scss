@@ -53,6 +53,7 @@
 @import "scss/utilities/utilities";
 @import "scss/components/components";
 @import "scss/palette";
+@import '../styles/scss/components/scrollbar';
 
 
 @import "scss/page-layouts";
@@ -62,31 +63,6 @@
 
 
 
-::-webkit-scrollbar {
-    width: 10px;
-}
-
-/* Track */
-::-webkit-scrollbar-track {
-    background: #fafafa;
-}
-
-/* Handle */
-::-webkit-scrollbar-thumb {
-    background: map-get($default-accent-palette, main);
-}
-
-/* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
-    background: map-get($default-accent-palette, darker);
-}
-
-::selection {
-    background: map-get($default-accent-palette, lighter) /* WebKit/Blink Browsers */
-  }
-  ::-moz-selection {
-    background: map-get($default-accent-palette, lighter); /* Gecko Browsers */
-  }
 
 
 //   @font-face {
