@@ -6,6 +6,7 @@ import { RoutePartsService } from './shared/services/route-parts.service';
 
 import { filter } from 'rxjs/operators';
 import { UILibIconService } from './shared/services/ui-lib-icon.service';
+import { AuthConfigService } from 'config/auth-config.service';
 
 @Component({
   selector: 'app-root',
@@ -18,17 +19,29 @@ export class AppComponent implements OnInit, AfterViewInit {
 
   constructor(
     public title: Title,
+    private authConfigService: AuthConfigService,
     private router: Router,
     private activeRoute: ActivatedRoute,
     private routePartsService: RoutePartsService,
-    private iconService: UILibIconService
+    private iconService: UILibIconService,
+
   ) {
     iconService.init()
   }
 
   ngOnInit() {
     this.changePageTitle();
+
+    // this.sleep();  
   }
+
+  // async sleep() {
+  //   await new Promise((resolve,reject) =>  {
+  //     setTimeout(() => {
+  //       resolve(true);
+  //     },1000);
+  //   });
+  // }
 
   ngAfterViewInit() {
   }
@@ -49,4 +62,6 @@ export class AppComponent implements OnInit, AfterViewInit {
       this.title.setTitle(this.pageTitle);
     });
   }
+
+  
 }

@@ -1,4 +1,5 @@
 @import '../variables';
+// @import '../../scss/themes/init';
 
 .header-topnav {
   position: sticky;
@@ -7,7 +8,8 @@
   width: 100%;
   top: 0;
   z-index: 999;
-// background: #333333;
+// background: $body-color;
+// color: #FFFFFF !important;
 
   .container {
     padding: 0;
@@ -22,7 +24,8 @@
     // font-family: monospace;
     letter-spacing: 4px;
     font-weight: 900;
-    font-size: 32px;
+    font-size: 40px;
+    // color: map-get($default-accent-palette, main);
     // color: #FFFFFF;
     // background: #FFFFFF;
     // text-shadow: 2px 2px 0 $body-color, 2px -2px 0 $body-color, -2px 2px 0 $body-color, -2px -2px 0 $body-color, 2px 0px 0 $body-color, 0px 2px 0 $body-color, -2px 0px 0 $body-color, 0px -2px 0 $body-color;
@@ -35,7 +38,7 @@
     // margin-left: -19px;
     display: flex;
     align-items: center;
-    height: 48px;
+    height: 78px;
     
     .trigger-text-container {
       min-width: 150px;

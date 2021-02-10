@@ -1,0 +1,13 @@
+<mat-card [ngClass]="isFilterOpen ? 'expanded' : ''" class="filter-container">
+    <div fxLayout="column" class="px-8 py-0">
+        <div fxFlex fxLayout="row" fxLayoutGap="8px">
+            <div *ngFor="let selectionFormTupel of searchFilterFormMap?.selectionFormMap | keyvalue" fxFlex fxLayoutAlign="center center">
+                <app-select class="full-width" (formControlChange)="changeFormControl($event)" [label]="selectionFormTupel?.value.label" [control]="selectionFormTupel?.key" [selectionList]="selectionFormTupel?.value.contentList" [placeHolder]="selectionFormTupel?.value.placeholder"></app-select>
+            </div>
+        </div>
+        <div fxFlex fxLayout="row" fxLayoutGap="10px">
+            <app-min-max-slider *ngFor="let minMaxSliderFormTupel of searchFilterFormMap?.minMaxSliderFormMap | keyvalue" fxFlex (controlGroupChange)="changeFormControl($event)" [title]="minMaxSliderFormTupel.value?.label" [minMaxGroup]="minMaxSliderFormTupel?.key"  [minValue]="minMaxSliderFormTupel.value?.minValue" [maxValue]="minMaxSliderFormTupel.value?.maxValue"></app-min-max-slider>
+        </div>
+    </div>
+
+</mat-card>

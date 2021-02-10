@@ -38,6 +38,9 @@ import { MatMomentDateModule } from "@angular/material-moment-adapter";
 
 
 @NgModule({
+  imports: [
+    MatIconModule
+  ],
   exports: [
     MatCheckboxModule,
     MatButtonModule,

@@ -1,0 +1,31 @@
+@import "../../../../../assets/styles/scss/variables";
+
+
+h1 {
+    // color: map-get($default-accent-palette, main);
+    color: $body-color;
+}
+
+.shop-filters-wrap {
+    margin-top: 7px;
+    padding: 0 0.5rem 0 0.333rem;
+}
+
+.mat-expansion-panel-body {
+    padding: 0 0 0 24px;
+}
+
+h1.title {
+    font-size: 1.8rem;
+    margin: 0 0 1rem;
+}
+::ng-deep .mat-drawer-content {
+    width: 100% !important;
+}
+@media (max-width: 960px) {
+    .shop-filters-wrap {
+        margin: 0;
+        padding: 0;
+    }
+    
+}

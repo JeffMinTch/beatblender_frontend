@@ -31,7 +31,7 @@
         *ngIf="layoutConf.navigationPos === 'side'"
         [notificPanel]="notificationPanel">
       </app-header-side>
-      <div class="rightside-content-hold z-1" [ngStyle]="{'height' : layoutConf.footerFixed ? 'calc(100vh - 103px)' : 'calc(100vh - 53px)'}" id="rightside-content-hold" [perfectScrollbar]="scrollConfig" [disabled]="!layoutConf.topbarFixed || !layoutConf.perfectScrollbar">
+      <div class="rightside-content-hold z-1" [ngStyle]="{'height' : layoutConf.footerFixed ? 'calc(100vh - 133px)' : 'calc(100vh - 78px)'}" id="rightside-content-hold" [perfectScrollbar]="scrollConfig" [disabled]="!layoutConf.topbarFixed || !layoutConf.perfectScrollbar">
         <!-- View Loader -->
         <div class="view-loader" *ngIf="isModuleLoading" style="position:fixed;"
         fxLayout="column" fxLayoutAlign="center center">

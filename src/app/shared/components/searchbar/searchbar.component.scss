@@ -1,0 +1,35 @@
+.shop-top-toolbar {
+    // margin-bottom: 0.5rem;
+    padding: 4px 8px 4px 8px;
+    .wrap {
+      display: flex;
+      flex-grow: 1;
+    }
+    
+  }
+  .product-search-wrap {
+    flex-grow: 1;
+    margin-right: 5px;
+    form {
+      height: 100%;
+      .product-search {
+        width: 260px;
+        min-height: 40px;
+        // height: 100%;
+        line-height: 20px;
+        font-size: 16px;
+        // border: 3px solid $body-color;
+        
+      }
+    }
+  }
+
+  .shop-top-toolbar ::ng-deep .mat-form-field-infix {
+    padding: 0 !important;
+  }
+
+  .shop-top-toolbar ::ng-deep .mat-form-field-wrapper {
+    width: auto !important;
+    padding-bottom: 0 !important;
+    margin: 0 !important;
+}

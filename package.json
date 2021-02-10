@@ -71,6 +71,7 @@
     "tslib": "^2.0.0",
     "wavesurfer.js": "^4.2.0",
     "web-animations-js": "^2.3.2",
+    "webfontloader": "^1.6.28",
     "zone.js": "~0.10.2"
   },
   "devDependencies": {

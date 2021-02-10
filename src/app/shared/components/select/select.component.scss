@@ -1,0 +1,10 @@
+// #selectForm ::ng-deep .mat-form-field-infix {
+//     padding: 0 !important;
+//   }
+
+  #selectForm ::ng-deep .mat-form-field-wrapper {
+    width: auto !important;
+    padding-bottom: 0 !important;
+    margin: 0 !important;
+}
+

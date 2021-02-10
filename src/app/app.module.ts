@@ -22,6 +22,8 @@ import { AppComponent } from './app.component';
 import { HttpClient, HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { AuthConfigService } from 'config/auth-config.service';
+import { init_app, load_font } from 'app.init';
 
 
 // AoT requires an exported function for factories
@@ -36,6 +38,10 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true
 };
+
+
+
+
 
 @NgModule({
   imports: [
@@ -58,6 +64,11 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   declarations: [AppComponent],
   providers: [
     // { provide: HAMMER_GESTURE_CONFIG, useClass: GestureConfig },
+    { 
+      provide: APP_INITIALIZER, 
+      useFactory: load_font, 
+      multi: true
+    },
     { provide: PERFECT_SCROLLBAR_CONFIG, useValue: DEFAULT_PERFECT_SCROLLBAR_CONFIG },
     // REQUIRED IF YOU USE JWT AUTHENTICATION
     // {
@@ -70,4 +81,8 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+
+
+export class AppModule {
+  
+}

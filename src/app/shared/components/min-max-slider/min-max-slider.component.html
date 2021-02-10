@@ -1,0 +1,36 @@
+<section id="minMaxSlider" fxFlex fxLayout="column" class="py-8" >
+    <!-- <span class="m-0">Minimum {{title}}: {{getMinControl()['value']}}</span>
+    <mat-slider (change)="changeMinSlider($event)" class="slider full-width" [formControl]="getMinControl()" [thumbLabel]="true"
+        [max]="getMaxControl().value - 5" [min]="minValue"></mat-slider>
+
+    <span class="m-0">Maximum {{title}}: {{getMaxControl()['value']}}</span>
+    <mat-slider (change)="changeMaxSlider($event)" class="slider full-width pl-0" [formControl]="getMaxControl()" [thumbLabel]="true" [max]="maxValue"
+        [min]="getMinControl()?.value + 5"></mat-slider> -->
+    <mat-form-field appearance="outline" class="full-width br-8">
+    <mat-label style="position: relative; font-size: 16px;">{{title | titlecase}}</mat-label>
+    <div fxFlex fxLayout="column" class="px-4 py-0 mt-28">
+        
+        <div fxFlex style="position: relative;" class="py-8">
+            <div style="position: absolute; top: 0; left: 0;">
+                <span class="m-0 pl-8">Minimum {{title}}: {{getMinControl()['value']}}</span>
+            </div>
+            <mat-slider (change)="changeMinSlider($event)" class="slider full-width"
+                [formControl]="getMinControl()" [thumbLabel]="true" [max]="getMaxControl().value - 5" [min]="minValue">
+            </mat-slider>
+        </div>
+
+        <div fxFlex style="position: relative;" class="py-8">
+            <div style="position: absolute; top: 0; left: 0;">
+                <span class="pl-8 m-0">Maximum {{title}}: {{getMaxControl()['value']}}</span>
+            </div>
+            <mat-slider (change)="changeMaxSlider($event)" class="slider full-width pl-0" [formControl]="getMaxControl()"
+                [thumbLabel]="true" [max]="maxValue" [min]="getMinControl()?.value + 5"></mat-slider>
+
+        </div>
+        <textarea matInput hidden></textarea>
+    </div>
+
+</mat-form-field>
+
+
+</section>

@@ -1,0 +1,17 @@
+.slider {
+    padding: 0;
+    margin: 0;
+    height: 40px;
+}
+
+#minMaxSlider ::ng-deep .mat-form-field-infix {
+    display: flex !important;
+    flex-direction: column !important;
+}
+
+#minMaxSlider ::ng-deep .mat-form-field-wrapper {
+    width: auto !important;
+    padding-bottom: 0 !important;
+    margin: 0 !important;
+}
+

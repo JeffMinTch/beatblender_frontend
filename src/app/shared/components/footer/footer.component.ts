@@ -14,7 +14,8 @@ import { createTrue } from 'typescript';
 @Component({
   selector: 'app-footer',
   templateUrl: './footer.component.html',
-  styleUrls: ['./footer.component.scss']
+  styleUrls: ['./footer.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class FooterComponent implements OnInit, AfterViewInit {
 
@@ -25,6 +26,8 @@ export class FooterComponent implements OnInit, AfterViewInit {
   sampleSubscription: Subscription;
   // samples$: Observable<Sample[]>;
   audioLoadCompleteSubscription: Subscription;
+  public initIcons: boolean = false;
+
 
   constructor(
     private audioService: AudioService,
@@ -71,10 +74,16 @@ export class FooterComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
+
   }
 
   ngAfterViewInit() {
+    this.initIcons = true;
 
+  }
+
+  ngOnChanges() {
+    // this.changeDetectorRef.detectChanges();
   }
 
   play() {

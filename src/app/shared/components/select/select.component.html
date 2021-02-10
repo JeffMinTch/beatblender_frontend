@@ -1,0 +1,13 @@
+<mat-form-field id="selectForm" appearance="outline" class="full-width br-8">
+    <mat-label style="font-size: 16px;">{{label}}</mat-label>
+    <mat-select (selectionChange)="selectionChange($event)"
+      [placeholder]="placeHolder"  [formControl]="control"
+        multiple>
+        <mat-option #allSelected (onSelectionChange)="onSelectionChange($event)" (click)="toggleAllSelection()" [value]="0">All
+        </mat-option>
+        <mat-option *ngFor="let element of selectionList" [value]="element"
+            (click)="tosslePerOne(allSelected.viewValue)">
+            {{element}}
+        </mat-option>
+    </mat-select>
+</mat-form-field>

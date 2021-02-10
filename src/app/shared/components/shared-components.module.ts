@@ -1,3 +1,8 @@
+import { MinMaxSliderComponent } from './min-max-slider/min-max-slider.component';
+import { SelectComponent } from './select/select.component';
+import { AudioPanelComponent } from './audio-panel/audio-panel.component';
+import { SearchbarComponent } from './searchbar/searchbar.component';
+import { SearchFilterComponent } from './search-filter/search-filter.component';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { SharedMaterialModule } from '../shared-material.module';
@@ -64,6 +69,11 @@ const components = [
   EgretSidebarComponent,
   FooterComponent,
   EgretSidebarTogglerDirective,
+  SearchFilterComponent,
+  SearchbarComponent,
+  AudioPanelComponent,
+  SelectComponent,
+  MinMaxSliderComponent
 ]
 
 @NgModule({

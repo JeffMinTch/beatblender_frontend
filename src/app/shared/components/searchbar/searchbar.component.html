@@ -1,0 +1,40 @@
+<section fxLayout="row" fxLayout.lt-sm="column" class="shop-top-toolbar">
+    <div class="wrap">
+      <button mat-stroked-button color="primary" class="mr-16" (click)="toggleSidenav()">
+        <mat-icon>short_text</mat-icon>
+      </button>
+      <div class="product-search-wrap">
+        <form [formGroup]="searchForm"
+          (ngSubmit)="selectedSearchOption === null ? convertSuggestionsToSamples() : convertSuggestionsToSamples(selectedSearchOption.value)">
+          <mat-form-field appearance="outline" class="full-width">
+
+            <input matInput #searchInput #searchInputTrigger="matAutocompleteTrigger" type="text" name="searchProduct"
+              [matAutocomplete]="auto" (input)="retrieveSuggestions(searchInput.value)"
+              placeholder="find by samples, artists or tags..."
+              class="product-search default-bg full-width" autocapitalize="false" autocomplete="off"
+              [formControl]="searchForm.controls['search']" spellcheck="false">
+          </mat-form-field>
+          <!-- Used displayWith here with filter function; see https://stackoverflow.com/questions/44234290/how-to-display-using-displaywith-in-autocomplete-material2 -->
+          <mat-autocomplete #auto="matAutocomplete" [displayWith]="displaySample">
+            <mat-option *ngFor="let suggestion of suggestionsSubject$ | async"
+              (onSelectionChange)="changeSelectedSample($event)" [value]="suggestion"
+              class="search-query-option pl-0">
+              <div fxLayout="row" class="option-layout">
+                <img fxFlex="48px"
+                  src="{{'http://localhost:9090/api/web/public/media/image/' + suggestion?.sampleID}}" alt="">
+                <div fxFlex="auto" fxLayout="column" fxLayoutAlign="center" class="pl-16">
+                  <span class="text-muted">{{suggestion?.title}}</span>
+                  <span class=""><span class="text-muted">by</span> {{suggestion?.artistName}}</span>
+                </div>
+              </div>
+              {{suggestion?.title}}
+            </mat-option>
+          </mat-autocomplete>
+        </form>
+      </div>
+    </div>
+    <span fxFlex="20px"></span>
+    <button mat-stroked-button color="primary" (click)="toggleFilter()">
+      <mat-icon>filter_list</mat-icon> {{isFilterOpen ? 'Close' : 'Open'}} Filter
+    </button>
+  </section>
