@@ -3,6 +3,28 @@
     <mat-select (selectionChange)="selectionChange($event)"
       [placeholder]="placeHolder"  [formControl]="control"
         multiple>
+        <mat-select-trigger>
+          <span *ngIf="allSelected.selected">All</span>
+          <span *ngIf="!allSelected.selected && control.value?.length >= 1">
+           <!-- <span *ngIf="control?.value.length != 0"> -->
+               {{ control?.value[0] }}
+            <!-- </span>    -->
+           <!-- <span *ngIf="control?.value.length === 2">, {{ control?.value[1] }}</span>    -->
+           <span *ngIf="control?.value.length > 1">
+               (+{{control.value?.length - 1}} {{control.value?.length === 2 ? 'other' : 'others'}})
+           </span>
+           <!-- <span></span> -->
+          </span>
+          <span *ngIf="control.value?.length === 0">
+              {{''}}
+          </span>
+          <!-- {{control.value?.length === 0 ? ''}} -->
+          <!-- <span *ngIf=""></span>   -->
+            <!-- {{toppings.value ? toppings.value[0] : ''}} -->
+            <!-- <span *ngIf="toppings.value?.length > 1" class="example-additional-selection">
+              (+{{toppings.value.length - 1}} {{toppings.value?.length === 2 ? 'other' : 'others'}})
+            </span> -->
+          </mat-select-trigger>
         <mat-option #allSelected (onSelectionChange)="onSelectionChange($event)" (click)="toggleAllSelection()" [value]="0">All
         </mat-option>
         <mat-option *ngFor="let element of selectionList" [value]="element"

@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, Output, ViewChild, EventEmitter } from '@angular/core';
+import { Component, Input, OnInit, Output, ViewChild, EventEmitter, AfterViewInit } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { MatOption, MatOptionSelectionChange } from '@angular/material/core';
 import { MatSelectChange } from '@angular/material/select';
@@ -8,7 +8,7 @@ import { MatSelectChange } from '@angular/material/select';
   templateUrl: './select.component.html',
   styleUrls: ['./select.component.scss']
 })
-export class SelectComponent implements OnInit {
+export class SelectComponent implements OnInit, AfterViewInit {
 
   @ViewChild('allSelected', { read: MatOption}) allSelected: MatOption;  
   
@@ -22,7 +22,23 @@ export class SelectComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+    this.control.setValue([...this.selectionList, 0]);
+
+  }
+  
+  ngAfterViewInit() {
+
+    // this.allSelected.select();
+    // if (this.allSelected.selected) {
+    //   this.allSelected.deselect();
+    //   // return false;
+    //   this.formControlChange.emit(this.control);
+    // }
     
+    // if (this.control.value.length == this.selectionList.length) {
+    //   this.allSelected.select();
+    //   this.formControlChange.emit(this.control);
+    // }
   }
 
   public selectionChange(selectionChange: MatSelectChange):void {
@@ -46,18 +62,20 @@ export class SelectComponent implements OnInit {
       this.allSelected.deselect();
       // return false;
       this.formControlChange.emit(this.control);
-
     }
-    if (this.control.value.length == this.selectionList.length)
+
+    if (this.control.value.length == this.selectionList.length) {
       this.allSelected.select();
       this.formControlChange.emit(this.control);
+    }
     console.log(this.control);
   }
 
   toggleAllSelection() {
     if (this.allSelected.selected) {
-      this.control
-      .patchValue([...this.selectionList.map(item => item), 0]);
+      // this.control
+      // .patchValue([...this.selectionList.map(item => item), 0]);
+      this.control.setValue([...this.selectionList, 0]);
       // this.control.setValue(this.selectionList);
     } else {
       // this.control.setValue([]);

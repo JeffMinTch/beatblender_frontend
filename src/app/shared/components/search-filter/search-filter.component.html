@@ -9,5 +9,4 @@
             <app-min-max-slider *ngFor="let minMaxSliderFormTupel of searchFilterFormMap?.minMaxSliderFormMap | keyvalue" fxFlex (controlGroupChange)="changeFormControl($event)" [title]="minMaxSliderFormTupel.value?.label" [minMaxGroup]="minMaxSliderFormTupel?.key"  [minValue]="minMaxSliderFormTupel.value?.minValue" [maxValue]="minMaxSliderFormTupel.value?.maxValue"></app-min-max-slider>
         </div>
     </div>
-
 </mat-card>

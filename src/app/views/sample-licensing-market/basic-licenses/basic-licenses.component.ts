@@ -1,3 +1,4 @@
+import { Page } from './../../../shared/models/page.model';
 import { SearchFilterFormMap } from './../../../shared/models/search-filter-form-map.model';
 import { MinMaxSlider } from './../../../shared/models/min-max-slider.model';
 import { Selection } from './../../../shared/models/selection.model';
@@ -14,7 +15,7 @@ import { delay, share, takeUntil } from 'rxjs/operators';
 import { PlayStateControlService } from './../../../shared/services/play-state-control.service';
 import { QueryList, ViewChildren, Renderer2, AfterViewInit, ChangeDetectorRef, AfterViewChecked, ChangeDetectionStrategy, ViewEncapsulation, HostListener, OnDestroy } from '@angular/core';
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators, AbstractControl } from '@angular/forms';
 import { MatSidenav } from '@angular/material/sidenav';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { egretAnimations } from 'app/shared/animations/egret-animations';
@@ -62,6 +63,9 @@ export class BasicLicensesComponent implements OnInit, AfterViewInit {
   public sampleSearchQueries: SampleSearchQuery[];
   // public filterForm: FormGroup;
   public searchForm: FormGroup;
+
+  selectionList: Array<Selection>;
+  minMaxList: Array<MinMaxSlider>
 
   public searchFilterFormMap: SearchFilterFormMap = {
     selectionFormMap: null,
@@ -118,6 +122,8 @@ export class BasicLicensesComponent implements OnInit, AfterViewInit {
 
     this.sampleLicensingMarketService.samples$.pipe(
       map((samples: Array<Sample>) => {
+        this.initSearchFilterFormMap(this.selectionList, this.minMaxList);
+    console.log(this.searchFilterFormMap);
         this.audioService.createWavesurferObj();
         this.loader.close();
         // (this.searchInput.nativeElement as HTMLInputElement).value = '';
@@ -152,6 +158,7 @@ export class BasicLicensesComponent implements OnInit, AfterViewInit {
       const { samples, totalItems } = response;
       this.count = totalItems;
       this.sampleLicensingMarketService.samples$.next(samples);
+      
     }, (error) => {
       if (error instanceof HttpErrorResponse) {
         if (error.status === 401) {
@@ -178,22 +185,10 @@ export class BasicLicensesComponent implements OnInit, AfterViewInit {
       // this.filterFormMap = filterFormMap;
       // const filterForm: FormGroup = this.buildFilterForm()
 
-      const selectionList: Array<Selection> = filterFormMap.get('selection') as Array<Selection>;
-      const minMaxList: Array<MinMaxSlider> = filterFormMap.get('minMaxSlider') as Array<MinMaxSlider>;
+      this.selectionList = filterFormMap.get('selection') as Array<Selection>;
+      this.minMaxList = filterFormMap.get('minMaxSlider') as Array<MinMaxSlider>;
 
-      selectionList.forEach(selection => {
-        this.searchFilterFormMap.selectionFormMap.set(new FormControl(""), selection);
-        // this.selectionFormMap.set(new FormControl(""), selection); 
-        // new FormControl(selection.contentList), selection);
-      });
-
-      minMaxList.forEach((minMaxSlider) => {
-        this.searchFilterFormMap.minMaxSliderFormMap.set(this.fb.group({
-          'minControl': [minMaxSlider.minValue, []],
-          'maxControl': [minMaxSlider.maxValue, []]
-        }), minMaxSlider);
-        // this.minMaxSliderFormMap.set(new FormControl, minMaxSlider);
-      });
+      this.initSearchFilterFormMap(this.selectionList, this.minMaxList);
     });
 
 
@@ -249,6 +244,21 @@ export class BasicLicensesComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     this.loader.open();
+  }
+
+  initSearchFilterFormMap(selectionList: Array<Selection>, minMaxSliderList: Array<MinMaxSlider>) {
+    this.searchFilterFormMap.selectionFormMap.clear();
+    this.searchFilterFormMap.minMaxSliderFormMap.clear();
+    selectionList.forEach(selection => {
+      this.searchFilterFormMap.selectionFormMap.set(new FormControl(selection.contentList, [Validators.required]), selection);
+    });
+
+    minMaxSliderList.forEach((minMaxSlider) => {
+      this.searchFilterFormMap.minMaxSliderFormMap.set(this.fb.group({
+        'minControl': [minMaxSlider.minValue, []],
+        'maxControl': [minMaxSlider.maxValue, []]
+      }), minMaxSlider);
+    });
   }
 
   // buildFilterForm(filterData: any = {}) {
@@ -463,8 +473,22 @@ export class BasicLicensesComponent implements OnInit, AfterViewInit {
 
   public applyFilter(searchFilterFormMap: SearchFilterFormMap) {
     this.searchFilterFormMap = searchFilterFormMap;
+    // const params = this.sampleLicensingMarketService.getRequestParams(this.sortBy, 1, this.pageSize);
+    // params['searchString'] = this.searchForm.controls['search'].value;
+    const page: Page = {
+      sortBy: this.sortBy,
+      pageNo: 1,
+      pageSize: this.pageSize
+    }
+    this.audioWebService.applySearchFilter(this.searchForm.controls['search'].value, this.searchFilterFormMap, page).subscribe((response) => {
+      const { samples, totalItems } = response;
+      this.count = totalItems;
+      this.sampleLicensingMarketService.samples$.next(samples);
+      // this.sampleLicensingMarketService.samples$.next(samples);
+    });
     console.log(this.searchForm.value);
     console.log(this.searchFilterFormMap.selectionFormMap);
+    
   }
 
 
