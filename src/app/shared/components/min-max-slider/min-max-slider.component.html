@@ -15,7 +15,7 @@
                 <span class="m-0 pl-8">Minimum {{title}}: {{getMinControl()['value']}}</span>
             </div>
             <mat-slider (change)="changeMinSlider($event)" class="slider full-width"
-                [formControl]="getMinControl()" [thumbLabel]="true" [max]="getMaxControl().value - 5" [min]="minValue">
+                [formControl]="getMinControl()" [thumbLabel]="false" [max]="getMaxControl().value - 5" [min]="minValue">
             </mat-slider>
         </div>
 
@@ -24,7 +24,7 @@
                 <span class="pl-8 m-0">Maximum {{title}}: {{getMaxControl()['value']}}</span>
             </div>
             <mat-slider (change)="changeMaxSlider($event)" class="slider full-width pl-0" [formControl]="getMaxControl()"
-                [thumbLabel]="true" [max]="maxValue" [min]="getMinControl()?.value + 5"></mat-slider>
+                [thumbLabel]="false" [max]="maxValue" [min]="getMinControl()?.value + 5"></mat-slider>
 
         </div>
         <textarea matInput hidden></textarea>

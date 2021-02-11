@@ -61,13 +61,15 @@ export class SelectComponent implements OnInit, AfterViewInit {
     if (this.allSelected.selected) {
       this.allSelected.deselect();
       // return false;
-      this.formControlChange.emit(this.control);
+      
+      console.log(this.control.value);
     }
-
+    
     if (this.control.value.length == this.selectionList.length) {
       this.allSelected.select();
-      this.formControlChange.emit(this.control);
+      // this.formControlChange.emit(this.control);
     }
+    this.formControlChange.emit(this.control);
     console.log(this.control);
   }
 

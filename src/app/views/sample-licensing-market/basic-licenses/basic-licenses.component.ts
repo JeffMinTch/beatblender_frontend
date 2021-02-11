@@ -2,7 +2,7 @@ import { Page } from './../../../shared/models/page.model';
 import { SearchFilterFormMap } from './../../../shared/models/search-filter-form-map.model';
 import { MinMaxSlider } from './../../../shared/models/min-max-slider.model';
 import { Selection } from './../../../shared/models/selection.model';
-import { filter } from 'rxjs/operators';
+import { filter, debounceTime, throttle } from 'rxjs/operators';
 import { AudioWebService } from './../../../shared/services/web-services/audio-web.service';
 import { LocalStoreService } from './../../../shared/services/local-store.service';
 import { JwtAuthService } from 'app/shared/services/auth/jwt-auth.service';
@@ -121,9 +121,10 @@ export class BasicLicensesComponent implements OnInit, AfterViewInit {
 
 
     this.sampleLicensingMarketService.samples$.pipe(
+      // debounceTime(5000),
       map((samples: Array<Sample>) => {
-        this.initSearchFilterFormMap(this.selectionList, this.minMaxList);
     console.log(this.searchFilterFormMap);
+    console.log('debounce');
         this.audioService.createWavesurferObj();
         this.loader.close();
         // (this.searchInput.nativeElement as HTMLInputElement).value = '';
@@ -191,6 +192,15 @@ export class BasicLicensesComponent implements OnInit, AfterViewInit {
       this.initSearchFilterFormMap(this.selectionList, this.minMaxList);
     });
 
+    this.audioWebService.searchFilterSubject$.pipe(
+      // throttle()
+      debounceTime(2000)).subscribe((response) => {
+      console.log('Apply')
+      const { samples, totalItems } = response;
+      this.count = totalItems;
+      this.sampleLicensingMarketService.samples$.next(samples);
+    });
+
 
     this.audioService.audioState$.pipe(
       takeUntil(this.audioService.audioServiceDestroyed$)
@@ -237,7 +247,7 @@ export class BasicLicensesComponent implements OnInit, AfterViewInit {
     
     // this.genres$ = this.sampleLicensingMarketService.getGenres();
     // this.filterForm = this.buildFilterForm(this.sampleLicensingMarketService.initialFilters);
-    this.buildSearchForm();
+    this.searchForm = this.sampleLicensingMarketService.buildSearchForm();
 
   }
 
@@ -273,27 +283,27 @@ export class BasicLicensesComponent implements OnInit, AfterViewInit {
   //   });
   // }
 
-  public buildFilterForm(filterData: any = {}): FormGroup {
-    return this.fb.group({
-      'categories': [this.categoryList, []],
-      'genres': [this.genreList, []],
-      'moods': [this.moodsList, []],
-      'tempo': this.fb.group({
-        'minTempo': [filterData.minTempo],
-        'maxTempo': [filterData.maxTempo],
-      }),
-      'lep': this.fb.group({
-        'minLep': [filterData.minLep],
-        'maxLep': [filterData.maxLep]
-      }),
-    });
-  }
+  // public buildFilterForm(filterData: any = {}): FormGroup {
+  //   return this.fb.group({
+  //     'categories': [this.categoryList, []],
+  //     'genres': [this.genreList, []],
+  //     'moods': [this.moodsList, []],
+  //     'tempo': this.fb.group({
+  //       'minTempo': [filterData.minTempo],
+  //       'maxTempo': [filterData.maxTempo],
+  //     }),
+  //     'lep': this.fb.group({
+  //       'minLep': [filterData.minLep],
+  //       'maxLep': [filterData.maxLep]
+  //     }),
+  //   });
+  // }
 
-  buildSearchForm() {
-    this.searchForm = this.fb.group({
-      search: ['']
-    });
-  }
+  // buildSearchForm() {
+  //   this.searchForm = this.fb.group({
+  //     search: ['']
+  //   });
+  // }
 
   // ngOnDestroy(): void {
   //   this.playStateControlService.emitPlayState(false);
@@ -453,6 +463,8 @@ export class BasicLicensesComponent implements OnInit, AfterViewInit {
   
   changePage(page: number) {
     this.page = page;
+    this.initSearchFilterFormMap(this.selectionList, this.minMaxList);
+
   }
 
   changeCount(count: number) {
@@ -473,21 +485,22 @@ export class BasicLicensesComponent implements OnInit, AfterViewInit {
 
   public applyFilter(searchFilterFormMap: SearchFilterFormMap) {
     this.searchFilterFormMap = searchFilterFormMap;
-    // const params = this.sampleLicensingMarketService.getRequestParams(this.sortBy, 1, this.pageSize);
-    // params['searchString'] = this.searchForm.controls['search'].value;
     const page: Page = {
       sortBy: this.sortBy,
       pageNo: 1,
       pageSize: this.pageSize
     }
-    this.audioWebService.applySearchFilter(this.searchForm.controls['search'].value, this.searchFilterFormMap, page).subscribe((response) => {
-      const { samples, totalItems } = response;
-      this.count = totalItems;
-      this.sampleLicensingMarketService.samples$.next(samples);
-      // this.sampleLicensingMarketService.samples$.next(samples);
-    });
-    console.log(this.searchForm.value);
-    console.log(this.searchFilterFormMap.selectionFormMap);
+    this.audioWebService.applySearchFilter((this.searchForm.controls['search'] as FormControl).value as string, this.searchFilterFormMap, page);
+    // .pipe(
+    //   debounceTime(5000)
+    // )
+    // .subscribe((response) => {
+    //   console.log('Apply')
+    //   const { samples, totalItems } = response;
+    //   this.count = totalItems;
+    //   this.sampleLicensingMarketService.samples$.next(samples);
+    // })
+    // ;
     
   }
 

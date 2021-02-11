@@ -26,6 +26,11 @@ export class MinMaxSliderComponent implements OnInit {
     this.controlGroupChange.emit(this.minMaxGroup);
   }
 
+  // changeMinSlider(event): void {
+  //   console.log(event);
+  //   // this.getMinControl().setValue(event);
+  //   this.controlGroupChange.emit(this.minMaxGroup);
+  // }
   changeMaxSlider(event: MatSliderChange): void {
     console.log(event);
     this.getMaxControl().setValue(event.value);

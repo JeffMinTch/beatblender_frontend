@@ -3,15 +3,20 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { SearchFilterFormMap } from 'app/shared/models/search-filter-form-map.model';
 import { environment } from 'environments/environment'
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { share } from 'rxjs/operators';
 @Injectable({
   providedIn: 'root'
 })
 export class AudioWebService {
+
+  public searchFilterSubject$ : Subject<any> = new Subject<any>();
+
   constructor(
     private httpClient: HttpClient
   ) { }
+
+  
 
   private ROOT = environment.apiURL.baseUrl;
   private PUBLIC_AUDIO = this.ROOT + environment.apiURL.audioPath.public.root;
@@ -27,10 +32,13 @@ export class AudioWebService {
     return this.httpClient.get(this.findByStringApi, { params });
   }
 
-  public applySearchFilter(searchString: string, searchFilterFormMap: SearchFilterFormMap, page: Page): Observable<any> {
+  public applySearchFilter(searchString: string, searchFilterFormMap: SearchFilterFormMap, page: Page): void {
     const formData: FormData = new FormData();
     formData.append('searchString', searchString);
-    formData.append('page', JSON.stringify(page));
+    formData.append('sortBy', page.sortBy);
+    formData.append('pageNo', JSON.stringify(page.pageNo));
+    formData.append('pageSize', JSON.stringify(page.pageSize));
+
     searchFilterFormMap.selectionFormMap.forEach((selection, control) => {
       (control.value as Array<string>).forEach((value) => {
         formData.append(selection.label, value);
@@ -40,7 +48,9 @@ export class AudioWebService {
       formData.append(`min${minMaxSlider.label}`, JSON.stringify(formGroup.controls['minControl'].value));
       formData.append(`max${minMaxSlider.label}`, JSON.stringify(formGroup.controls['maxControl'].value));
     });   
-    return this.httpClient.post(this.applySearchFilterApi, formData);
+    this.httpClient.post(this.applySearchFilterApi, formData).subscribe((data) => {
+      this.searchFilterSubject$.next(data);
+    });
   }
 
   // searchAudioByFormInput(searchString: string): Observable<any> {

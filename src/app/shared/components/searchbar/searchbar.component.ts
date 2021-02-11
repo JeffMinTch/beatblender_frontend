@@ -62,7 +62,7 @@ export class SearchbarComponent implements OnInit {
 
     this.sampleLicensingMarketService.samples$.pipe(
       map((samples: Array<Sample>) => {
-        (this.searchInput.nativeElement as HTMLInputElement).value = '';
+        // (this.searchInput.nativeElement as HTMLInputElement).value = '';
         this.matSearchInputTrigger.closePanel();
         this.selectedSearchOption = null;
       })
@@ -102,6 +102,8 @@ export class SearchbarComponent implements OnInit {
   }
 
   public emitSearchForm() {
+    console.log('SearchFormEmit');
+    console.log(this.searchForm);
     this.searchFormChange.emit(this.searchForm);
   }
 
@@ -112,10 +114,13 @@ export class SearchbarComponent implements OnInit {
       const removedSample: Array<Sample> = this.suggestions.splice(index, 1);
       this.suggestions.unshift(removedSample[0]);
     }
+
     this.pageChange.emit(1);
     this.countChange.emit(this.suggestionsCount);
     this.sampleLicensingMarketService.samples$.next(this.suggestions);
     this.suggestionsSubject$.next(new Array<Sample>());
+    console.log('SearchFormComvert');
+    console.log(this.searchForm);
   }
 
   public changeSelectedSample(event: MatOptionSelectionChange) {

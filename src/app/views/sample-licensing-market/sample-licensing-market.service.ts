@@ -171,12 +171,12 @@ export class SampleLicensingMarketService implements OnDestroy {
     filterFormMap.set('selection', selectionList);
     const minMaxSliderArray: Array<MinMaxSlider> = new Array<MinMaxSlider>();
     minMaxSliderArray.push({
-      label: 'tempo',
+      label: 'Tempo',
       minValue: 1,
       maxValue: 300
     });
     minMaxSliderArray.push({
-      label: 'lep',
+      label: 'Lep',
       minValue: 1,
       maxValue: 1000
     });
@@ -225,7 +225,7 @@ export class SampleLicensingMarketService implements OnDestroy {
 
   buildSearchForm(): FormGroup {
     return this.fb.group({
-      search: ['']
+      'search': ['']
     });
   }
 
