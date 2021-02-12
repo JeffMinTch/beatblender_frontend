@@ -14,7 +14,7 @@
             <div style="position: absolute; top: 0; left: 0;">
                 <span class="m-0 pl-8">Minimum {{title}}: {{getMinControl()['value']}}</span>
             </div>
-            <mat-slider (change)="changeMinSlider($event)" class="slider full-width"
+            <mat-slider #minSlider (blur)="emitChange()" (change)="changeMinSlider($event)" class="slider full-width"
                 [formControl]="getMinControl()" [thumbLabel]="false" [max]="getMaxControl().value - 5" [min]="minValue">
             </mat-slider>
         </div>
@@ -23,7 +23,7 @@
             <div style="position: absolute; top: 0; left: 0;">
                 <span class="pl-8 m-0">Maximum {{title}}: {{getMaxControl()['value']}}</span>
             </div>
-            <mat-slider (change)="changeMaxSlider($event)" class="slider full-width pl-0" [formControl]="getMaxControl()"
+            <mat-slider #maxSlider (blur)="emitChange()" (change)="changeMaxSlider($event)" class="slider full-width pl-0" [formControl]="getMaxControl()"
                 [thumbLabel]="false" [max]="maxValue" [min]="getMinControl()?.value + 5"></mat-slider>
 
         </div>

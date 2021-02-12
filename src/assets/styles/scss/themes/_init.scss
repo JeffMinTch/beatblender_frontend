@@ -145,9 +145,10 @@ $config: mat-typography-config();
 
 // Theme Config
 $default-primary-palette: (
-  main: #0081ff,
+  // #0081ff  
+main: #6b9b6d,
   // main: #4ca54c9a,
-  lighter: #b3d9ff,
+  lighter: #dce6dd,
   darker: #0064ff,
   200: #0081ff,
   // For slide toggle,
@@ -161,9 +162,13 @@ $default-primary-palette: (
 $default-theme-primary: mat-palette($default-primary-palette, main, lighter, darker);
 
 $default-accent-palette: (
-  // #ffb7b7  
-main:#ff8a48,
-  lighter: #ffdcc8,
+  // #ffb7b7
+  // #ff8a48
+    
+main: #fe2d52,
+// #ffdcc8
+
+  lighter: #0081ff,
   darker: #ff6d30,
   200: #ff8a48,
   // For slide toggle,

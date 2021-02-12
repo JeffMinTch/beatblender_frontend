@@ -121,7 +121,9 @@ export class AudioService implements OnDestroy {
       // backgroundColor: this.themeLightColor,
       // // progressColor: '#03a9f4',
       // #051136
-      progressColor: '#0081ff',
+      // #0081ff
+      
+      progressColor: '#ffffff',
       responsive: true,
       // waveColor: 'transparent',
       waveColor: 'rgb(202,202,202)',

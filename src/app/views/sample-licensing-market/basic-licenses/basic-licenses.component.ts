@@ -31,6 +31,7 @@ import { MatAutocomplete, MatAutocompleteTrigger } from '@angular/material/autoc
 import { MatOption, MatOptionSelectionChange } from '@angular/material/core';
 import { SidenavContent } from 'app/shared/models/sidenav-content.model';
 import { HttpErrorResponse } from '@angular/common/http';
+import { style } from '@angular/animations';
 // import { MinMaxSlider } from 'app/shared/models/min-max-slider.model';
 
 
@@ -40,7 +41,8 @@ import { HttpErrorResponse } from '@angular/common/http';
   changeDetection: ChangeDetectionStrategy.OnPush,
   animations: [egretAnimations],
   // tslint:disable-next-line:use-component-view-encapsulation
-  encapsulation: ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None,
+  // styleUrls: ['basic-licenses.component.scss']
 })
 export class BasicLicensesComponent implements OnInit, AfterViewInit {
   public isFilterOpen: boolean = false;
@@ -71,6 +73,8 @@ export class BasicLicensesComponent implements OnInit, AfterViewInit {
     selectionFormMap: null,
     minMaxSliderFormMap: null
   };
+
+  responseReceived: boolean = true;
   // filterFormMap: Map<string, Array<Selection> | Array<MinMaxSlider>>;
   // selectionFormMap: Map<FormControl, Selection> = new Map<FormControl, Selection>();
   // minMaxSliderFormMap: Map<FormControl, MinMaxSlider> = new Map<FormControl, MinMaxSlider>();
@@ -80,7 +84,7 @@ export class BasicLicensesComponent implements OnInit, AfterViewInit {
   
 
   page: number = 1;
-  pageSize: number = 2;
+  pageSize: number = 12;
   sortBy: string = 'title';
   count:number = 0;
 
@@ -194,7 +198,11 @@ export class BasicLicensesComponent implements OnInit, AfterViewInit {
 
     this.audioWebService.searchFilterSubject$.pipe(
       // throttle()
-      debounceTime(2000)).subscribe((response) => {
+
+      // debounceTime(500)
+      
+      ).subscribe((response) => {
+        this.responseReceived = true;
       console.log('Apply')
       const { samples, totalItems } = response;
       this.count = totalItems;
@@ -490,6 +498,7 @@ export class BasicLicensesComponent implements OnInit, AfterViewInit {
       pageNo: 1,
       pageSize: this.pageSize
     }
+    this.responseReceived = false;
     this.audioWebService.applySearchFilter((this.searchForm.controls['search'] as FormControl).value as string, this.searchFilterFormMap, page);
     // .pipe(
     //   debounceTime(5000)

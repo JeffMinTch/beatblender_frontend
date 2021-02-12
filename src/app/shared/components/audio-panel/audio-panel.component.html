@@ -20,7 +20,7 @@
     <button mat-button class="play-button fs-32" fxLayout="row" fxLayoutAlign="center center"
       (click)="playState ? pause(sample?.sampleID === currentSampleID, sample?.sampleID) : play(sample?.sampleID === currentSampleID, sample?.sampleID)">
       <mat-icon inline="true"
-        [ngStyle]="{color: sample?.sampleID === (playStateControlService.currentSampleID$ | async) ? '#304156' : 'rgb(202, 202, 202)'}">
+        [ngStyle]="{color: sample?.sampleID === (playStateControlService.currentSampleID$ | async) ? '#6b9b6d' : 'rgb(202, 202, 202)'}">
         {{sample?.sampleID === (playStateControlService.currentSampleID$ | async) &&
         (playStateControlService.playState$ | async) ? 'pause' : 'play_arrow'}}
       </mat-icon>

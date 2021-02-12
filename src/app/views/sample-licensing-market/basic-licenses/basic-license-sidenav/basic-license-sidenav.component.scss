@@ -1,9 +1,9 @@
-@import "../../../../../assets/styles/scss/variables";
-
+// @import "../../../../../assets/styles/scss/variables";
+// @import '../../../../../assets/styles/scss/themes/init';
 
 h1 {
-    // color: map-get($default-accent-palette, main);
-    color: $body-color;
+    // color: map-get($default-primary-palette, main);
+    // color: $bod;
 }
 
 .shop-filters-wrap {

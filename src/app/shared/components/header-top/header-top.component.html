@@ -1,11 +1,12 @@
 <div class="header-topnav">
   <div class="container">
-    <div class="topnav">
+    <mat-toolbar class="topnav">
       <!-- App Logo -->
-      <div fxLayout="column" fxLayoutAlign="center" class="topbar-branding">
-        BeatBlender
+      <div fxLayout="column" style="color: #6b9b6d;" fxLayoutAlign="center" class="topbar-branding">
+        beatblender.com
         <!-- <img src="assets/images/egret.png" alt="" class="app-logo"> -->
       </div>
+      <!-- <div class="tiktok"></div> -->
 
       <ul class="menu p-0" *ngIf="!layoutConf.isMobile">
         <li *ngFor="let item of menuItems; let i = index;">
@@ -16,7 +17,7 @@
             </a>
             <div *ngIf="item.type === 'dropDown'" fxLayoutAlign="center center">
               <label matRipple for="drop-{{i}}" class="toggle"><mat-icon>{{item.icon}}</mat-icon> {{item.name | translate}}</label>
-              <a class="mat-elevation-z2 menu-item"><mat-icon>{{item.icon}}</mat-icon> {{item.name | translate}}</a>
+              <a mat-flat-button color="primary" class="mat-elevation-z0 menu-item"><mat-icon>{{item.icon}}</mat-icon> {{item.name | translate}}</a>
               <input type="checkbox" id="drop-{{i}}" />
               <ul>
                 <li *ngFor="let itemLvL2 of item.sub; let j = index;" routerLinkActive="open">
@@ -100,8 +101,9 @@
           <span class="notification-number mat-bg-warn">3</span>
         </button>
         <!-- Top left user menu -->
-        <button class="br-0" *ngIf="!isAuth()" mat-button (click)="login()">
-          <mat-icon inline="true">login</mat-icon>
+        <button fxFlex *ngIf="!isAuth()" mat-raised-button color="accent" (click)="login()" style="color: white; min-width: 150px;">
+          <!-- <mat-icon inline="true">login</mat-icon> -->
+          <!-- <mat-icon inline="false">face</mat-icon> -->
           Login
         </button>
         <a *ngIf="isAuth()" fxLayout="row" class="profile-menu-trigger full-height px-16" [matMenuTriggerFor]="accountMenu"
@@ -145,6 +147,6 @@
         </button>
       </section>
 
-    </div>
+    </mat-toolbar>
   </div>
 </div>

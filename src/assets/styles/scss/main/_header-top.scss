@@ -1,5 +1,5 @@
 @import '../variables';
-// @import '../../scss/themes/init';
+@import '../../scss/themes/init';
 
 .header-topnav {
   position: sticky;
@@ -55,12 +55,14 @@
 
 .menu-item {
   font-weight: 700;
+  background: map-get($default-primary-palette , main);
+  // border: 2px dashed $body-color;
+  color: #FFFFFF;
 }
 
 .menu-item:hover {
-  background: $body-color;
-  // border: 2px dashed $body-color;
-  color: #FFFFFF;
+  background: map-get($default-accent-palette , main) !important;
+
 }
 
 @media (max-width: 959px) {

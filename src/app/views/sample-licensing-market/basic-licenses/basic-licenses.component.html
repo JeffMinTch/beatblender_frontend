@@ -8,6 +8,9 @@
       <div class="full-width">
         <!-- Search Form -->
         <app-searchbar [searchForm]="searchForm" (searchFormChange)="changeSearchForm($event)" (pageChange)="changePage($event)" (countChange)="changeCount($event)" (expandFilter)="toggleFilter($event)" (sidenavChange)="toggleSidenav()" [sortBy]="sortBy" [page]="page" [pageSize]="pageSize"></app-searchbar>
+        <!-- <mat-progress-bar color="primary" mode="determinate" value="100" class="mt-16"></mat-progress-bar> -->
+        <!-- <mat-progress-bar *ngIf="!responseReceived" mode="query" class="mb-16"></mat-progress-bar> -->
+
         <app-search-filter [searchFilterFormMap]="searchFilterFormMap" (filterFormChange)="applyFilter($event)" [isFilterOpen]="isFilterOpen"></app-search-filter>
         <!-- <app-search-filter></app-search-filter> -->
         <!-- Products container -->
