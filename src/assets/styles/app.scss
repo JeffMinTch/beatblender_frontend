@@ -5,13 +5,16 @@
  *
 */
 
-@font-face {
-  font-family: "Material Icons";
-  // font-display: block;
-  src: local("Material Icons"), local("MaterialIcons-Regular"),
-    url(https://fonts.gstatic.com/s/materialicons/v21/2fcrYFNaTjcS6g4U3t-Y5UEw0lE80llgEseQY3FEmqw.woff2) format("woff2");
-}
 
+// @font-face {
+//   font-family: "Material Icons";
+//   font-display: block;
+  
+//   src: local("Material Icons"), local("MaterialIcons-Regular"),
+//     url(https://fonts.gstatic.com/s/materialicons/v21/2fcrYFNaTjcS6g4U3t-Y5UEw0lE80llgEseQY3FEmqw.woff2) format("woff2");
+// }
+@import url('https://fonts.googleapis.com/css2?family=Archivo&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900|Material+Icons');
 // // Third pirty style files
 // // Sidebar Scroll
 @import "~perfect-scrollbar/css/perfect-scrollbar.css";
@@ -67,6 +70,14 @@
 // Open _views.scss and remove unnecessary view related files
 @import "scss/views/views";
 
+
+// @font-face {
+//   font-family: "Archivo";
+//   font-display: block;
+//   src: local("Archivo"),
+//   url(https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,400;0,500;0,600;0,700;1,400&amp;display=swap) format('truetype');
+//   // src: local("Material Icons"), local("MaterialIcons-Regular"),
+// }
 
 // @font-face {
 //   font-family: 'Material Icons';
