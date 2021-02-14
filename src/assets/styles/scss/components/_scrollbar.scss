@@ -1,4 +1,4 @@
-
+// @import '../themes/init';
 
 ::-webkit-scrollbar {
     width: 10px;
@@ -20,8 +20,11 @@
 }
 
 ::selection {
-    background: map-get($default-accent-palette, lighter) /* WebKit/Blink Browsers */
+    background: map-get($default-accent-palette, main); /* WebKit/Blink Browsers */
+    color: #fafafa;
   }
   ::-moz-selection {
-    background: map-get($default-accent-palette, lighter); /* Gecko Browsers */
-  }
+    background: map-get($default-accent-palette, main); /* Gecko Browsers */
+    color: #fafafa;
+    
+}

@@ -15,7 +15,12 @@
               [formControl]="searchForm.controls['search']" spellcheck="false">
           </mat-form-field>
           <!-- Used displayWith here with filter function; see https://stackoverflow.com/questions/44234290/how-to-display-using-displaywith-in-autocomplete-material2 -->
-          <mat-autocomplete #auto="matAutocomplete" [displayWith]="displaySample">
+          <mat-autocomplete #auto="matAutocomplete" [displayWith]="displaySample" (optionSelected)="optionSelected($event)">
+            <ng-container *ngIf="(suggestionsSubject$ | async) != null">
+              <mat-option disabled="true" [value]="null" *ngIf="(suggestionsSubject$ | async)?.length === 0">
+                <mat-label class="no-match">No sample matches...</mat-label> 
+              </mat-option>
+            </ng-container>
             <mat-option *ngFor="let suggestion of suggestionsSubject$ | async"
               (onSelectionChange)="changeSelectedSample($event)" [value]="suggestion"
               class="search-query-option pl-0">

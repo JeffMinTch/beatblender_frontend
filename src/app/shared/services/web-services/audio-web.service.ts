@@ -1,5 +1,5 @@
 import { Page } from './../../models/page.model';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { SearchFilterFormMap } from 'app/shared/models/search-filter-form-map.model';
 import { environment } from 'environments/environment'
@@ -40,8 +40,10 @@ export class AudioWebService {
     formData.append('pageSize', JSON.stringify(page.pageSize));
 
     searchFilterFormMap.selectionFormMap.forEach((selection, control) => {
-      (control.value as Array<string>).forEach((value) => {
-        formData.append(selection.label, value);
+      (control.value as Array<any>).forEach((value) => {
+        if(value !== 0) {
+          formData.append(selection.label, value);
+        }
       });
     });
     searchFilterFormMap.minMaxSliderFormMap.forEach((minMaxSlider, formGroup) => {
@@ -50,7 +52,19 @@ export class AudioWebService {
     });   
     this.httpClient.post(this.applySearchFilterApi, formData).subscribe((data) => {
       this.searchFilterSubject$.next(data);
-    });
+    },
+    (error: HttpErrorResponse) => {
+      if(error.status === 404) {
+        alert("Nothing Found");
+        const response = {
+          samples: [],
+          totalItems: 0
+        }
+        this.searchFilterSubject$.next(response);
+        // this.count = 0;
+      }
+    }
+    );
   }
 
   // searchAudioByFormInput(searchString: string): Observable<any> {

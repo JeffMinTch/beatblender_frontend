@@ -1,5 +1,10 @@
+
+@import '../../../../assets/styles/scss/variables';
+
 .player-widget {
-    background: rgb(251, 251, 251);
+  transition: background $transitionDuration $transitionTiming;
+    // background: rgb(251, 251, 251);
+    // background: #dce6dd !important;
     cursor: pointer;
     height: 64px;
     width: 100%;
@@ -139,7 +144,11 @@
       height: 100%;
       cursor: pointer;
       outline: none;
-      background: #fafafa;
+      background: transparent;
+      // background: white;
+      // background: map-get($default-accent-palette, main);
+      // color: #fafafa;
+      // background: #fafafa;
       border: none;
       padding: 0;
       border-radius: 0;

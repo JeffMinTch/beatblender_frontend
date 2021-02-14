@@ -1,13 +1,13 @@
 <div>
   <mat-sidenav-container fxLayout="row" class="mat-elevation-z2">
     
-    <mat-sidenav EgretSideNavToggle class="shop-sidebar" style="border-right: none;">
+    <mat-sidenav EgretSideNavToggle class="shop-sidebar" style="border-right: none; background: #dce6dd;">
       <app-basic-license-sidenav ></app-basic-license-sidenav>
     </mat-sidenav>
     <div class="shop-wrap">
       <div class="full-width">
         <!-- Search Form -->
-        <app-searchbar [searchForm]="searchForm" (searchFormChange)="changeSearchForm($event)" (pageChange)="changePage($event)" (countChange)="changeCount($event)" (expandFilter)="toggleFilter($event)" (sidenavChange)="toggleSidenav()" [sortBy]="sortBy" [page]="page" [pageSize]="pageSize"></app-searchbar>
+        <app-searchbar [searchForm]="searchForm" (searchStringChange)="changeSearchString($event)" (pageChange)="changePage($event)" (countChange)="changeCount($event)" (expandFilter)="toggleFilter($event)" (sidenavChange)="toggleSidenav()" [sortBy]="sortBy" [page]="page" [pageSize]="pageSize"></app-searchbar>
         <!-- <mat-progress-bar color="primary" mode="determinate" value="100" class="mt-16"></mat-progress-bar> -->
         <!-- <mat-progress-bar *ngIf="!responseReceived" mode="query" class="mb-16"></mat-progress-bar> -->
 
@@ -17,116 +17,126 @@
         <div class="product-container" fxLayout="row wrap" fxLayoutAlign="start start"
           [ngClass]="{'list-view': viewMode === 'list-view'}">
           <!-- Product Box -->
-          <div fxLayout="row" class="product-wrap"
-            *ngFor="let sample of (sampleLicensingMarketService.samples$ | async) | paginate: { itemsPerPage: pageSize, currentPage: page, totalItems: count }; let i = index;"
-            [@animate]="{value:'*',params:{delay: (i*100)+'ms', y:'100px'}}">
-            <div fxLayout="column" class="product-inner default-bg px-8 py-16 full-width">
-              <!-- <div *ngIf="product?.badge?.text" class="product-badge mat-elevation-z7" [ngStyle]="{background: product?.badge?.color || '#f44336'}">
-                  <span>{{product?.badge?.text}}</span>
-                </div> -->
-              <app-audio-panel [sample]="sample"></app-audio-panel>
-              <div class="info-wrap p-16">
-                <div class="main-info">
-                  <h3 class="title">{{sample?.title}}</h3>
-                  <p class="text-muted p-line">by <span class="artist-name">{{sample?.artistName}}</span></p>
-                  <p class="text-muted p-line">
-                    <strong>Category:</strong> {{sample?.genre}}
-                  </p>
-                  <p class="text-muted p-line">
-                    <strong>Moods:</strong>
-                    <!-- <span-list aria-label="Fish selection"> -->
-                    <!-- <span>#{{sample?.}}</span>
-                    <span>#{{sample?.region}}</span>
-                    <span>#{{sample?.songKey}}</span>
-                    <span>#Dmoll</span> -->
-                    <span *ngFor="let mood of sample?.moods">{{mood}}</span>
-
-                    <!-- </span-list> -->
-                    <!-- <span *ngFor="let t of ">{{sample?.sampleTitle}} </span> -->
-                  </p>
-                  <p class="text-muted p-line">
-                    <strong>Tags:</strong>
-                    <!-- <span-list aria-label="Fish selection"> -->
-                    <!-- <span>#{{sample?.}}</span>
-                    <span>#{{sample?.region}}</span>
-                    <span>#{{sample?.songKey}}</span>
-                    <span>#Dmoll</span> -->
-                    <span *ngFor="let tag of sample?.tags">{{tag}}</span>
-
-                    <!-- </span-list> -->
-                    <!-- <span *ngFor="let t of ">{{sample?.sampleTitle}} </span> -->
-                  </p>
-                  <p class="text-muted p-line">
-                    <strong>Available Formats:</strong>
-                    <!-- <mat-chip-list aria-label="Fish selection"> -->
-                    <!-- <mat-chip>mp3</mat-chip> -->
-                    <!-- <mat-chip>wav</mat-chip> -->
-                    <!-- <mat-chip color="primary" selected>Primary fish</mat-chip> -->
-                    <!-- <mat-chip color="accent" selected>Accent fish</mat-chip> -->
-                    <!-- </mat-chip-list> -->
-                    <span>mp3</span>
-                    <span>wav</span>
-                  </p>
-                </div>
-                <div class="actions">
-                  <div class="price-rating">
-                    <div class="price">
-                      <span>LEP: {{sample?.lep}}</span>
-                      <del class="text-muted">{{sample?.lep}}LEP</del>
-                    </div>
-                  </div>
-                  <div class="add-to-cart">
-                    <span fxFlex></span>
-                    <button mat-icon-button>
-                      <mat-icon>library_add</mat-icon>
-                    </button>
-                  </div>
-                </div>
-                <span fxFlex></span>
-              </div>
-              <button fxFlex="50px" mat-stroked-button color="primary" class="full-width download-button">
-                <span class="fw-700 fs-16">Download License</span>
-              </button>
-              <!-- Visible when viewMode === list-view -->
-              <div class="more-info-wrap p-16" *ngIf="viewMode === 'list-view'">
-                <div class="more-info">
-                  <div class="more-actions mb-16">
-                    <div class="product-rating">
-                      <star-rating [starType]="'svg'" [readOnly]="true" [size]="'medium'" [staticColor]="'ok'"
-                        [rating]="4.63"></star-rating>
-                      <small class="text-muted">(140)</small>
-                    </div>
-                    <span fxFlex></span>
-                    <button mat-icon-button>
-                      <mat-icon>playlist_add</mat-icon>
-                    </button>
-                    <button mat-icon-button>
-                      <mat-icon>favorite</mat-icon>
-                    </button>
-                  </div>
-
-                  <div>
-                    <ul>
-                      <li>
-                        <mat-icon>check</mat-icon> Heavy duty
-                      </li>
-                      <li>
-                        <mat-icon>check</mat-icon> Water resistance
-                      </li>
-                      <li>
-                        <mat-icon>check</mat-icon> Clean design
-                      </li>
-                      <li>
-                        <mat-icon>check</mat-icon> High quality raw materials
-                      </li>
-                    </ul>
-                  </div>
-
-                </div>
-              </div>
-
+          <ng-container *ngIf="(sampleLicensingMarketService.samples$ | async)?.length <= 0 && (sampleLicensingMarketService.samples$ | async) != null"; else product>
+            <div fxFlex fxLayoutAlign="center" >
+              <span class="fs-24">No samples match your request.</span>
             </div>
-          </div>
+          </ng-container>
+          <ng-container #product>
+            <div fxLayout="row" class="product-wrap"
+              *ngFor="let sample of (sampleLicensingMarketService.samples$ | async) | paginate: { itemsPerPage: pageSize, currentPage: page, totalItems: count }; let i = index;"
+              [@animate]="{value:'*',params:{delay: (i*300)+'ms', y:'300px'}}"
+              >
+              <!-- [@animate]="{value:'*',params:{delay: (i*50)+'ms', y:'50px'}}" -->
+              <!-- [@animate]="{value:'*',params:{delay: (i*100)+'ms', y:'100px'}}" -->
+              <div fxLayout="column" class="product-inner default-bg px-8 py-16 full-width">
+                <!-- <div *ngIf="product?.badge?.text" class="product-badge mat-elevation-z7" [ngStyle]="{background: product?.badge?.color || '#f44336'}">
+                    <span>{{product?.badge?.text}}</span>
+                  </div> -->
+                <app-audio-panel [sample]="sample"></app-audio-panel>
+                <div class="info-wrap p-16">
+                  <div class="main-info">
+                    <h3 class="title">{{sample?.title}}</h3>
+                    <p class="text-muted p-line">by <span class="artist-name">{{sample?.artistName}}</span></p>
+                    <p class="text-muted p-line">
+                      <strong>Category:</strong> {{sample?.genre}}
+                    </p>
+                    <p class="text-muted p-line">
+                      <strong>Moods:</strong>
+                      <!-- <span-list aria-label="Fish selection"> -->
+                      <!-- <span>#{{sample?.}}</span>
+                      <span>#{{sample?.region}}</span>
+                      <span>#{{sample?.songKey}}</span>
+                      <span>#Dmoll</span> -->
+                      <span *ngFor="let mood of sample?.moods">{{mood}}</span>
+  
+                      <!-- </span-list> -->
+                      <!-- <span *ngFor="let t of ">{{sample?.sampleTitle}} </span> -->
+                    </p>
+                    <p class="text-muted p-line">
+                      <strong>Tags:</strong>
+                      <!-- <span-list aria-label="Fish selection"> -->
+                      <!-- <span>#{{sample?.}}</span>
+                      <span>#{{sample?.region}}</span>
+                      <span>#{{sample?.songKey}}</span>
+                      <span>#Dmoll</span> -->
+                      <span *ngFor="let tag of sample?.tags">{{tag}}</span>
+  
+                      <!-- </span-list> -->
+                      <!-- <span *ngFor="let t of ">{{sample?.sampleTitle}} </span> -->
+                    </p>
+                    <p class="text-muted p-line">
+                      <strong>Available Formats:</strong>
+                      <!-- <mat-chip-list aria-label="Fish selection"> -->
+                      <!-- <mat-chip>mp3</mat-chip> -->
+                      <!-- <mat-chip>wav</mat-chip> -->
+                      <!-- <mat-chip color="primary" selected>Primary fish</mat-chip> -->
+                      <!-- <mat-chip color="accent" selected>Accent fish</mat-chip> -->
+                      <!-- </mat-chip-list> -->
+                      <span>mp3</span>
+                      <span>wav</span>
+                    </p>
+                  </div>
+                  <div class="actions">
+                    <div class="price-rating">
+                      <div class="price">
+                        <span>LEP: {{sample?.lep}}</span>
+                        <del class="text-muted">{{sample?.lep}}LEP</del>
+                      </div>
+                    </div>
+                    <div class="add-to-cart">
+                      <span fxFlex></span>
+                      <button mat-icon-button>
+                        <mat-icon>library_add</mat-icon>
+                      </button>
+                    </div>
+                  </div>
+                  <span fxFlex></span>
+                </div>
+                <button fxFlex="50px" mat-stroked-button color="primary" class="full-width download-button">
+                  <span class="fw-700 fs-16">Download License</span>
+                </button>
+                <!-- Visible when viewMode === list-view -->
+                <div class="more-info-wrap p-16" *ngIf="viewMode === 'list-view'">
+                  <div class="more-info">
+                    <div class="more-actions mb-16">
+                      <div class="product-rating">
+                        <star-rating [starType]="'svg'" [readOnly]="true" [size]="'medium'" [staticColor]="'ok'"
+                          [rating]="4.63"></star-rating>
+                        <small class="text-muted">(140)</small>
+                      </div>
+                      <span fxFlex></span>
+                      <button mat-icon-button>
+                        <mat-icon>playlist_add</mat-icon>
+                      </button>
+                      <button mat-icon-button>
+                        <mat-icon>favorite</mat-icon>
+                      </button>
+                    </div>
+  
+                    <div>
+                      <ul>
+                        <li>
+                          <mat-icon>check</mat-icon> Heavy duty
+                        </li>
+                        <li>
+                          <mat-icon>check</mat-icon> Water resistance
+                        </li>
+                        <li>
+                          <mat-icon>check</mat-icon> Clean design
+                        </li>
+                        <li>
+                          <mat-icon>check</mat-icon> High quality raw materials
+                        </li>
+                      </ul>
+                    </div>
+  
+                  </div>
+                </div>
+  
+              </div>
+            </div>
+          </ng-container>
 
           <div class="products-pagination" *ngIf="count > 0">
             <!-- <pagination-controls (pageChange)="currentPage = $event"></pagination-controls> -->

@@ -2,7 +2,7 @@
     <mat-label style="font-size: 16px;">{{label}}</mat-label>
     <mat-select (selectionChange)="selectionChange($event)"
       [placeholder]="placeHolder"  [formControl]="control"
-        multiple>
+        multiple (openedChange)="openedChange($event)">
         <mat-select-trigger>
           <span *ngIf="allSelected.selected">All</span>
           <span *ngIf="!allSelected.selected && control.value?.length >= 1">

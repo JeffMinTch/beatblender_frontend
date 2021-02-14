@@ -65,7 +65,7 @@ export class BasicLicensesComponent implements OnInit, AfterViewInit {
   public sampleSearchQueries: SampleSearchQuery[];
   // public filterForm: FormGroup;
   public searchForm: FormGroup;
-
+  searchString: string;
   selectionList: Array<Selection>;
   minMaxList: Array<MinMaxSlider>
 
@@ -125,24 +125,23 @@ export class BasicLicensesComponent implements OnInit, AfterViewInit {
 
 
     this.sampleLicensingMarketService.samples$.pipe(
-      // debounceTime(5000),
+      // debounceTime(500),
       map((samples: Array<Sample>) => {
-    console.log(this.searchFilterFormMap);
-    console.log('debounce');
-        this.audioService.createWavesurferObj();
-        this.loader.close();
-        // (this.searchInput.nativeElement as HTMLInputElement).value = '';
-        // this.matSearchInputTrigger.closePanel();
-        // this.selectedSearchOption = null;
         if (this.playState) {
           this.playStateControlService.emitPlayState(false);
         }
-        this.audioService.loadPlayAudio(samples[0].sampleID);
+        this.loader.close();
+        if(samples.length > 0) {
+          this.audioService.createWavesurferObj();
+          this.audioService.loadPlayAudio(samples[0].sampleID);
+        }
         return samples;
       }),
       takeUntil(this.sampleLicensingMarketService.sampleLicensingMarketDestroyed$),
     ).subscribe((samples: Array<Sample>) => {
-      this.initCurrentFile(samples[0].sampleID);
+      if(samples.length > 0) {
+        this.initCurrentFile(samples[0].sampleID);
+      }
     });
 
     
@@ -199,16 +198,19 @@ export class BasicLicensesComponent implements OnInit, AfterViewInit {
     this.audioWebService.searchFilterSubject$.pipe(
       // throttle()
 
-      // debounceTime(500)
+      debounceTime(500)
       
       ).subscribe((response) => {
+
         this.responseReceived = true;
       console.log('Apply')
       const { samples, totalItems } = response;
       this.count = totalItems;
+      
       this.sampleLicensingMarketService.samples$.next(samples);
-    });
-
+    
+    }
+    );
 
     this.audioService.audioState$.pipe(
       takeUntil(this.audioService.audioServiceDestroyed$)
@@ -466,7 +468,8 @@ export class BasicLicensesComponent implements OnInit, AfterViewInit {
   handlePageChange(event: number) {
     console.log(event);
     this.page = event;
-    this.retrieveSamples();
+    this.applyFilter(this.searchFilterFormMap);
+    // this.retrieveSamples();
   }
   
   changePage(page: number) {
@@ -479,8 +482,9 @@ export class BasicLicensesComponent implements OnInit, AfterViewInit {
     this.count = count;
   }
 
-  changeSearchForm(searchForm: FormGroup) {
-    this.searchForm = searchForm;
+  changeSearchString(searchString: string) {
+    this.searchString = searchString;
+    // this.applyFilter(this.searchFilterFormMap);
   }
 
   toggleFilter(isFilterOpen: boolean) {
@@ -495,11 +499,12 @@ export class BasicLicensesComponent implements OnInit, AfterViewInit {
     this.searchFilterFormMap = searchFilterFormMap;
     const page: Page = {
       sortBy: this.sortBy,
-      pageNo: 1,
+      pageNo: 0,
       pageSize: this.pageSize
     }
     this.responseReceived = false;
-    this.audioWebService.applySearchFilter((this.searchForm.controls['search'] as FormControl).value as string, this.searchFilterFormMap, page);
+    // (this.searchForm.controls['search'] as FormControl).value.title as string
+    this.audioWebService.applySearchFilter(this.searchString, this.searchFilterFormMap, page);
     // .pipe(
     //   debounceTime(5000)
     // )

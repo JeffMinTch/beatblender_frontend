@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { SampleLicensingMarketService } from './../../../views/sample-licensing-market/sample-licensing-market.service';
 import { AudioWebService } from './../../services/web-services/audio-web.service';
@@ -6,8 +7,8 @@ import { MatOption, MatOptionSelectionChange } from '@angular/material/core';
 import { MatSidenav } from '@angular/material/sidenav';
 import { Sample } from 'app/shared/models/sample.model';
 import { Subject } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { MatAutocomplete, MatAutocompleteTrigger } from '@angular/material/autocomplete';
+import { map, debounceTime } from 'rxjs/operators';
+import { MatAutocomplete, MatAutocompleteTrigger, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 
 @Component({
   selector: 'app-searchbar',
@@ -29,7 +30,10 @@ export class SearchbarComponent implements OnInit {
   @Output() countChange = new EventEmitter<number>();
   @Output() expandFilter = new EventEmitter<boolean>();
   @Output() sidenavChange = new EventEmitter<void>();
-  @Output() searchFormChange = new EventEmitter<FormGroup>();
+  // @Output() searchFormChange = new EventEmitter<FormGroup>();
+  @Output() searchStringChange = new EventEmitter<string>();
+
+  public searchString: string;
 
   @HostListener('window:resize', ['$event'])
   onResize(event) {
@@ -90,44 +94,79 @@ export class SearchbarComponent implements OnInit {
 
   public retrieveSuggestions(searchString: string) {
     // console.log(this.searchForm.value);
-    const params = this.sampleLicensingMarketService.getRequestParams(this.sortBy, 1, this.pageSize);
-    params['searchString'] = searchString;
-    this.audioWebService.findBySearchString(params).subscribe((response) => {
-      this.suggestionsCount = response.totalItems;
-      console.log(response.samples);
-      this.suggestionsSubject$.next(response.samples);
-      this.emitSearchForm();
-      // this.sampleSuggestions = response.samples;
-    });
+    if(searchString) {
+      const params = this.sampleLicensingMarketService.getRequestParams(this.sortBy, 1, this.pageSize);
+      params['searchString'] = searchString;
+      // this.searchForm.setValue({
+      //   search: searchString
+      // });
+      // this.searchForm.controls['search'].setValue(searchString);
+      this.searchString = searchString;
+      this.emitSearchString(this.searchString);
+      this.audioWebService.findBySearchString(params).pipe().subscribe((response) => {
+        
+        this.suggestionsCount = response.totalItems;
+        console.log('Suggestionscount' + this.suggestionsCount )
+        console.log(response.samples);
+        // if(response.samples.length > 0) {
+          this.suggestionsSubject$.next(response.samples);
+          
+          console.log(searchString);
+        // }
+        // this.sampleSuggestions = response.samples;
+      }, (error: HttpErrorResponse) => {
+        if(error.status === 404) {
+          this.suggestionsSubject$.next([]);
+          this.matSearchInputTrigger.openPanel();
+          
+          // alert('Nothing found');
+        }
+      });
+    }
   }
 
-  public emitSearchForm() {
+  public emitSearchString(searchString: string) {
     console.log('SearchFormEmit');
     console.log(this.searchForm);
-    this.searchFormChange.emit(this.searchForm);
+    this.searchStringChange.emit(searchString);
+    // this.searchFormChange.emit(this.sea);
   }
 
   public convertSuggestionsToSamples(sample?: Sample) {
+    
     
     if(sample) {
       const index = this.suggestions.indexOf(sample);
       const removedSample: Array<Sample> = this.suggestions.splice(index, 1);
       this.suggestions.unshift(removedSample[0]);
+      // this.searchForm.controls['search'].setValue(sample);
+      // this.emitSearchString(this.searchString);
+      // (this.searchInput.nativeElement as HTMLInputElement).value = sample.title; 
+      // this.searchForm.controls['search'].setValue(sample);
+      console.log('SAMPLE');
+      this.selectedSearchOption = null;
+      // this.emitSearchString(this.searchString);
+      // this.emitSearchString(this.searchForm.controls['search'].value.title);
     }
-
+    
     this.pageChange.emit(1);
     this.countChange.emit(this.suggestionsCount);
     this.sampleLicensingMarketService.samples$.next(this.suggestions);
-    this.suggestionsSubject$.next(new Array<Sample>());
+    
+    // this.suggestionsSubject$.next([]);
     console.log('SearchFormComvert');
     console.log(this.searchForm);
   }
 
   public changeSelectedSample(event: MatOptionSelectionChange) {
     // angular bug fix. Event fires multiple times: https://github.com/angular/components/issues/4094
+    // this.emitSearchForm();
     if (event.source.selected) {
+      console.log(this.searchForm);
+      // console.log(suggestion.title);
       this.selectedSearchOption = event.source;
-      console.log(this.selectedSearchOption.value);
+      // this.searchForm.controls['search'].setValue(suggestion.title);
+      // console.log(this.selectedSearchOption.value);
     }
   }
 
@@ -135,8 +174,8 @@ export class SearchbarComponent implements OnInit {
     
     
     if (sample) {
-      
-      return sample.title + ' ' + '(' + sample.artistName + ')';
+      return sample.title;
+      // return sample.title + ' ' + '(' + sample.artistName + ')';
       
       
 
@@ -150,7 +189,18 @@ export class SearchbarComponent implements OnInit {
     this.expandFilter.emit(this.isFilterOpen);
   }
 
+  optionSelected(e: MatAutocompleteSelectedEvent) {
+    console.log(event);
+    console.log(e.option.value);
+    // this.searchInput.nativeElement.value = e.option.value.title;
+  }
+
   
+  getSelectedTitle(): string {
+    if(this.selectedSearchOption) {
+      return this.selectedSearchOption.value.title;
+    }
+  }
   
 
 }

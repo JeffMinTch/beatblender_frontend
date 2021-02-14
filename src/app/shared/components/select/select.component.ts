@@ -23,7 +23,8 @@ export class SelectComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.control.setValue([...this.selectionList, 0]);
-
+    // this.control.setValue([...this.selectionList, '']);
+    // this.control.setValue(this.selectionList);
   }
   
   ngAfterViewInit() {
@@ -60,31 +61,32 @@ export class SelectComponent implements OnInit, AfterViewInit {
     console.log(all);
     if (this.allSelected.selected) {
       this.allSelected.deselect();
-      // return false;
-      
-      console.log(this.control.value);
     }
     
     if (this.control.value.length == this.selectionList.length) {
       this.allSelected.select();
-      // this.formControlChange.emit(this.control);
     }
-    this.formControlChange.emit(this.control);
-    console.log(this.control);
+    // this.formControlChange.emit(this.control);
   }
 
   toggleAllSelection() {
     if (this.allSelected.selected) {
-      // this.control
-      // .patchValue([...this.selectionList.map(item => item), 0]);
       this.control.setValue([...this.selectionList, 0]);
-      // this.control.setValue(this.selectionList);
     } else {
-      // this.control.setValue([]);
       this.control
       .patchValue([]);
     }
+    // this.formControlChange.emit(this.control);
+  }
+
+
+  openedChange(opened: boolean) {
+    if(!opened) {
+      console.log('Select Closed');
+      console.log(opened);
     this.formControlChange.emit(this.control);
+
+    }
   }
 
 
