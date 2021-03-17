@@ -7,7 +7,8 @@ import { BasicLicensesComponent } from './basic-licenses/basic-licenses.componen
 // import { CartComponent } from './cart/cart.component';
 // import { CheckoutComponent } from './checkout/checkout.component';
 
-export const SampleLicensingMarketRoutes: Routes = [{
+export const SampleLicensingMarketRoutes: Routes = [
+  {
   path: '',
   children: [
       {

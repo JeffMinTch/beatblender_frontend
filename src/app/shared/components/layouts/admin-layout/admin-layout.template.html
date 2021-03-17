@@ -44,14 +44,15 @@
         <!-- Breadcrumb -->
         <!-- <app-breadcrumb></app-breadcrumb> -->
         <!-- View outlet -->
-        <div class="container-dynamic mt-8">
+        <div class="container-dynamic">
           <router-outlet></router-outlet>
         </div>
         <!-- <span class="m-auto" *ngIf="!layoutConf.footerFixed"></span> -->
         <!-- <app-footer *ngIf="!layoutConf.footerFixed" style="margin: 0 -.33rem -.33rem;"></app-footer> -->
       </div>
       <!-- <span class="m-auto" *ngIf="layoutConf.footerFixed"></span> -->
-      <app-footer *ngIf="layoutConf.footerFixed" class="box-shadow-top" style="z-index: 10;"></app-footer>
+      <!-- class="box-shadow-top" -->
+      <app-footer *ngIf="layoutConf.footerFixed" style="z-index: 10;"></app-footer>
       <div *ngIf="!layoutConf.footerFixed" id="waveform" style="visibility: hidden;"></div>
     </div>
     <!-- View overlay for mobile navigation -->

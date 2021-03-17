@@ -1,7 +1,7 @@
-<mat-toolbar mat-ripple [ngStyle]="{background: sample?.sampleID === (playStateControlService.currentSampleID$ | async) ? '#ededed' : '#fafafa'}" 
+<mat-toolbar mat-ripple [ngStyle]="{background: sample?.sampleID === (playStateControlService.currentSampleID$ | async) ? '#ededed' : '#ededed'}" 
 (click)="playState ? pause(sample?.sampleID === currentSampleID, sample?.sampleID) : play(sample?.sampleID === currentSampleID, sample?.sampleID)"
 
-class="mat-box-shadow player-widget p-0" fxLayout="row" fxLayoutAlign="space-between">
+class="player-widget p-0" fxLayout="row" fxLayoutAlign="space-between">
     <!-- [routerLink]="['/shop/products/', product._id]" -->
     <!-- <div fxLayout="row" fxLayoutAlign="center center" class="category">
     </div> -->
@@ -20,10 +20,9 @@ class="mat-box-shadow player-widget p-0" fxLayout="row" fxLayoutAlign="space-bet
               max="100"  -->
     </div>
     <!-- style="font-size: 32px;" -->
-    <button mat-flat-button class="play-button fs-32" fxLayout="row" fxLayoutAlign="center center"
-      >
-      <mat-icon inline="true"
-        [ngStyle]="{color: sample?.sampleID === (playStateControlService.currentSampleID$ | async) ? '#6b9b6d' : '#051136'}">
+    <button class="play-button" fxLayout="row" fxLayoutAlign="center center">
+      <mat-icon
+        [ngStyle]="{color: sample?.sampleID === (playStateControlService.currentSampleID$ | async) ? '#658566': 'grey'}">
         {{sample?.sampleID === (playStateControlService.currentSampleID$ | async) &&
         (playStateControlService.playState$ | async) ? 'pause' : 'play_arrow'}}
       </mat-icon>

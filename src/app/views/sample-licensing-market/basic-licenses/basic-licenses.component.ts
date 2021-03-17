@@ -495,8 +495,10 @@ export class BasicLicensesComponent implements OnInit, AfterViewInit {
     this.sideNav.opened = !this.sideNav.opened;
   }
 
-  public applyFilter(searchFilterFormMap: SearchFilterFormMap) {
-    this.searchFilterFormMap = searchFilterFormMap;
+  public applyFilter(searchFilterFormMap?: SearchFilterFormMap) {
+    if(searchFilterFormMap) {
+      this.searchFilterFormMap = searchFilterFormMap;
+    }
     const page: Page = {
       sortBy: this.sortBy,
       pageNo: 0,

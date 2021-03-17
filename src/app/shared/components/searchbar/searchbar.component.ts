@@ -7,7 +7,7 @@ import { MatOption, MatOptionSelectionChange } from '@angular/material/core';
 import { MatSidenav } from '@angular/material/sidenav';
 import { Sample } from 'app/shared/models/sample.model';
 import { Subject } from 'rxjs';
-import { map, debounceTime } from 'rxjs/operators';
+import { map, debounceTime, skipWhile, skipUntil } from 'rxjs/operators';
 import { MatAutocomplete, MatAutocompleteTrigger, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 
 @Component({
@@ -22,8 +22,8 @@ export class SearchbarComponent implements OnInit {
   @ViewChild('auto', { static: false, read: MatAutocomplete }) private matAutoComplete: MatAutocomplete;
 
   @Input() sortBy: string;
-  @Input() page: number; 
-  @Input() pageSize: number; 
+  @Input() page: number;
+  @Input() pageSize: number;
   @Input() searchForm: FormGroup;
 
   @Output() pageChange = new EventEmitter<number>();
@@ -32,8 +32,12 @@ export class SearchbarComponent implements OnInit {
   @Output() sidenavChange = new EventEmitter<void>();
   // @Output() searchFormChange = new EventEmitter<FormGroup>();
   @Output() searchStringChange = new EventEmitter<string>();
+  @Output() searchRequest = new EventEmitter<void>();
 
+  // public responseReceivedEvent: Subject<void>  = new Subject<void>(); 
   public searchString: string;
+  public counter: number = 0;
+  public searchbarEmpty: boolean = false;
 
   @HostListener('window:resize', ['$event'])
   onResize(event) {
@@ -44,10 +48,10 @@ export class SearchbarComponent implements OnInit {
   // private isSidenavOpen;
 
   public suggestionsSubject$: Subject<Array<Sample>> = new Subject<Array<Sample>>();
-  
+
 
   public suggestions: Array<Sample>;
-  public suggestionsCount = 0; 
+  public suggestionsCount = 0;
 
   public selectedSearchOption: MatOption = null;
 
@@ -57,7 +61,7 @@ export class SearchbarComponent implements OnInit {
     private audioWebService: AudioWebService,
     private sampleLicensingMarketService: SampleLicensingMarketService,
     private fb: FormBuilder
-    ) { }
+  ) { }
 
   ngOnInit(): void {
     this.suggestionsSubject$.subscribe((suggestions: Array<Sample>) => {
@@ -94,34 +98,62 @@ export class SearchbarComponent implements OnInit {
 
   public retrieveSuggestions(searchString: string) {
     // console.log(this.searchForm.value);
-    if(searchString) {
+    this.searchbarEmpty = false;
+    console.log(searchString);
+    if (searchString) {
       const params = this.sampleLicensingMarketService.getRequestParams(this.sortBy, 1, this.pageSize);
       params['searchString'] = searchString;
-      // this.searchForm.setValue({
-      //   search: searchString
-      // });
-      // this.searchForm.controls['search'].setValue(searchString);
       this.searchString = searchString;
       this.emitSearchString(this.searchString);
-      this.audioWebService.findBySearchString(params).pipe().subscribe((response) => {
-        
+      this.audioWebService.findBySearchString(params).pipe(
+        // map((response) => {
+        //   this.searchbarEmpty = false;
+        //   return response;
+        // }),
+        skipWhile(() => {
+          if(this.searchbarEmpty) {
+            this.searchbarEmpty = false;
+            return true;
+          } else {
+            return false;
+          }
+        //  return this.searchbarEmpty
+        }),
+      ).subscribe((response) => {
+
+        // if (!this.searchbarEmpty) {
         this.suggestionsCount = response.totalItems;
-        console.log('Suggestionscount' + this.suggestionsCount )
+        console.log('Suggestionscount' + this.suggestionsCount)
         console.log(response.samples);
-        // if(response.samples.length > 0) {
-          this.suggestionsSubject$.next(response.samples);
-          
-          console.log(searchString);
+        this.suggestionsSubject$.next(response.samples);
+        // this.responseReceivedEvent.next();
         // }
-        // this.sampleSuggestions = response.samples;
       }, (error: HttpErrorResponse) => {
-        if(error.status === 404) {
+        if (error.status === 404) {
           this.suggestionsSubject$.next([]);
           this.matSearchInputTrigger.openPanel();
-          
-          // alert('Nothing found');
         }
       });
+    } else {
+      console.log("Suggestions null");
+      // setTimeout(() => {
+      let counter = 0;
+
+      this.suggestionsSubject$.next(null);
+      this.searchbarEmpty = true;
+      this.selectedSearchOption = null;
+      this.counter = 0;
+
+      // this.suggestionsSubject$.subscribe(() => {
+      //   if (counter = 0) {
+      //     counter++;
+
+      //   } else {
+      //     this.suggestionsSubject$.unsubscribe();
+
+      //   }
+      // });
+      // });
     }
   }
 
@@ -132,31 +164,63 @@ export class SearchbarComponent implements OnInit {
     // this.searchFormChange.emit(this.sea);
   }
 
-  public convertSuggestionsToSamples(sample?: Sample) {
-    
-    
-    if(sample) {
+  // public convertSuggestionsToSamples(sample?: Sample) {
+
+  //   if(this.counter > 0) {
+  //     this.searchStringChange.emit(this.searchString);
+  //     this.searchRequest.emit();
+  //     this.counter = 0;
+  //   } else {
+  //     if(sample) {
+  //       const index = this.suggestions.indexOf(sample);
+  //       const removedSample: Array<Sample> = this.suggestions.splice(index, 1);
+  //       this.suggestions.unshift(removedSample[0]);
+  //       this.selectedSearchOption = null;
+  //     }
+  //     this.pageChange.emit(1);
+  //     this.countChange.emit(this.suggestionsCount);
+  //     this.sampleLicensingMarketService.samples$.next(this.suggestions);
+  //     this.counter++;
+
+  //   }
+
+  // }
+
+  public handleSearchbar(searchString: string, sample?: Sample) {
+    if (searchString) {
+      if (this.counter > 0) {
+        this.fetchSamples();
+        this.counter = 0;
+      } else {
+        if (sample) {
+          this.convertSuggestionsToSamples(sample);
+        } else {
+          this.convertSuggestionsToSamples();
+        }
+        this.counter++;
+
+      }
+    }
+  }
+
+  fetchSamples() {
+    this.searchStringChange.emit(this.searchString);
+    this.searchRequest.emit();
+  }
+
+  convertSuggestionsToSamples(sample?: Sample) {
+    if (sample) {
       const index = this.suggestions.indexOf(sample);
       const removedSample: Array<Sample> = this.suggestions.splice(index, 1);
       this.suggestions.unshift(removedSample[0]);
-      // this.searchForm.controls['search'].setValue(sample);
-      // this.emitSearchString(this.searchString);
-      // (this.searchInput.nativeElement as HTMLInputElement).value = sample.title; 
-      // this.searchForm.controls['search'].setValue(sample);
-      console.log('SAMPLE');
       this.selectedSearchOption = null;
-      // this.emitSearchString(this.searchString);
-      // this.emitSearchString(this.searchForm.controls['search'].value.title);
     }
-    
     this.pageChange.emit(1);
     this.countChange.emit(this.suggestionsCount);
     this.sampleLicensingMarketService.samples$.next(this.suggestions);
-    
-    // this.suggestionsSubject$.next([]);
-    console.log('SearchFormComvert');
-    console.log(this.searchForm);
   }
+
+  // public searchRequest(sample?: )
 
   public changeSelectedSample(event: MatOptionSelectionChange) {
     // angular bug fix. Event fires multiple times: https://github.com/angular/components/issues/4094
@@ -171,13 +235,13 @@ export class SearchbarComponent implements OnInit {
   }
 
   public displaySample(sample: Sample): string {
-    
-    
+
+
     if (sample) {
       return sample.title;
       // return sample.title + ' ' + '(' + sample.artistName + ')';
-      
-      
+
+
 
     } else {
       return '';
@@ -195,12 +259,12 @@ export class SearchbarComponent implements OnInit {
     // this.searchInput.nativeElement.value = e.option.value.title;
   }
 
-  
+
   getSelectedTitle(): string {
-    if(this.selectedSearchOption) {
+    if (this.selectedSearchOption) {
       return this.selectedSearchOption.value.title;
     }
   }
-  
+
 
 }

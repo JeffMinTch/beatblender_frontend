@@ -89,16 +89,21 @@
 
 	ul li:hover > div > div > ul,
 	ul li:hover > div > ul {
+		// width: 100vw;
+		// width: 100vh;
 		opacity: 1;
 		visibility: visible;
 		transform: translateY(0);
 	}
 
 	ul ul li {
-		width:170px;
+		min-width:200px;
 		float:none;
-		display:list-item;
+		// display:list-item;
 		position: relative;
+		> a {
+			text-align: center;
+		}
 	}
 	ul ul ul {
 		top: 0;

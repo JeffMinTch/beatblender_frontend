@@ -28,6 +28,49 @@ interface IBadge {
 
 @Injectable()
 export class NavigationService {
+  
+  sampleMarketMenu: IMenuItem[] = [
+    {
+      type: 'separator',
+      name: 'Sample Market - Navigation'
+    },
+    {
+      name: 'Sample Market',
+      type: 'extLink',
+      tooltip: 'Sample Market',
+      icon: 'storefront',
+      state: 'http://demos.ui-lib.com/egret-doc/'
+    },
+    {
+      name: 'How It Works',
+      type: 'dropDown',
+      tooltip: 'Documentation',
+      icon: 'info',
+      state: 'http://demos.ui-lib.com/egret-doc/',
+      sub: [
+        { name: 'Introduction', state: 'default' },
+        {name: 'Learning Management', state: 'learning-management'},
+        { name: 'Analytics', state: 'analytics' },
+        { name: 'Cryptocurrency', state: 'crypto' },
+        { name: 'Dark Cards', state: 'dark' }
+      ]
+    },
+    {
+      name: 'Upload',
+      type: 'extLink',
+      tooltip: 'Documentation',
+      icon: 'library_books',
+      state: 'http://demos.ui-lib.com/egret-doc/'
+    },
+    {
+      name: 'My Licenses',
+      type: 'extLink',
+      tooltip: 'My Licenses',
+      icon: 'library_books',
+      state: 'http://demos.ui-lib.com/egret-doc/'
+    },
+  ];
+
   iconMenu: IMenuItem[] = [
     {
       name: 'HOME',
@@ -73,7 +116,7 @@ export class NavigationService {
       type: 'dropDown',
       tooltip: 'Sample Market',
       icon: 'storefront',
-      state: 'sample-licensing-market',
+      state: 'sample-market',
       sub: [
         {name: 'How it works', state: 'how-it-works'},
         {name: 'Basic Licenses', state: 'basic-licenses'},
@@ -476,6 +519,10 @@ export class NavigationService {
   menuItems = new BehaviorSubject<IMenuItem[]>(this.iconMenu);
   // navigation component has subscribed to this Observable
   menuItems$ = this.menuItems.asObservable();
+
+  sampleMarketItems = new BehaviorSubject<IMenuItem[]>(this.sampleMarketMenu);
+  sampleMarketItems$ = this.sampleMarketItems.asObservable();
+
   constructor() {}
 
   // Customizer component uses this method to change menu.

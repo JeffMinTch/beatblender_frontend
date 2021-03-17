@@ -6,17 +6,17 @@
 
 /* Track */
 ::-webkit-scrollbar-track {
-    background: #fafafa;
+    background: map-get($default-primary-palette, lighter);
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-    background: map-get($default-accent-palette, main);
+    background: map-get($default-primary-palette, main);
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-    background: map-get($default-accent-palette, darker);
+    background: map-get($default-primary-palette, main);
 }
 
 ::selection {

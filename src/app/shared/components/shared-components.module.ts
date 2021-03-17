@@ -1,3 +1,4 @@
+import { QuickAccessMenuComponent } from './quick-access-menu/quick-access-menu.component';
 import { MinMaxSliderComponent } from './min-max-slider/min-max-slider.component';
 import { SelectComponent } from './select/select.component';
 import { AudioPanelComponent } from './audio-panel/audio-panel.component';
@@ -73,7 +74,8 @@ const components = [
   SearchbarComponent,
   AudioPanelComponent,
   SelectComponent,
-  MinMaxSliderComponent
+  MinMaxSliderComponent,
+  QuickAccessMenuComponent
 ]
 
 @NgModule({

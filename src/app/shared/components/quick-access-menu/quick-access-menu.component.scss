@@ -1,0 +1,38 @@
+.quick-access-menu-container {
+    height: 80px;
+    // background: #658566;
+}
+
+.button-container {
+    &:hover {
+        // color: #502222;
+        .quick-access-button-text {
+            // font-size: 12px;
+            // font-weight: 700;
+            color: #658566;
+        }
+
+        .quick-access-button {
+            width: 90px;
+            // background: #658566;
+            color: #502222;
+            
+        
+            
+        }
+    }
+}
+.quick-access-button-text {
+    font-size: 12px;
+    font-weight: 700;
+    color: #6a6c74;
+}
+
+.quick-access-button {
+    width: 90px;
+    background: #dce6dd;
+    color: #6a6c74;
+    
+
+    
+}

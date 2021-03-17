@@ -1,16 +1,17 @@
 <div>
-  <mat-sidenav-container fxLayout="row" class="mat-elevation-z2">
+  <mat-sidenav-container fxLayout="row" class="mat-elevation-z2 full-width">
     
-    <mat-sidenav EgretSideNavToggle class="shop-sidebar" style="border-right: none; background: #dce6dd;">
-      <app-basic-license-sidenav ></app-basic-license-sidenav>
+    <mat-sidenav EgretSideNavToggle class="shop-sidebar" style="border-right: none;">
+      <app-basic-license-sidenav></app-basic-license-sidenav>
     </mat-sidenav>
     <div class="shop-wrap">
       <div class="full-width">
         <!-- Search Form -->
-        <app-searchbar [searchForm]="searchForm" (searchStringChange)="changeSearchString($event)" (pageChange)="changePage($event)" (countChange)="changeCount($event)" (expandFilter)="toggleFilter($event)" (sidenavChange)="toggleSidenav()" [sortBy]="sortBy" [page]="page" [pageSize]="pageSize"></app-searchbar>
+        <!-- <router-outlet></router-outlet> -->
+        <app-searchbar [searchForm]="searchForm" (searchRequest)="applyFilter()" (searchStringChange)="changeSearchString($event)" (pageChange)="changePage($event)" (countChange)="changeCount($event)" (expandFilter)="toggleFilter($event)" (sidenavChange)="toggleSidenav()" [sortBy]="sortBy" [page]="page" [pageSize]="pageSize"></app-searchbar>
         <!-- <mat-progress-bar color="primary" mode="determinate" value="100" class="mt-16"></mat-progress-bar> -->
         <!-- <mat-progress-bar *ngIf="!responseReceived" mode="query" class="mb-16"></mat-progress-bar> -->
-
+        
         <app-search-filter [searchFilterFormMap]="searchFilterFormMap" (filterFormChange)="applyFilter($event)" [isFilterOpen]="isFilterOpen"></app-search-filter>
         <!-- <app-search-filter></app-search-filter> -->
         <!-- Products container -->
@@ -29,7 +30,7 @@
               >
               <!-- [@animate]="{value:'*',params:{delay: (i*50)+'ms', y:'50px'}}" -->
               <!-- [@animate]="{value:'*',params:{delay: (i*100)+'ms', y:'100px'}}" -->
-              <div fxLayout="column" class="product-inner default-bg px-8 py-16 full-width">
+              <div fxLayout="column" class="product-inner default-bg mx-8 my-16 full-width">
                 <!-- <div *ngIf="product?.badge?.text" class="product-badge mat-elevation-z7" [ngStyle]="{background: product?.badge?.color || '#f44336'}">
                     <span>{{product?.badge?.text}}</span>
                   </div> -->
@@ -40,6 +41,9 @@
                     <p class="text-muted p-line">by <span class="artist-name">{{sample?.artistName}}</span></p>
                     <p class="text-muted p-line">
                       <strong>Category:</strong> {{sample?.genre}}
+                    </p>
+                    <p class="text-muted p-line">
+                      <strong>Tempo:</strong> {{sample?.tempo}} BPM
                     </p>
                     <p class="text-muted p-line">
                       <strong>Moods:</strong>
@@ -53,14 +57,14 @@
                       <!-- </span-list> -->
                       <!-- <span *ngFor="let t of ">{{sample?.sampleTitle}} </span> -->
                     </p>
-                    <p class="text-muted p-line">
+                    <p fxLayout="row wrap" class="text-muted p-line">
                       <strong>Tags:</strong>
                       <!-- <span-list aria-label="Fish selection"> -->
                       <!-- <span>#{{sample?.}}</span>
                       <span>#{{sample?.region}}</span>
                       <span>#{{sample?.songKey}}</span>
                       <span>#Dmoll</span> -->
-                      <span *ngFor="let tag of sample?.tags">{{tag}}</span>
+                      <span *ngFor="let tag of sample?.tags">#{{tag}}</span>
   
                       <!-- </span-list> -->
                       <!-- <span *ngFor="let t of ">{{sample?.sampleTitle}} </span> -->
@@ -93,7 +97,7 @@
                   </div>
                   <span fxFlex></span>
                 </div>
-                <button fxFlex="50px" mat-stroked-button color="primary" class="full-width download-button">
+                <button fxFlex="50px" mat-flat-button class="full-width download-button">
                   <span class="fw-700 fs-16">Download License</span>
                 </button>
                 <!-- Visible when viewMode === list-view -->

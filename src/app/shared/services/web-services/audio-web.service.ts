@@ -55,7 +55,6 @@ export class AudioWebService {
     },
     (error: HttpErrorResponse) => {
       if(error.status === 404) {
-        alert("Nothing Found");
         const response = {
           samples: [],
           totalItems: 0

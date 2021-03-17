@@ -57,7 +57,7 @@ filter: drop-shadow(16px 0px 0 #fe2d52);
 }
 
 .shop-sidebar {
-  width: 18rem;
+  width: 20rem;
 }
 
 .p-line {
@@ -167,6 +167,8 @@ filter: drop-shadow(16px 0px 0 #fe2d52);
 .product-container {
   // display: flex;
   // flex-wrap: wrap;
+  // background-image: url(../../../images/svg-icons/Background2.svg);
+  //   background-repeat: no-repeat;
   margin: 0;
   min-height: 1600px;
   .products-pagination {
@@ -186,9 +188,25 @@ filter: drop-shadow(16px 0px 0 #fe2d52);
   }
 
   .product-wrap {
-    width: 33.333%;
+    // width: 100%;
+    width: 33.33%;
     float: left;
     height: fit-content;
+    &:hover .download-button {
+      background: map-get($default-primary-palette, main);
+      color: #fafafa;
+      transition: all $transitionTiming $transitionDuration;
+
+    }
+    &:hover .info-wrap {
+      background:  map-get($default-primary-palette, lighter);
+      transition: all $transitionTiming $transitionDuration;
+    }
+    &:hover audio-panel {
+      box-shadow: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12);
+
+}
+
     .product-inner {
       // display: flex;
       // flex-direction: column;
@@ -202,9 +220,9 @@ filter: drop-shadow(16px 0px 0 #fe2d52);
 
       // border-bottom: 1px solid $border-color;
       transition: all 0.3s $transitionTiming;
-      // &:hover .download-button {
-      //   background: map-get($default-accent-palette, main);
-      //   color: #fafafa;
+      // &:hover {
+      //         box-shadow: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12);
+
       // }
       // .download-button {
       //   background: map-get($default-primary-palette, main) !important;

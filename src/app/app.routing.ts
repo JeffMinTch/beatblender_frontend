@@ -47,10 +47,21 @@ export const rootRouterConfig: Routes = [
         data: { title: 'Forms', breadcrumb: 'FORMS'}
       },
       {
-        path: 'sample-licensing-market',
+        path: 'sample-market',
         loadChildren: () => import('./views/sample-licensing-market/sample-licensing-market.module').then(m => m.SampleLicensingMarketModule),
-        data: { title: 'Sample Licensing Market ', breadcrumb: 'Get Sample Licenses'}
+        data: { title: 'Sample Market ', breadcrumb: 'Get Sample Licenses'}
       },
+      {
+        path: 'music',
+        loadChildren: () => import('./views/music-platform/music-platform.module').then(m => m.MusicPlatformModule),
+        data: { title: 'All Music', breadcrumb: 'All Music'}
+      },
+      {
+        path: 'docs',
+        loadChildren: () => import('./views/documentation/documentation.module').then(m => m.DocumentationModule),
+        data: { title: 'docs', breadcrumb: 'Docs'}
+      }
+      
     ]
   },
   {

@@ -2,10 +2,11 @@
     <div class="wrap">
       <button mat-stroked-button color="primary" class="mr-16" (click)="toggleSidenav()">
         <mat-icon>short_text</mat-icon>
+        Open Guide
       </button>
       <div class="product-search-wrap">
         <form [formGroup]="searchForm"
-          (ngSubmit)="selectedSearchOption === null ? convertSuggestionsToSamples() : convertSuggestionsToSamples(selectedSearchOption.value)">
+          (ngSubmit)="selectedSearchOption === null ? handleSearchbar(searchInput.value) : handleSearchbar(searchInput.value, selectedSearchOption.value)">
           <mat-form-field appearance="outline" class="full-width">
 
             <input matInput #searchInput #searchInputTrigger="matAutocompleteTrigger" type="text" name="searchProduct"
@@ -39,7 +40,7 @@
       </div>
     </div>
     <span fxFlex="20px"></span>
-    <button mat-stroked-button color="primary" (click)="toggleFilter()">
+    <button mat-stroked-button color="primary" style="height: 50px;" (click)="toggleFilter()">
       <mat-icon>filter_list</mat-icon> {{isFilterOpen ? 'Close' : 'Open'}} Filter
     </button>
   </section>

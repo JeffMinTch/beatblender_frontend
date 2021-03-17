@@ -64,7 +64,7 @@
           </button>
       </div>
     </div>
-    <div class="waveform-container" #waveFormContainer>
+    <div [fxHide.lt-md]="true" class="waveform-container" #waveFormContainer>
       <!-- [ngClass]="{'waveform-background': isPanelOpen(expansionPanelHeader)}" -->
       <div id="waveform" #waveform>
         
@@ -74,8 +74,8 @@
     <div  *ngIf="sample?.sampleID === (playStateControlService.currentSampleID$ | async)" class="current-audio-container">
         <img src="{{'http://localhost:9090/api/web/public/media/image/' + sample?.sampleID}}" alt="">
         <div class="current-audio-info" fxLayout="column">
-          <span>{{sample?.artistName}}</span>
-          <span>{{sample?.title}}</span>
+          <span fxLayout="row">{{sample?.artistName}}</span>
+          <span fxLayout="row">{{sample?.title}}</span>
         </div>
       </div>
     </ng-container>

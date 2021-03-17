@@ -1,0 +1,12 @@
+<div fxLayout="row" fxFlex fxLayoutAlign="space-around center" class="quick-access-menu-container" style="border-bottom: 1px solid #ededed;">
+    <ng-container class="icon-menu-item" *ngFor="let item of menuItems">
+        <div *ngIf="!item.disabled && item.type === 'icon'" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="5px" class="button-container">
+            <button class="quick-access-button"  mat-raised-button [matTooltip]="item.tooltip" [matTooltipPosition]="'above'"
+                routerLink="/{{item.state}}" routerLinkActive="mat-bg-primary">
+                <mat-icon *ngIf="item.icon" class="sidenav-mat-icon">{{item.icon}}</mat-icon>
+                <mat-icon *ngIf="item.svgIcon" [svgIcon]="item.svgIcon" class="svgIcon"></mat-icon>
+            </button>
+            <span class="quick-access-button-text">{{item.tooltip}}</span>
+        </div>
+    </ng-container>
+</div>

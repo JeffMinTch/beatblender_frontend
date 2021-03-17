@@ -83,7 +83,18 @@ export class UILibIconService {
       'fileName': 'business_card_of_a_man_with_contact_info.svg'
     },
     { 'name': 'ulb_help', 'fileName': 'help.svg' },
-    { 'name': 'ulb_list_1', 'fileName': 'list_1.svg' }
+    { 'name': 'ulb_list_1', 'fileName': 'list_1.svg' },
+    { 'name': 'logo', 'fileName': 'logo.svg' },
+    { 'name': 'undraw-upload', 'fileName': 'undraw-upload.svg'},
+    { 'name': 'undraw-contract', 'fileName': 'undraw-contract.svg'},
+    { 'name': 'undraw-agreement', 'fileName': 'undraw-agreement.svg'},
+    { 'name': 'undraw-terms', 'fileName': 'undraw-terms.svg'},
+    { 'name': 'antlers', 'fileName': 'antlers.svg'},
+    { 'name': 'tree', 'fileName': 'tree.svg'},
+
+
+    
+
   ]
 
   constructor(

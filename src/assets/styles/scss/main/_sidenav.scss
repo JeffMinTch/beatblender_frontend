@@ -1,4 +1,8 @@
 .sidenav-hold {
+  ul {
+    list-style-type: none;
+
+  }
   .menuitem-badge {
     padding: 3px 10px;
     line-height: 12px;
@@ -37,11 +41,13 @@
     }
   }
   .sidenav {
+    padding: 0;
     li {
       cursor: pointer;
       ul.submenu {
         max-height: 0;
         overflow: hidden;
+        
         // transition: all $sidebarTrnTime $transitionTiming;
         opacity: 1;
         &.lvl2 a,
