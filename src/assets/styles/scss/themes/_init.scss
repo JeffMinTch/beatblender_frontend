@@ -23,7 +23,7 @@ $fontConfig: (
 // Foreground Elements
 // Light Theme Text
 $dark-text: #000000;
-$dark-primary-text: $body-color;
+$dark-primary-text: #6a6c74;
 $dark-accent-text: rgba($dark-primary-text, 0.54);
 $dark-disabled-text: rgba($dark-primary-text, 0.38);
 $dark-dividers: rgba($dark-primary-text, 0.12);
@@ -79,6 +79,7 @@ $mat-dark-theme-foreground: (
 // Background config
 // Light Theme
 $light-background: #fafafa;
+$light-background-accent: #ededed;
 $light-bg-darker-5: darken($light-background, 5%);
 $light-bg-darker-10: darken($light-background, 10%);
 $light-bg-darker-20: darken($light-background, 20%);
@@ -204,6 +205,7 @@ $altTheme: mat-dark-theme($default-theme-primary, $default-theme-accent, $defaul
 // MAIN THEME INIT
 .egret-navy {
   @include angular-material-theme($default-theme);
+// @include mat-core($fontConfig);
   
   @include egret-theme($default-theme);
 }
@@ -229,7 +231,7 @@ $altTheme: mat-dark-theme($default-theme-primary, $default-theme-accent, $defaul
 // DARK THEME INIT
 .egret-navy-dark {
   @include angular-material-theme($altTheme);
-  @include egret-theme($altTheme);
+  // @include egret-theme($altTheme);
 }
 
 

@@ -1,0 +1,233 @@
+<div fxFlex fxLayout="column" class="my-licenses-container" class="p-16" style="">
+  <!-- <div fxLayout="row wrap" [@animate]="{value:'*',params:{delay:'800ms',scale:'.9'}}"> -->
+
+
+
+  <!-- <div fxFlex="100" fxFlex.gt-sm="33.33">
+        <mat-card class="p-0 ">
+            <h6 class="ml-16 mt-16">Trending Currencies</h6>
+            <ngx-datatable
+            class="material ml-0 mr-0"
+            [rows]="trendingCurrencies"
+            [columnMode]="'flex'"
+            [headerHeight]="50"
+            [footerHeight]="0"
+            [rowHeight]="'auto'">
+            
+            <ngx-datatable-column name="Currency" [flexGrow]="1">
+              <ng-template let-row="row" ngx-datatable-cell-template>
+                  {{ row?.currency }}
+              </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column name="Balance" [flexGrow]="1">
+              <ng-template let-row="row" ngx-datatable-cell-template>
+                {{row?.rate}}
+              </ng-template>
+            </ngx-datatable-column>
+            
+            <ngx-datatable-column name="Action" [flexGrow]="1">
+                    <ng-template let-row="row" ngx-datatable-cell-template>
+                          <button mat-stroked-button color="warn">Buy</button>
+                    </ng-template>
+            </ngx-datatable-column>
+          </ngx-datatable>    
+        </mat-card>
+    </div>
+   -->
+  <!-- </div> -->
+  <h1>My Licenses</h1>
+  <div fxFlex fxLayoutAlign="center" class="mt-32">
+    <h2>1. Step: Get A Basic License.</h2>
+  </div>
+  <div fxLayout="row" class="p-16">
+    <mat-card fxFlex="35" fxLayout="column" class="contract-container">
+      
+      <h3 style="text-align: center;">Basic License</h3>
+      <ul fxFlex class="pl-0">
+        <li class="benefits-list-item">
+          <div fxFlex fxLayout="row" fxLayoutGap="10px" class="benefits-list-layout">
+            <div class="contract-icon-container" fxLayoutAlign="center center">
+              <mat-icon color="primary">done</mat-icon>
+            </div>
+            <div fxFlex fxLayoutAlign="start center">
+              <span>Does not cost anything</span>
+            </div>
+          </div>
+        </li>
+        <li class="benefits-list-item">
+          <div fxFlex fxLayout="row" fxLayoutGap="10px" class="benefits-list-layout">
+            <div class="contract-icon-container" fxLayoutAlign="center center">
+              <mat-icon color="primary">done</mat-icon>
+            </div>
+            <div fxFlex fxLayoutAlign="start center">
+              <span>Produce a Track with this or multiple Samples from BeatBlender and earn Money on BeatBlender</span>
+            </div>
+          </div>
+        </li>
+        <li class="benefits-list-item">
+          <div fxFlex fxLayout="row" fxLayoutGap="10px" class="benefits-list-layout">
+            <div class="contract-icon-container" fxLayoutAlign="center center">
+              <mat-icon color="primary">done</mat-icon>
+            </div>
+            <div fxFlex fxLayoutAlign="start center">
+              <span>Royality Free Use at Events under 5000 people</span>
+            </div>
+          </div>
+        </li>
+        <li class="benefits-list-item">
+          <div fxFlex fxLayout="row" fxLayoutGap="10px" class="benefits-list-layout">
+            <div class="contract-icon-container" fxLayoutAlign="center center">
+              <mat-icon color="primary">done</mat-icon>
+            </div>
+            <div fxFlex fxLayoutAlign="start center">
+              <span>Does not cost anything</span>
+            </div>
+          </div>
+        </li>
+      </ul>
+      <!-- <mat-card-title>Basic License</mat-card-title> -->
+    </mat-card>
+    <div fxFlex="65" class="">
+      <p class="standard-text m-32">Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet error inventore possimus saepe
+        quos vel minus consectetur repellendus nesciunt molestiae doloribus unde quo, quae tenetur asperiores in? Laboriosam
+        suscipit voluptatem facere temporibus iusto quia nobis nesciunt repudiandae sit tenetur blanditiis expedita
+        inventore, qui alias officia officiis ducimus, sint facilis esse minus doloribus distinctio labore eum? Eius neque
+        rem cumque adipisci?</p>
+    </div>
+  </div>
+  <div fxFlex fxLayout="row" fxLayoutAlign="center center" style="height: 200px; font-size: 80px;">
+    <div style="">
+      <mat-icon inline="true" class="ml-64">arrow_downward</mat-icon>
+    </div>
+
+  </div>
+  <div fxFlex fxLayoutAlign="center" class="mt-32">
+    <h2>2. Step: Extend the License.</h2>
+  </div>
+  <div fxLayout="row" class="p-16">
+    <mat-card fxFlex="35" class="contract-container">
+      <h3 style="text-align: center;">Upgrade License</h3>
+
+    </mat-card>
+    <div fxFlex="65" class="">
+      <p class="standard-text m-32">Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet error inventore possimus saepe
+        quos vel minus consectetur repellendus nesciunt molestiae doloribus unde quo, quae tenetur asperiores in? Laboriosam
+        suscipit voluptatem facere temporibus iusto quia nobis nesciunt repudiandae sit tenetur blanditiis expedita
+        inventore, qui alias officia officiis ducimus, sint facilis esse minus doloribus distinctio labore eum? Eius neque
+        rem cumque adipisci?</p>
+    </div>
+  </div>
+  <div fxFlex fxLayout="row" fxLayoutAlign="center center" style="height: 200px; font-size: 80px;">
+    <div style="">
+      <mat-icon inline="true" class="ml-64">arrow_downward</mat-icon>
+    </div>
+
+  </div>
+    <h2>Basic Licenses</h2>
+    <div class="table-wrapper">
+      <div fxFlex class="table-container">
+        <table mat-table [dataSource]="dataSource" matSort class="">
+      
+          <!-- Position Column -->
+          <ng-container matColumnDef="position">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> No. </th>
+            <td mat-cell *matCellDef="let element"> {{element.position}} </td>
+          </ng-container>
+      
+          <!-- Name Column -->
+          <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
+            <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+          </ng-container>
+      
+          <!-- Weight Column -->
+          <ng-container matColumnDef="weight">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Weight </th>
+            <td mat-cell *matCellDef="let element"> {{element.weight}} </td>
+          </ng-container>
+      
+          <!-- Symbol Column -->
+          <ng-container matColumnDef="symbol">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Download Sample </th>
+            <td mat-cell *matCellDef="let element">
+              <button mat-icon-button>
+                <mat-icon svgIcon="ulb_cloud_computing"></mat-icon>
+                <!-- <mat-icon>favorite</mat-icon> -->
+              </button>
+              <!-- {{element.symbol}}  -->
+              </td>
+          </ng-container>
+          <ng-container matColumnDef="c">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Download License</th>
+            <td mat-cell *matCellDef="let element">
+              <button mat-icon-button>
+                <mat-icon svgIcon="ulb_cloud_computing"></mat-icon>
+                <!-- <mat-icon>favorite</mat-icon> -->
+              </button>  
+            </td>
+          </ng-container>
+
+
+          
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+        <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+  
+      </div>
+
+    </div>
+    <h2>Extended Licenses</h2>
+    <div class="table-wrapper mat-elevation-z1" >
+      <div fxFlex class="table-container">
+        <table mat-table [dataSource]="dataSource" matSort class="">
+      
+          <!-- Position Column -->
+          <ng-container matColumnDef="position">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> No. </th>
+            <td mat-cell *matCellDef="let element"> {{element.position}} </td>
+          </ng-container>
+      
+          <!-- Name Column -->
+          <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
+            <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+          </ng-container>
+      
+          <!-- Weight Column -->
+          <ng-container matColumnDef="weight">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Weight </th>
+            <td mat-cell *matCellDef="let element"> {{element.weight}} </td>
+          </ng-container>
+      
+          <!-- Symbol Column -->
+          <ng-container matColumnDef="symbol">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Symbol </th>
+            <td mat-cell *matCellDef="let element"> 
+              <button mat-icon-button>
+                <mat-icon>favorite</mat-icon>
+              </button>
+              
+              <!-- {{element.symbol}}  -->
+            </td>
+          </ng-container>
+          
+          <ng-container matColumnDef="c">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Symbol </th>
+            <td mat-cell *matCellDef="let element"> 
+              <button mat-icon-button>
+                <mat-icon>favorite</mat-icon>
+              </button>
+              
+              <!-- {{element.symbol}}  -->
+            </td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+  
+      </div>
+
+    </div>
+</div>

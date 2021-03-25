@@ -14,24 +14,29 @@ h6,
   margin-top: 0;
   font-weight: $headings-font-weight;
   line-height: $headings-line-height;
-  color: $headings-color;
+  letter-spacing: 4px;
 }
 
 h1,
 .h1 {
   font-size: $font-size-h1;
+  color: var(--primary-color);
 }
 h2,
 .h2 {
   font-size: $font-size-h2;
+  color: var(--accent-color);
 }
 h3,
 .h3 {
   font-size: $font-size-h3;
+  color: var(--base-primary-color);
 }
 h4,
 .h4 {
   font-size: $font-size-h4;
+  color: var(--base-accent-color);
+
 }
 h5,
 .h5 {

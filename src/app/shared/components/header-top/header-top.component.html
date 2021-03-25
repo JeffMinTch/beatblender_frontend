@@ -8,16 +8,16 @@
           <!-- <img src="../../../../assets/images/logos/tree.jpg" alt=""> -->
           <mat-icon inline="true" svgIcon="tree" style="font-weight: 700;" color="accent"></mat-icon> 
         </div>
-        <div fxLayout="column" style="color: #502222;" fxLayoutAlign="center" class="topbar-branding">
-          <h1 fxFlex style="font-weight: 900; font-size: 32px;">Root <span style="background: #658566; color: #fafafa; padding: 4px 8px; border-radius: 8px;">Sounds</span> </h1>
-          <h4 style="color: #6a6c74; font-size: 16px; font-weight: 900;">Social & Fair Music Licensing</h4>
+        <div fxLayout="column" style="color: var(--accent-color);" fxLayoutAlign="center" class="topbar-branding">
+          <h1 fxFlex style="font-weight: 900; font-size: 32px;">Back <span style="background: var(--primary-color); color: var(--light-theme); padding: 4px 8px; border-radius: 8px;">2Roots</span> </h1>
+          <h4 style="color: var(--body-color); font-size: 16px; font-weight: 900;">Social & Fair Music Licensing</h4>
           <!-- <img src="assets/images/egret.png" alt="" class="app-logo"> -->
         </div>
         
       </div>
       <!-- <div class="tiktok"></div> -->
 
-      <ul class="menu p-0" *ngIf="!layoutConf.isMobile">
+      <!-- <ul class="menu p-0" *ngIf="!layoutConf.isMobile">
         <li *ngFor="let item of menuItems; let i = index;">
           <div *ngIf="item.type !== 'separator'" routerLinkActive="open">
             <a matRipple routerLink="/{{item.state}}" *ngIf="item.type === 'link'">
@@ -54,7 +54,7 @@
             </div>
           </div>
         </li>
-      </ul>
+      </ul> -->
       <span fxFlex></span>
       <!-- End Navigation -->
       

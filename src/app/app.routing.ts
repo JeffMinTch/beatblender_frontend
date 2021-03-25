@@ -31,22 +31,6 @@ export const rootRouterConfig: Routes = [
     // canActivate: [AuthGuard],
     children: [
       {
-        path: 'dashboard',
-        loadChildren: () => import('./views/dashboard/dashboard.module').then(m => m.DashboardModule),
-        canActivate: [AuthGuard],
-        data: { title: 'Dashboard', breadcrumb: 'DASHBOARD'}
-      },
-      {
-        path: 'profile',
-        loadChildren: () => import('./views/profile/profile.module').then(m => m.ProfileModule),
-        data: { title: 'Profile', breadcrumb: 'PROFILE'}
-      },
-      {
-        path: 'forms',
-        loadChildren: () => import('./views/forms/forms.module').then(m => m.AppFormsModule),
-        data: { title: 'Forms', breadcrumb: 'FORMS'}
-      },
-      {
         path: 'sample-market',
         loadChildren: () => import('./views/sample-licensing-market/sample-licensing-market.module').then(m => m.SampleLicensingMarketModule),
         data: { title: 'Sample Market ', breadcrumb: 'Get Sample Licenses'}
@@ -56,12 +40,6 @@ export const rootRouterConfig: Routes = [
         loadChildren: () => import('./views/music-platform/music-platform.module').then(m => m.MusicPlatformModule),
         data: { title: 'All Music', breadcrumb: 'All Music'}
       },
-      {
-        path: 'docs',
-        loadChildren: () => import('./views/documentation/documentation.module').then(m => m.DocumentationModule),
-        data: { title: 'docs', breadcrumb: 'Docs'}
-      }
-      
     ]
   },
   {

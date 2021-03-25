@@ -1,26 +1,6 @@
-<div class="docs-container">
+<div fxFlex fxLayout="column" class="docs-container">
 
-    <mat-sidenav-container fxFlex fxLayout="row" class="mat-elevation-z2 full-width" class="sidenav-container" style="">
-
-        <mat-sidenav fxLayout="column" EgretSideNavToggle class="shop-sidebar" style="border-right: none;">
-            <!-- <div class="quick-access-wrapper"> -->
-            <!-- <app-quick-access-menu class="quick-access-menu"></app-quick-access-menu> -->
-            <!-- <div class="sidenav-hold"> -->
-
-            <!-- </div> -->
-            <app-sidenav [items]="menuItems" [hasIconMenu]="hasIconTypeMenuItem" [iconMenuTitle]="iconTypeMenuTitle"></app-sidenav>
-
-            <!-- </div> -->
-            <!-- <app-basic-license-sidenav></app-basic-license-sidenav> -->
-            <!-- <app-sidebar-side></app-sidebar-side> -->
-        </mat-sidenav>
-        <div fxFlex class="doc-content">
-            <!-- Sidenav works -->
-            <router-outlet class="router-outlet"></router-outlet>
-            <footer>
-
-            </footer>
-
-        </div>
-    </mat-sidenav-container>
+    <router-outlet class="router-outlet"></router-outlet>
+    <footer></footer>
+    
 </div>

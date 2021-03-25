@@ -5,16 +5,15 @@
  *
 */
 
-
 // @font-face {
 //   font-family: "Material Icons";
 //   font-display: block;
-  
+
 //   src: local("Material Icons"), local("MaterialIcons-Regular"),
 //     url(https://fonts.gstatic.com/s/materialicons/v21/2fcrYFNaTjcS6g4U3t-Y5UEw0lE80llgEseQY3FEmqw.woff2) format("woff2");
 // }
-@import url('https://fonts.googleapis.com/css2?family=Archivo&display=swap');
-@import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900|Material+Icons');
+@import url("https://fonts.googleapis.com/css2?family=Archivo&display=swap");
+@import url("https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900|Material+Icons");
 // // Third pirty style files
 // // Sidebar Scroll
 @import "~perfect-scrollbar/css/perfect-scrollbar.css";
@@ -70,7 +69,27 @@
 // Open _views.scss and remove unnecessary view related files
 @import "scss/views/views";
 
+$primary-color: map-get($default-primary-palette, main);
+$primary-light-color: map-get($default-primary-palette, lighter);
+$accent-color: map-get($default-accent-palette, main);
 
+:root {
+    --primary-color: #{$primary-color}; // or any global you wish to share with components
+    --primary-light-color: #{$primary-light-color};
+    --accent-color: #{$accent-color};
+    --body-color: #{$body-color};
+    --light-theme: #{$light-background};
+    --light-theme-accent: #{$light-background-accent};
+    --transition-duration: #{$transitionDuration};
+    --transition-timing: #{$transitionTiming};
+    --sidebar-width: #{$sidebar-width};
+    --base-primary-color: #{$dark-primary-text};
+    --base-accent-color: #{$dark-accent-text};
+    --base-disabled-color: #{$dark-disabled-text};
+    --base-focused-color: #{$dark-focused};
+    --font-size-base: #{$font-size-base};
+    // --primary-light: #dce6dd;
+}
 // @font-face {
 //   font-family: "Archivo";
 //   font-display: block;

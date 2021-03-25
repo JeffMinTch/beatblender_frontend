@@ -18,24 +18,25 @@ $font-weight-base: 400 !default;
 $font-weight-medium: 500 !default;
 $font-weight-bold: 600 !default;
 
-$font-size-h1: 24px !default;
-$font-size-h2: 20px !default;
-$font-size-h3: 16px !default;
-$font-size-h4: 15px !default;
-$font-size-h5: 14px !default;
-$font-size-h6: 13px !default;
+$font-size-h1: 44px !default;
+$font-size-h2: 36px !default;
+$font-size-h3: 24px !default;
+$font-size-h4: 20px !default;
+$font-size-h5: 16px !default;
+$font-size-h6: 14px !default;
 
 $headings-margin-bottom: (1rem / 2) !default;
 $headings-font-family:   inherit !default;
-$headings-font-weight:   500 !default;
+$headings-font-weight:   700 !default;
 $headings-line-height:   1.1 !default;
-$headings-color:         inherit !default;
+$headings-primary-color:         inherit !default;
 
 // Colors
 // $body-color: #304156;
 // #051136
-$body-color: #000000;
+$body-color: #6a6c74;
 // $body-color: rgba(76, 165, 76, 0.603922);
 
 // Shadow
 $shadow-primary: 0 8px 12px rgba(47, 60, 74, 0.04), 0 2px 6px rgba(47, 60, 74, 0.08);
+

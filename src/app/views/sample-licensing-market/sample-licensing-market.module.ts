@@ -1,3 +1,4 @@
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
@@ -12,11 +13,14 @@ import { HowItWorksComponent } from './how-it-works/how-it-works.component';
 import { BasicLicensesComponent } from './basic-licenses/basic-licenses.component';
 import { FullLicensesComponent } from './full-licenses/full-licenses.component';
 import { BasicLicenseSidenavComponent } from './basic-licenses/basic-license-sidenav/basic-license-sidenav.component';
+import { SampleMarketComponent } from './sample-market/sample-market.component';
+import { MyLicensesComponent } from './my-licenses/my-licenses.component';
 
 
 @NgModule({
   imports: [
     CommonModule,
+    // BrowserAnimationsModule,
     FormsModule,
     ReactiveFormsModule,
     FlexLayoutModule,
@@ -26,7 +30,7 @@ import { BasicLicenseSidenavComponent } from './basic-licenses/basic-license-sid
     RouterModule.forChild(SampleLicensingMarketRoutes),
     SharedModule,
   ],
-  declarations: [HowItWorksComponent, BasicLicensesComponent, FullLicensesComponent, BasicLicenseSidenavComponent],
+  declarations: [HowItWorksComponent, BasicLicensesComponent, FullLicensesComponent, BasicLicenseSidenavComponent, SampleMarketComponent, MyLicensesComponent],
   providers: [
   ]
 })

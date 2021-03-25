@@ -32,6 +32,19 @@ body {
   outline: none;
 }
 
+.standard-text {
+  // font-size: 16px;
+  // // font-size: 1rem;
+  // line-height: 32px;
+  // // line-height: 1.6rem;
+  // // font-family: inherit;
+  // font-weight: 400;
+  // color: #6a6c74;
+  
+}
+
+
+
 select,
 button,
 textarea,
@@ -71,9 +84,22 @@ a:hover {
 a {
   color: inherit;
 }
+
 p {
   margin: 0 0 16px;
+  font-size: 16px;
+  font-weight: 400;
+  color: var(--base-primary-color);
 }
+p:not(.p-line) {
+  line-height: 32px;
+}
+
+.p-line {
+  font-size: 0.813rem;
+  margin-bottom: 4px;
+}
+
 .h1,
 .h2,
 .h3,
@@ -89,32 +115,46 @@ h6 {
   margin-bottom: 0.5rem;
   font-weight: 400;
   line-height: 1.1;
-  color: inherit;
+  // color: inherit;
 }
 .h1,
 h1 {
   font-size: 2rem;
+  color: var(--primary-color);
 }
 .h2,
 h2 {
   font-size: 1.75rem;
+  color: var(--accent-color);
 }
 .h3,
 h3 {
   font-size: 1.5rem;
+  color: var(--accent-color);
+
 }
 .h4,
 h4 {
   font-size: 1.25rem;
+  color: var(--accent-color);
+
 }
 .h5,
 h5 {
   font-size: 1rem;
+  color: var(--accent-color);
+
 }
 .h6,
 h6 {
   font-size: 0.875rem;
 }
+
+// span {
+//   color: var(--base-primary-color);
+// }
+
+
 code {
   padding: 8px;
   background: rgba(0, 0, 0, 0.08);

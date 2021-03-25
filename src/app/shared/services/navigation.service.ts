@@ -36,38 +36,40 @@ export class NavigationService {
     },
     {
       name: 'Sample Market',
-      type: 'extLink',
+      type: 'link',
       tooltip: 'Sample Market',
       icon: 'storefront',
-      state: 'http://demos.ui-lib.com/egret-doc/'
+      state: 'sample-market/basic-licenses'
     },
     {
       name: 'How It Works',
       type: 'dropDown',
       tooltip: 'Documentation',
       icon: 'info',
-      state: 'http://demos.ui-lib.com/egret-doc/',
+      state: 'sample-market/docs',
       sub: [
-        { name: 'Introduction', state: 'default' },
-        {name: 'Learning Management', state: 'learning-management'},
-        { name: 'Analytics', state: 'analytics' },
-        { name: 'Cryptocurrency', state: 'crypto' },
-        { name: 'Dark Cards', state: 'dark' }
+        { name: 'Introduction', state: 'introduction' },
+        {name: 'What is Root Sounds', state: 'learning-management'},
+        { name: 'How To Get A License', state: 'analytics' },
+        { name: 'Sampling Rules', state: 'crypto' },
+        { name: 'Video Tutorials', state: 'dark' },
+        { name: 'FAQ', state: 'dark' }
+
       ]
     },
     {
       name: 'Upload',
-      type: 'extLink',
+      type: 'link',
       tooltip: 'Documentation',
       icon: 'library_books',
-      state: 'http://demos.ui-lib.com/egret-doc/'
+      state: 'sample-market/forms/upload-audio'
     },
     {
       name: 'My Licenses',
-      type: 'extLink',
+      type: 'link',
       tooltip: 'My Licenses',
       icon: 'library_books',
-      state: 'http://demos.ui-lib.com/egret-doc/'
+      state: 'sample-market/my-licenses'
     },
   ];
 
