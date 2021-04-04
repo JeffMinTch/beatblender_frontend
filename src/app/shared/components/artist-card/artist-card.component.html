@@ -1,0 +1,22 @@
+<mat-card class="artist-card">
+    <div class="card-image">
+        <img [src]="imageUrl" alt="">
+        <!-- <div fxLayout fxLayoutAlign="center center" class="play-container">
+            <div class="play-button" fxLayoutAlign="center center">
+                <mat-icon class="m-auto">play_arrow</mat-icon>
+            </div>
+        </div> -->
+    </div>
+    <mat-card-content fxLayout="column" fxLayoutGap="20px" class="artist-card-content">
+        <h6 class="mb-16">{{artistName}}</h6>
+        <mat-chip-list aria-label="Fish selection" class="artist-chip-list">
+            <!-- <mat-chip>One fish</mat-chip> -->
+            <mat-chip>Two fish</mat-chip>
+            <mat-chip  style="background: var(--primary-light-color); color: var(--body-color);" selected>Primary fish</mat-chip>
+            <mat-chip color="accent" selected style="color: white;">Accent fish</mat-chip>
+          </mat-chip-list>
+        <div class="" fxFlex fxLayoutAlign="center center">
+            <button color="primary"  mat-button style="width: 100%;">See Artist</button>
+        </div>
+    </mat-card-content>
+</mat-card>

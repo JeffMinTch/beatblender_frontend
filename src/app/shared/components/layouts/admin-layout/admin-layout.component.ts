@@ -1,5 +1,5 @@
 import { MatSidenav } from '@angular/material/sidenav';
-import { SampleLicensingMarketService } from './../../../../views/sample-licensing-market/sample-licensing-market.service';
+import { SampleLicensingMarketService } from '../../../../views/licensing/sample-licensing-market.service';
 import { Component, OnInit, AfterViewInit, ViewChild, HostListener, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { 
   Router, 

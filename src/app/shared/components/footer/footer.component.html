@@ -1,4 +1,4 @@
-<footer class="main-footer">
+<footer class="main-footer mat-elevation-z7">
   <div class="container-dynamic d-flex">
     <div class="toolbar" fxLayout="row" fxLayoutAlign="center center">
       
@@ -72,7 +72,9 @@
     </div>
     <ng-container *ngFor="let sample of sampleLicensingMarketService.samples$ | async">
     <div  *ngIf="sample?.sampleID === (playStateControlService.currentSampleID$ | async)" class="current-audio-container">
-        <img src="{{'http://localhost:9090/api/web/public/media/image/' + sample?.sampleID}}" alt="">
+      <div fxLayoutAlign="center center">
+        <img class="mat-elevation-z1" src="{{'http://localhost:9090/api/web/public/media/image/' + sample?.sampleID}}" alt="">
+      </div>  
         <div class="current-audio-info" fxLayout="column">
           <span fxLayout="row">{{sample?.artistName}}</span>
           <span fxLayout="row">{{sample?.title}}</span>

@@ -1,18 +1,19 @@
+import { FlexLayoutModule } from '@angular/flex-layout';
+import { MusicPlatformComponent } from './music-platform.component';
 import { SharedModule } from './../../shared/shared.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
-import { AllMusicComponent } from './all-music/all-music.component';
 import { RouterModule } from '@angular/router';
-import { MusicPlatformRoutes } from './music-platform-routing.module';
+import { MusicPlatformRoutes } from './music-platform.routing';
 
 
 @NgModule({
-  declarations: [AllMusicComponent],
+  declarations: [MusicPlatformComponent],
   imports: [
     CommonModule,
     RouterModule.forChild(MusicPlatformRoutes),
-    SharedModule
-  ]
+    SharedModule,
+    FlexLayoutModule
+  ],
 })
 export class MusicPlatformModule { }

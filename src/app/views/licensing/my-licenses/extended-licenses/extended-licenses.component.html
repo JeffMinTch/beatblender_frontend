@@ -1,0 +1,62 @@
+<div fxFlex fxLayout="column" class="my-licenses-container">
+
+
+
+<!-- <h2>Extended Licenses</h2> -->
+<h2 class="mb-16" style="color: var(--body-color); padding: 8px 16px; width: fit-content; font-family: 'Lazer84'" ><span style="color: var(--primary-color);">E</span>xtend <span style="color: var(--accent-color);">L</span>icenses</h2>
+
+    <div class="table-wrapper mat-elevation-z1">
+      <div fxFlex class="table-container">
+        <table mat-table [dataSource]="dataSource" matSort class="">
+  
+          <!-- Position Column -->
+          <ng-container matColumnDef="position">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> No. </th>
+            <td mat-cell *matCellDef="let element"> {{element.position}} </td>
+          </ng-container>
+  
+          <!-- Name Column -->
+          <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
+            <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+          </ng-container>
+  
+          <!-- Weight Column -->
+          <ng-container matColumnDef="weight">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Weight </th>
+            <td mat-cell *matCellDef="let element"> {{element.weight}} </td>
+          </ng-container>
+  
+          <!-- Symbol Column -->
+          <ng-container matColumnDef="symbol">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Symbol </th>
+            <td mat-cell *matCellDef="let element">
+              <button mat-icon-button>
+                <mat-icon>favorite</mat-icon>
+              </button>
+  
+              <!-- {{element.symbol}}  -->
+            </td>
+          </ng-container>
+  
+          <ng-container matColumnDef="c">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Symbol </th>
+            <td mat-cell *matCellDef="let element">
+              <button mat-icon-button>
+                <mat-icon>favorite</mat-icon>
+              </button>
+  
+              <!-- {{element.symbol}}  -->
+            </td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+        <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+
+  
+      </div>
+  
+    </div>
+
+</div>

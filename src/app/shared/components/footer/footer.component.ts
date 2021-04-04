@@ -1,6 +1,6 @@
 import { takeUntil } from 'rxjs/operators';
 import { ComponentCommunicationService } from './../../services/component-communication.service';
-import { SampleLicensingMarketService } from './../../../views/sample-licensing-market/sample-licensing-market.service';
+import { SampleLicensingMarketService } from '../../../views/licensing/sample-licensing-market.service';
 import { PlayStateControlService } from './../../services/play-state-control.service';
 import { Subscription, Observable } from 'rxjs';
 import { AudioService } from './../../services/audio.service';

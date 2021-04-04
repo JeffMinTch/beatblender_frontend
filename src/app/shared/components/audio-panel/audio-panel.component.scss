@@ -9,9 +9,11 @@
     height: 64px;
     width: 100%;
     > img {
-      width: 64px;
-      height: 100%;
+      width: 55px;
+      height: 55px;
       object-fit: cover;
+      border-radius: 8px;
+      // border: 5px solid var(--light-theme-accent);
     }
 
     .slider-container {
@@ -158,5 +160,11 @@
         width: fit-content;
         height: fit-content;
       }
+    }
+
+    .cell-content {
+      font-size: 14px;
+      color: var(--body-color);
+      word-break: break-all;
     }
 }

@@ -24,6 +24,7 @@ import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { AuthConfigService } from 'config/auth-config.service';
 import { init_app, load_font } from 'app.init';
+// import { BasicLicensesComponent } from './views/my-licenses/basic-licenses/basic-licenses.component';
 
 
 // AoT requires an exported function for factories
@@ -61,6 +62,8 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     InMemoryWebApiModule.forRoot(InMemoryDataService, { passThruUnknownUrl: true}),
     RouterModule.forRoot(rootRouterConfig, { useHash: false }),
   ],
+  
+  // BasicLicensesComponent
   declarations: [AppComponent],
   providers: [
     // { provide: HAMMER_GESTURE_CONFIG, useClass: GestureConfig },

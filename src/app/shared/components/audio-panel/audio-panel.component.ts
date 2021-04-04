@@ -5,6 +5,8 @@ import { Sample } from 'app/shared/models/sample.model';
 import { AudioService } from 'app/shared/services/audio.service';
 import { AudioState } from 'app/shared/models/audio-state.model';
 
+export type AudioPanelType = 'primary' | 'secondary';
+
 @Component({
   selector: 'app-audio-panel',
   templateUrl: './audio-panel.component.html',
@@ -13,6 +15,7 @@ import { AudioState } from 'app/shared/models/audio-state.model';
 export class AudioPanelComponent implements OnInit {
 
   @Input() sample: Sample;
+  @Input() type: AudioPanelType;
 
   public playState: boolean;
   public currentSampleID: string;

@@ -1,0 +1,12 @@
+<!-- <div> -->
+    <mat-sidenav-container fxLayout="row" class="full-width br-8 sidenav-container">
+      
+      <mat-sidenav EgretSideNavToggle class="shop-sidebar" style="border-right: none;">
+        <div class="shop-filters-wrap " fxLayout="column" fxLayoutGap="5px">
+            
+            <app-sidenav [items]="listenItems" [hasIconMenu]="hasIconTypeMenuItem" [iconMenuTitle]="iconTypeMenuTitle"></app-sidenav>
+          </div>
+    </mat-sidenav>
+      <router-outlet></router-outlet>
+    </mat-sidenav-container>
+  <!-- </div> -->

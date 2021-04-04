@@ -2,12 +2,8 @@ import { SearchFilterFormMap } from './../../models/search-filter-form-map.model
 import { MinMaxSlider } from './../../models/min-max-slider.model';
 import { Selection } from './../../models/selection.model';
 import { AbstractControl } from '@angular/forms';
-import { SampleLicensingMarketService } from './../../../views/sample-licensing-market/sample-licensing-market.service';
-import { SampleLicensingMarketModule } from './../../../views/sample-licensing-market/sample-licensing-market.module';
-import { MatOption, MatOptionSelectionChange } from '@angular/material/core';
-import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
-import { Component, Input, OnInit, Output, ViewChild, EventEmitter } from '@angular/core';
-import { MatSelectChange } from '@angular/material/select';
+import { FormGroup, FormControl } from '@angular/forms';
+import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-search-filter',

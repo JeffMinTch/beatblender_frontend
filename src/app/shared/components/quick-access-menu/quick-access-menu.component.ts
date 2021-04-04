@@ -21,7 +21,7 @@ export class QuickAccessMenuComponent implements OnInit {
     // public themeService: ThemeService,
     private layout: LayoutService,
     // public jwtAuth: JwtAuthService,
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.iconTypeMenuTitle = this.navService.iconTypeMenuTitle;
@@ -33,7 +33,32 @@ export class QuickAccessMenuComponent implements OnInit {
       ).length;
     });
     this.layoutConf = this.layout.layoutConf;
-    
+
   }
 
+  setBackgroundColor(index: number) {
+    switch (index) {
+      case 0:
+        return 'var(--light-theme-accent)'
+
+      case 1:
+        return 'var(--primary-light-color)'
+      case 2:
+        return 'var(--accent-color)'
+
+    }
+  }
+
+
+  setIconColor(index: number) {
+    switch (index) {
+      case 0:
+        return 'var(--body-color)'
+      case 1:
+        return 'var(--body-color)'
+      case 2: {
+        return 'var(--light-theme)'
+      }
+    }
+  }
 }

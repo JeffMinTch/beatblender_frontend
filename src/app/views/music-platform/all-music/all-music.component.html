@@ -1,3 +1,57 @@
-<div *ngFor="let sample of samples">
-    <audio-panel [sample]="sample"></audio-panel>
+
+<div fxLayout="column" fxLayoutGap="">
+    <h1>Discover Artists</h1>
+    <!-- <h2 class="mb-16" style="color: var(--body-color); padding: 8px 16px; width: fit-content; font-family: 'Lazer84'" ><span style="color: var(--primary-color);">D</span>iscover <span style="color: var(--accent-color);">A</span>rtists </h2> -->
+    <mat-divider class="mb-16" ></mat-divider>
+    <div fxFlex fxLayout="row wrap" class="all-music-container">
+        <div fxFlex="33.33" style="padding: 8px;">
+            <app-artist-card [artistName]="'Kavinsky'" [imageUrl]="'../../../../assets/images/lsd.jpg'" fxFlex></app-artist-card>
+        </div>
+        <div fxFlex="33.33" style="padding: 8px;">
+            <app-artist-card [artistName]="'SAHARA'" [imageUrl]="'../../../../assets/images/m9.jpg'" fxFlex></app-artist-card>
+        </div>
+        <div fxFlex="33.33" style="padding: 8px;">
+            <app-artist-card [artistName]="'Hotel Motel'" [imageUrl]="'../../../../assets/images/place12.png'" fxFlex></app-artist-card>
+        </div>
+        <div fxFlex="33.33" style="padding: 8px;">
+            <app-artist-card [artistName]="'Gossenboss'" [imageUrl]="'../../../../assets/images/typ5.jpg'" fxFlex></app-artist-card>
+        </div>
+        <div fxFlex="33.33" style="padding: 8px;">
+            <app-artist-card [artistName]="'Daft Punk'" [imageUrl]="'../../../../assets/images/neon.jpg'" fxFlex></app-artist-card>
+        </div>
+        <div fxFlex="33.33" style="padding: 8px;">
+            <app-artist-card [artistName]="'A$AP Rocky'" [imageUrl]="'../../../../assets/images/typ.jpg'" fxFlex></app-artist-card>
+        </div>
+    
+    
+    </div>
+    <mat-divider class="mb-16" ></mat-divider>
+
+    <h1>Todays Charts</h1>
+    <!-- <h2 class="mb-16" style="color: var(--body-color); padding: 8px 16px; width: fit-content; font-family: 'Lazer84'" ><span style="color: var(--primary-color);">T</span>oday's <span style="color: var(--accent-color);">C</span>harts </h2> -->
+    <!-- <mat-divider class="mb-16" ></mat-divider> -->
+    <div fxFlex fxLayout="row wrap" class="all-music-container">
+        <div fxFlex="33.33" style="padding: 8px;">
+            <app-artist-card [artistName]="'Kavinsky'" [imageUrl]="'../../../../assets/images/lsd.jpg'" fxFlex></app-artist-card>
+        </div>
+        <div fxFlex="33.33" style="padding: 8px;">
+            <app-artist-card [artistName]="'SAHARA'" [imageUrl]="'../../../../assets/images/m9.jpg'" fxFlex></app-artist-card>
+        </div>
+        <div fxFlex="33.33" style="padding: 8px;">
+            <app-artist-card [artistName]="'Hotel Motel'" [imageUrl]="'../../../../assets/images/place12.png'" fxFlex></app-artist-card>
+        </div>
+        <div fxFlex="33.33" style="padding: 8px;">
+            <app-artist-card [artistName]="'Gossenboss'" [imageUrl]="'../../../../assets/images/typ5.jpg'" fxFlex></app-artist-card>
+        </div>
+        <div fxFlex="33.33" style="padding: 8px;">
+            <app-artist-card [artistName]="'Daft Punk'" [imageUrl]="'../../../../assets/images/neon.jpg'" fxFlex></app-artist-card>
+        </div>
+        <div fxFlex="33.33" style="padding: 8px;">
+            <app-artist-card [artistName]="'A$AP Rocky'" [imageUrl]="'../../../../assets/images/typ.jpg'" fxFlex></app-artist-card>
+        </div>
+    
+    
+    </div>
+    
 </div>
+

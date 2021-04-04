@@ -10,8 +10,11 @@ h6,
 .h4,
 .h5,
 .h6 {
-  margin-bottom: $headings-margin-bottom;
-  margin-top: 0;
+  // margin-bottom: $headings-margin-bottom;
+  // margin-top: 0;
+  // margin-left: 16px;
+  // margin-right: 16px;
+  // margin: 16px;
   font-weight: $headings-font-weight;
   line-height: $headings-line-height;
   letter-spacing: 4px;
@@ -20,22 +23,22 @@ h6,
 h1,
 .h1 {
   font-size: $font-size-h1;
-  color: var(--primary-color);
+  color: var(--base-accent-color);
 }
 h2,
 .h2 {
   font-size: $font-size-h2;
-  color: var(--accent-color);
+  color: var(--primary-color);
 }
 h3,
 .h3 {
   font-size: $font-size-h3;
-  color: var(--base-primary-color);
+  color: var(--primary-primary-color);
 }
 h4,
 .h4 {
   font-size: $font-size-h4;
-  color: var(--base-accent-color);
+  color: var(--primary-accent-color);
 
 }
 h5,

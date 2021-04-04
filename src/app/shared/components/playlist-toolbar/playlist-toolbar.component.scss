@@ -1,0 +1,12 @@
+.playlist-toolbar {
+    width: 100%;
+    // height: 64px;
+    padding: 8px;
+    
+
+    .shuffle-button {
+        background: var(--primary-light-color);
+        color: var(--body-color);
+        border-radius: 32px;
+    }
+}

@@ -3,8 +3,12 @@ import * as WebFont from 'webfontloader'
 
 
 export function init_app(authConfigService: AuthConfigService) {
+    
+    
     return () => authConfigService.initAuth().then((data) => {
+        
         console.log(data);
+        
     });
 }
 

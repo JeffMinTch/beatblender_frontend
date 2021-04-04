@@ -1,3 +1,4 @@
+import { PlaylistToolbarComponent } from './playlist-toolbar/playlist-toolbar.component';
 import { QuickAccessMenuComponent } from './quick-access-menu/quick-access-menu.component';
 import { MinMaxSliderComponent } from './min-max-slider/min-max-slider.component';
 import { SelectComponent } from './select/select.component';
@@ -75,7 +76,8 @@ const components = [
   AudioPanelComponent,
   SelectComponent,
   MinMaxSliderComponent,
-  QuickAccessMenuComponent
+  QuickAccessMenuComponent,
+  PlaylistToolbarComponent
 ]
 
 @NgModule({
@@ -107,7 +109,8 @@ const components = [
     MatSliderModule,
     MatExpansionModule,
     MatSnackBarModule,
-    MatListModule
+    MatListModule,
+
 
   ],
   declarations: components,

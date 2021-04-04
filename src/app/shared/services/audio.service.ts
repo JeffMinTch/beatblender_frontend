@@ -107,8 +107,8 @@ export class AudioService implements OnDestroy {
     }
     this.wavesurfer = WaveSurfer.create({
       container: '#waveform',
-      barWidth: 3,
-      // barRadius: 3,
+      barWidth: 5,
+      barRadius: 3,
       hideScrollbar: true,
       cursorWidth: 1,
       // scrollParent: true,
@@ -118,15 +118,16 @@ export class AudioService implements OnDestroy {
       backend: 'WebAudio',
       height: 40, 
       fillParent: true,
-      // backgroundColor: this.themeLightColor,
+      backgroundColor: '#ededed',
       // // progressColor: '#03a9f4',
       // #051136
       // #0081ff
       
-      progressColor: '#ffffff',
+      progressColor: '#d69090',
       responsive: true,
       // waveColor: 'transparent',
       waveColor: 'rgb(202,202,202)',
+      // waveColor: '#dce6dd',
       // zoom: 50,
       // cursorColor: '#efefef',
       cursorColor: 'transparent',

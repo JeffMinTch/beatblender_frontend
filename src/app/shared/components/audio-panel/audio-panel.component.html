@@ -1,13 +1,13 @@
-<mat-toolbar mat-ripple [ngStyle]="{background: sample?.sampleID === (playStateControlService.currentSampleID$ | async) ? '#ededed' : '#ededed'}" 
+<mat-toolbar mat-ripple [ngStyle]="{background: sample?.sampleID === (playStateControlService.currentSampleID$ | async) ? '#ededed' : '#fafafa'}" 
 (click)="playState ? pause(sample?.sampleID === currentSampleID, sample?.sampleID) : play(sample?.sampleID === currentSampleID, sample?.sampleID)"
-
-class="player-widget p-0" fxLayout="row" fxLayoutAlign="space-between">
+style="border-left: none; border-right: none;"
+class="player-widget px-8 py-0" fxLayout="row" fxLayoutAlign="center center">
     <!-- [routerLink]="['/shop/products/', product._id]" -->
     <!-- <div fxLayout="row" fxLayoutAlign="center center" class="category">
     </div> -->
     <!-- <img [src]="sample?.imageDownLoadUri" alt=""> -->
-    <img src="{{'http://localhost:9090/api/web/public/media/image/' + sample?.sampleID}}" alt="">
-    <div fxFlex="1 1 auto" class="slider-container" fxLayout="row" fxLayoutAlign="center center">
+    <img src="{{'http://localhost:9090/api/web/public/media/image/' + sample?.sampleID}}" alt="" class="mat-elevation-z1">
+    <div fxFlex="1 1 auto" class="slider-container" fxLayout="row" fxLayoutAlign="start center">
       <!-- <mat-slider #audioSlider thumbLabel="true" class="slider" min="0"
         [max]="sample?.sampleID === (playStateControlService.currentSampleID$ | async) ? getDuration() : durationFallback()"
         [value]="sample?.sampleID === (playStateControlService.currentSampleID$ | async) ? getCurrentTime() : currentTimeFallback()"
@@ -18,12 +18,39 @@ class="player-widget p-0" fxLayout="row" fxLayoutAlign="space-between">
                 [max]="getMax(sample?.sampleID)" -->
       <!-- value="0"
               max="100"  -->
+              <div fxLayout="row" fxFlex class="ml-32" *ngIf="type === 'primary'">
+                <!-- <div fxFlex fxLayoutAlign="center center">
+    
+                </div> -->
+                <div fxFlex="30" fxLayout="row wrap" fxLayoutAlign="start center" class="p-8">
+                    <span fxFlex class="cell-content">{{sample?.artistName}}</span>
+                </div>
+                <div fxFlex="40" fxLayout="row wrap" fxLayoutAlign="start center" class="p-8">
+                    <span fxFlex class="cell-content">{{sample?.title}}</span>
+                </div>
+                <div fxFlex fxLayout="row wrap" fxLayoutAlign="start center" class="p-8">
+                    <span fxFlex class="cell-content">3:02 min</span>
+                </div>
+                <div fxFlex fxLayout="row wrap" fxLayoutAlign="start center" class="p-8">
+                    <span fxFlex class="cell-content">~2k</span>
+                </div>
+                <!-- <div fxFlex="10" fxLayout="row wrap" fxLayoutAlign="start center" class="p-8">
+                    <span></span>
+                </div> -->
+    
+              </div>       
     </div>
     <!-- style="font-size: 32px;" -->
-    <button class="play-button" fxLayout="row" fxLayoutAlign="center center">
-      <mat-icon
-        [ngStyle]="{color: sample?.sampleID === (playStateControlService.currentSampleID$ | async) ? '#658566': 'grey'}">
-        {{sample?.sampleID === (playStateControlService.currentSampleID$ | async) &&
+    <button mat-icon-button color="" class="mr-8" *ngIf="type === 'primary'">
+      <mat-icon>more_vert</mat-icon>
+    </button>
+    <button  mat-icon-button [ngStyle]="{background: sample?.sampleID === (playStateControlService.currentSampleID$ | async) ? 'var(--primary-color)' : '#fafafa',
+    border: sample?.sampleID === (playStateControlService.currentSampleID$ | async) ? '1px solid var(--primary-color)' : '1px solid var(--body-color)'
+
+  }" [ngClass]="sample?.sampleID === (playStateControlService.currentSampleID$ | async) ? 'mat-elevation-z1' : ''" fxLayout="row" fxLayoutAlign="center center">
+      <!-- [ngStyle]="{color: sample?.sampleID === (playStateControlService.currentSampleID$ | async) ? 'var(--body-color)': 'grey'}"> -->
+      <mat-icon [ngStyle]="{color: sample?.sampleID === (playStateControlService.currentSampleID$ | async) ? 'var(--light-theme)': 'var(--body-color)'}">
+      {{sample?.sampleID === (playStateControlService.currentSampleID$ | async) &&
         (playStateControlService.playState$ | async) ? 'pause' : 'play_arrow'}}
       </mat-icon>
     </button>

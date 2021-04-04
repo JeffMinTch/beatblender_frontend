@@ -6,7 +6,7 @@ import { AuthGuard } from './shared/guards/auth.guard';
 export const rootRouterConfig: Routes = [
   {
     path: '',
-    redirectTo: 'home',
+    redirectTo: 'licensing/sample-market',
     pathMatch: 'full'
   },
   {
@@ -31,14 +31,14 @@ export const rootRouterConfig: Routes = [
     // canActivate: [AuthGuard],
     children: [
       {
-        path: 'sample-market',
-        loadChildren: () => import('./views/sample-licensing-market/sample-licensing-market.module').then(m => m.SampleLicensingMarketModule),
-        data: { title: 'Sample Market ', breadcrumb: 'Get Sample Licenses'}
+        path: 'licensing',
+        loadChildren: () => import('./views/licensing/licensing.module').then(m => m.LicensingModule),
+        data: { title: 'Licensing', breadcrumb: 'Get Sample Licenses'}
       },
       {
-        path: 'music',
+        path: 'listen',
         loadChildren: () => import('./views/music-platform/music-platform.module').then(m => m.MusicPlatformModule),
-        data: { title: 'All Music', breadcrumb: 'All Music'}
+        data: { title: 'Listen', breadcrumb: 'All Music'}
       },
     ]
   },

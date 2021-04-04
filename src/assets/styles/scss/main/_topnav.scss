@@ -1,6 +1,10 @@
 @import '../themes/init';
 
-.topnav {	
+.topnav {
+	// background-color: #658566;
+
+	.logo-container {
+	}	
 	&:after {
 		content:"";
 		display:table;

@@ -112,7 +112,8 @@ $accent-color: map-get($default-accent-palette, main);
 
 // }
 
-//   @font-face {
-//     font-family: "Alba";
-//     src: url("./scss/fonts/typo-round/Typo_Round_Regular_Demo.otf") format("truetype"),
-//   }
+  @font-face {
+    font-family: "Lazer84";
+    src: url("./scss/fonts/lazer84/Lazer84.ttf") format("truetype");
+    font-display: block;
+  }

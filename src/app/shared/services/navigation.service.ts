@@ -28,7 +28,53 @@ interface IBadge {
 
 @Injectable()
 export class NavigationService {
-  
+
+  listenMenu: IMenuItem[] = [
+    {
+      type: 'separator',
+      name: 'Listen Music - Navigation'
+    },
+    {
+      name: 'All Music',
+      type: 'link',
+      tooltip: 'All Music',
+      icon: 'headphones',
+      state: 'listen/all-music'
+    },
+    {
+      name: 'Find',
+      type: 'link',
+      tooltip: 'Find',
+      icon: 'search',
+      state: 'listen/find'
+    },
+    {
+      name: 'Genres',
+      type: 'link',
+      tooltip: 'Documentation',
+      icon: 'library_books',
+      state: 'licensing/forms/upload-audio'
+    },
+    {
+      name: 'PlayLists',
+      type: 'dropDown',
+      tooltip: 'My Licenses',
+      icon: 'library_books',
+      state: 'licensing/my-licenses',
+      sub: [
+        { name: 'Basic Licenses', state: 'basic-licenses' },
+        {name: 'Extended Licenses', state: 'extended-licenses'},
+        // { name: 'How To Get A License', state: 'analytics' },
+        // { name: 'Sampling Rules', state: 'crypto' },
+        // { name: 'Video Tutorials', state: 'dark' },
+        // { name: 'FAQ', state: 'dark' }
+
+      ]
+    },
+  ];
+
+
+
   sampleMarketMenu: IMenuItem[] = [
     {
       type: 'separator',
@@ -39,14 +85,14 @@ export class NavigationService {
       type: 'link',
       tooltip: 'Sample Market',
       icon: 'storefront',
-      state: 'sample-market/basic-licenses'
+      state: 'licensing/sample-market'
     },
     {
       name: 'How It Works',
       type: 'dropDown',
       tooltip: 'Documentation',
       icon: 'info',
-      state: 'sample-market/docs',
+      state: 'licensing/docs',
       sub: [
         { name: 'Introduction', state: 'introduction' },
         {name: 'What is Root Sounds', state: 'learning-management'},
@@ -62,14 +108,23 @@ export class NavigationService {
       type: 'link',
       tooltip: 'Documentation',
       icon: 'library_books',
-      state: 'sample-market/forms/upload-audio'
+      state: 'licensing/forms/upload-audio'
     },
     {
       name: 'My Licenses',
-      type: 'link',
+      type: 'dropDown',
       tooltip: 'My Licenses',
       icon: 'library_books',
-      state: 'sample-market/my-licenses'
+      state: 'licensing/my-licenses',
+      sub: [
+        { name: 'Basic Licenses', state: 'basic-licenses' },
+        {name: 'Extended Licenses', state: 'extended-licenses'},
+        // { name: 'How To Get A License', state: 'analytics' },
+        // { name: 'Sampling Rules', state: 'crypto' },
+        // { name: 'Video Tutorials', state: 'dark' },
+        // { name: 'FAQ', state: 'dark' }
+
+      ]
     },
   ];
 
@@ -82,18 +137,18 @@ export class NavigationService {
       state: 'home'
     },
     {
-      name: 'PROFILE',
+      name: 'MUSIC',
       type: 'icon',
       tooltip: 'Listen Music',
       icon: 'headset',
-      state: 'profile/overview'
+      state: 'listen'
     },
     {
-      name: 'TOUR',
+      name: 'SAMPLE MARKET',
       type: 'icon',
       tooltip: 'Sample Market',
       icon: 'storefront',
-      state: 'tour'
+      state: 'licensing/sample-market'
     },
     {
       type: 'separator',
@@ -118,7 +173,7 @@ export class NavigationService {
       type: 'dropDown',
       tooltip: 'Sample Market',
       icon: 'storefront',
-      state: 'sample-market',
+      state: 'licensing',
       sub: [
         {name: 'How it works', state: 'how-it-works'},
         {name: 'Basic Licenses', state: 'basic-licenses'},
@@ -524,6 +579,10 @@ export class NavigationService {
 
   sampleMarketItems = new BehaviorSubject<IMenuItem[]>(this.sampleMarketMenu);
   sampleMarketItems$ = this.sampleMarketItems.asObservable();
+
+  listenItems = new BehaviorSubject<IMenuItem[]>(this.listenMenu);
+  listenItems$ = this.listenItems.asObservable();
+
 
   constructor() {}
 

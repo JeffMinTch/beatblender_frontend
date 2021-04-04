@@ -1,0 +1,118 @@
+<div class="pt-8" fxLayout="column" fxLayoutGap="">
+    <app-searchbar [searchForm]="searchForm" (searchRequest)="applyFilter()"
+        (searchStringChange)="changeSearchString($event)" (pageChange)="changePage($event)"
+        (countChange)="changeCount($event)" (expandFilter)="toggleFilter($event)" (sidenavChange)="toggleSidenav()"
+        [sortBy]="sortBy" [page]="page" [pageSize]="pageSize"></app-searchbar>
+    <!-- <table mat-table [dataSource]="dataSource" class="mat-elevation-z8"> -->
+    <!-- <mat-text-column name="artistName" headerText="Artist"></mat-text-column> -->
+    <!-- <mat-text-column name="sampleTitle"></mat-text-column> -->
+    <!-- <mat-text-column name="weight"></mat-text-column> -->
+    <!-- <mat-text-column name="symbol"></mat-text-column> -->
+
+    <!-- <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr> -->
+    <!-- <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr> -->
+    <!-- <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr> -->
+    <!-- <app-playlist-toolbar></app-playlist-toolbar> -->
+    <h1 class="pl-16">Benjamin Kliemann</h1>
+    <app-playlist-toolbar></app-playlist-toolbar>
+    
+    <div fxLayout="row" class="" style="height: 64px;">
+        <div fxFlex="64px"></div>
+        <div fxFlex class="ml-32">
+            <!-- <div fxFlex fxLayoutAlign="center center">
+    
+                </div> -->
+            <div fxFlex="30" fxLayoutAlign="start center" class="p-8">
+                <span>Artist</span>
+            </div>
+            <div fxFlex="40" fxLayoutAlign="start center" class="p-8">
+                <span>Title</span>
+            </div>
+            <div fxFlex fxLayoutAlign="start center" class="p-8">
+                <span>Length</span>
+            </div>
+            <div fxFlex fxLayoutAlign="start center" class="p-8">
+                <span>Streaming</span>
+            </div>
+            <!-- <div fxFlex="10" fxLayoutAlign="start center" class="p-8">
+                <span></span>
+            </div> -->
+
+        </div>
+        <div fxFlex="96px"></div>
+    </div>
+
+    <div class="product-container" fxLayout="row wrap" fxLayoutAlign="start start">
+        <!-- Product Box -->
+        <ng-container
+            *ngIf="(sampleLicensingMarketService.samples$ | async)?.length <= 0 && (sampleLicensingMarketService.samples$ | async) != null"
+            ; else product>
+            <div fxFlex fxLayoutAlign="center">
+                <span class="fs-24">No samples match your request.</span>
+            </div>
+        </ng-container>
+        <ng-container #product>
+            <div fxLayout="row" class="product-wrap" style="width: 100%;"
+                *ngFor="let sample of (sampleLicensingMarketService.samples$ | async) | paginate: { itemsPerPage: pageSize, currentPage: page, totalItems: count }; let i = index;"
+                [@animate]="{value:'*',params:{delay: (i*200)+'ms', y:'300px'}}">
+                <!-- [@animate]="{value:'*',params:{delay: (i*50)+'ms', y:'50px'}}" -->
+                <!-- [@animate]="{value:'*',params:{delay: (i*100)+'ms', y:'100px'}}" -->
+                <div fxLayout="column" class="product-inner default-bg full-width" style="border-bottom: 1px solid var(--light-theme-accent);">
+                    <!-- <div *ngIf="product?.badge?.text" class="product-badge mat-elevation-z7" [ngStyle]="{background: product?.badge?.color || '#f44336'}">
+                          <span>{{product?.badge?.text}}</span>
+                        </div> -->
+                    <app-audio-panel [sample]="sample" type="primary"></app-audio-panel>
+
+                    <!-- Visible when viewMode === list-view -->
+                    <div class="more-info-wrap p-16" *ngIf="viewMode === 'list-view'">
+                        <div class="more-info">
+                            <div class="more-actions mb-16">
+                                <div class="product-rating">
+                                    <star-rating [starType]="'svg'" [readOnly]="true" [size]="'medium'"
+                                        [staticColor]="'ok'" [rating]="4.63"></star-rating>
+                                    <small class="text-muted">(140)</small>
+                                </div>
+                                <span fxFlex></span>
+                                <button mat-icon-button>
+                                    <mat-icon>playlist_add</mat-icon>
+                                </button>
+                                <button mat-icon-button>
+                                    <mat-icon>favorite</mat-icon>
+                                </button>
+                            </div>
+
+                            <div>
+                                <ul>
+                                    <li>
+                                        <mat-icon>check</mat-icon> Heavy duty
+                                    </li>
+                                    <li>
+                                        <mat-icon>check</mat-icon> Water resistance
+                                    </li>
+                                    <li>
+                                        <mat-icon>check</mat-icon> Clean design
+                                    </li>
+                                    <li>
+                                        <mat-icon>check</mat-icon> High quality raw materials
+                                    </li>
+                                </ul>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </ng-container>
+        <div class="products-pagination" *ngIf="count > 0">
+            <!-- <pagination-controls (pageChange)="currentPage = $event"></pagination-controls> -->
+            <pagination-controls (pageChange)="handlePageChange($event)"></pagination-controls>
+        </div>
+
+
+    </div>
+
+    <!-- </table> -->
+
+
+</div>

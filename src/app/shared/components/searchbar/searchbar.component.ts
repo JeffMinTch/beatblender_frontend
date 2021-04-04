@@ -1,6 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { FormGroup, FormBuilder } from '@angular/forms';
-import { SampleLicensingMarketService } from './../../../views/sample-licensing-market/sample-licensing-market.service';
+import { SampleLicensingMarketService } from '../../../views/licensing/sample-licensing-market.service';
 import { AudioWebService } from './../../services/web-services/audio-web.service';
 import { Component, ElementRef, Input, OnInit, Output, ViewChild, EventEmitter, HostListener } from '@angular/core';
 import { MatOption, MatOptionSelectionChange } from '@angular/material/core';

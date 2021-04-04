@@ -1,13 +1,17 @@
 <section fxLayout="row" fxLayout.lt-sm="column" class="shop-top-toolbar">
-    <div class="wrap">
-      <button mat-stroked-button color="primary" class="mr-16" (click)="toggleSidenav()">
+    <div class="wrap" fxFlex fxLayoutAlign="center center">
+      <button mat-stroked-button style="height: 40px;" color="primary" class="mr-16 br-32" (click)="toggleSidenav()">
         <mat-icon>short_text</mat-icon>
-        Open Guide
+        
       </button>
+      <!-- <button mat-stroked-button color="primary" style="height: 50px;" (click)="toggleFilter()">
+        <mat-icon>filter_list</mat-icon> {{isFilterOpen ? 'Close' : 'Open'}} Filter
+      </button> -->
+      <span fxFlex="20px"></span>
       <div class="product-search-wrap">
         <form [formGroup]="searchForm"
           (ngSubmit)="selectedSearchOption === null ? handleSearchbar(searchInput.value) : handleSearchbar(searchInput.value, selectedSearchOption.value)">
-          <mat-form-field appearance="outline" class="full-width">
+          <mat-form-field appearance="outline" class="full-width br-32">
 
             <input matInput #searchInput #searchInputTrigger="matAutocompleteTrigger" type="text" name="searchProduct"
               [matAutocomplete]="auto" (input)="retrieveSuggestions(searchInput.value)"
@@ -39,8 +43,6 @@
         </form>
       </div>
     </div>
-    <span fxFlex="20px"></span>
-    <button mat-stroked-button color="primary" style="height: 50px;" (click)="toggleFilter()">
-      <mat-icon>filter_list</mat-icon> {{isFilterOpen ? 'Close' : 'Open'}} Filter
-    </button>
+    
+
   </section>
