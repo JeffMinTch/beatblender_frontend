@@ -1,0 +1,50 @@
+<h1>My Playlists</h1>
+<!-- <app-audio-panel [sample]="sample" type="sample"></app-audio-panel> -->
+<ng-container #product>
+    <div fxLayout="row" class="product-wrap"
+      *ngFor="let sample of (sampleLicensingMarketService.samples$ | async) | paginate: { itemsPerPage: pageSize, currentPage: page, totalItems: count }; let i = index;"
+      [@animate]="{value:'*',params:{delay: (i*300)+'ms', y:'300px'}}"
+      >
+      <div fxLayout="column" class="product-inner default-bg mx-8 my-16 full-width">
+        <app-audio-panel [sample]="sample" type="playlist"></app-audio-panel>
+        
+        <div class="more-info-wrap p-16" *ngIf="viewMode === 'list-view'">
+          <div class="more-info">
+            <div class="more-actions mb-16">
+              <div class="product-rating">
+                <star-rating [starType]="'svg'" [readOnly]="true" [size]="'medium'" [staticColor]="'ok'"
+                  [rating]="4.63"></star-rating>
+                <small class="text-muted">(140)</small>
+              </div>
+              <span fxFlex></span>
+              <button mat-icon-button>
+                <mat-icon>playlist_add</mat-icon>
+              </button>
+              <button mat-icon-button>
+                <mat-icon>favorite</mat-icon>
+              </button>
+            </div>
+
+            <div>
+              <ul>
+                <li>
+                  <mat-icon>check</mat-icon> Heavy duty
+                </li>
+                <li>
+                  <mat-icon>check</mat-icon> Water resistance
+                </li>
+                <li>
+                  <mat-icon>check</mat-icon> Clean design
+                </li>
+                <li>
+                  <mat-icon>check</mat-icon> High quality raw materials
+                </li>
+              </ul>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </ng-container>

@@ -5,7 +5,7 @@ import { Sample } from 'app/shared/models/sample.model';
 import { AudioService } from 'app/shared/services/audio.service';
 import { AudioState } from 'app/shared/models/audio-state.model';
 
-export type AudioPanelType = 'primary' | 'secondary';
+export type AudioPanelType = 'primary' | 'sample' | 'playlist';
 
 @Component({
   selector: 'app-audio-panel',

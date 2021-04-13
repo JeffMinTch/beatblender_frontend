@@ -43,20 +43,23 @@ export class LayoutService {
   constructor(private themeService: ThemeService, private router: Router) {
 
     this.router.events.subscribe((routerEvent: RouterEvent) => {
-      if(routerEvent instanceof NavigationEnd) {
-        switch(routerEvent.url) {
+      if (routerEvent instanceof NavigationEnd) {
+        switch (routerEvent.url) {
           case '/licensing/sample-market':
             this.layoutConf.footerFixed = true;
             break;
           case '/docs/introduction':
             this.layoutConf.footerFixed = true;
             break;
-            case '/listen/all-music':
-              this.layoutConf.footerFixed = true;
-              break;
-              case '/listen/find':
-                this.layoutConf.footerFixed = true;
-                break;      
+          case '/listen/all-music':
+            this.layoutConf.footerFixed = true;
+            break;
+          case '/listen/find':
+            this.layoutConf.footerFixed = true;
+            break;
+          case '/listen/playlists':
+            this.layoutConf.footerFixed = true;
+            break;
           default:
             this.layoutConf.footerFixed = false;
         }
@@ -112,7 +115,7 @@ export class LayoutService {
     try {
       this.layoutConf = JSON.parse(layoutConfString);
       this.themeService.changeTheme(prevTheme, this.layoutConf.matTheme);
-    } catch (e) {}
+    } catch (e) { }
   }
 
   adjustLayout(options: IAdjustScreenOptions = {}) {
@@ -138,5 +141,15 @@ export class LayoutService {
     return window.matchMedia(`(max-width: 959px)`).matches;
   }
 
-  
+  toggleSidenav():void {
+    if(this.layoutConf.sidebarStyle === 'full') {
+      this.layoutConf.sidebarStyle = 'closed';
+    } else if(this.layoutConf.sidebarStyle === 'closed') {
+      this.layoutConf.sidebarStyle = 'full';
+    } else {
+      throw new Error("Sidenav has wrong state");
+    }
+  }
+
+
 }

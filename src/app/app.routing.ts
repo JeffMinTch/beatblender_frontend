@@ -9,11 +9,11 @@ export const rootRouterConfig: Routes = [
     redirectTo: 'licensing/sample-market',
     pathMatch: 'full'
   },
-  {
-    path: 'home',
-    loadChildren: () => import('./views/home/home.module').then(m => m.HomeModule),
-    data: { title: 'Choose A Demo' }
-  },
+  // {
+  //   path: 'home',
+  //   loadChildren: () => import('./views/home/home.module').then(m => m.HomeModule),
+  //   data: { title: 'Choose A Demo' }
+  // },
   {
     path: '',
     component: AuthLayoutComponent,
@@ -39,6 +39,11 @@ export const rootRouterConfig: Routes = [
         path: 'listen',
         loadChildren: () => import('./views/music-platform/music-platform.module').then(m => m.MusicPlatformModule),
         data: { title: 'Listen', breadcrumb: 'All Music'}
+      },
+      {
+        path: 'home',
+        loadChildren: () => import('./views/home/home.module').then(m => m.HomeModule),
+        data: { title: 'Choose A Demo' }
       },
     ]
   },

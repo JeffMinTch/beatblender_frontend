@@ -14,6 +14,7 @@ import { AppLoaderService } from './services/app-loader/app-loader.service';
 import { SharedComponentsModule } from './components/shared-components.module';
 import { SharedPipesModule } from './pipes/shared-pipes.module';
 import { SharedDirectivesModule } from './directives/shared-directives.module';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 @NgModule({
   imports: [
@@ -21,7 +22,11 @@ import { SharedDirectivesModule } from './directives/shared-directives.module';
     SharedComponentsModule,
     SharedPipesModule,
     SharedDirectivesModule,
-    SharedMaterialModule    
+    SharedMaterialModule,
+    FlexLayoutModule,
+    // ParallaxModule,
+    // ParallaxC
+
   ],
   providers: [
     ThemeService,
@@ -36,7 +41,8 @@ import { SharedDirectivesModule } from './directives/shared-directives.module';
     SharedComponentsModule,
     SharedPipesModule,
     SharedDirectivesModule,
-    SharedMaterialModule
+    SharedMaterialModule,
+    FlexLayoutModule
   ]
 })
 export class SharedModule { }

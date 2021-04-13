@@ -28,6 +28,11 @@ export const MusicPlatformRoutes: Routes = [
         path: 'find',
         loadChildren: () => import('./find/find.module').then(m => m.FindModule),
         data: { title: 'Find', breadcrumb: 'Find' }
+      },
+      {
+        path: 'playlists',
+        loadChildren: () => import('./playlists/playlists.module').then(m => m.PlaylistsModule),
+        data: { title: 'Playlists', breadcrumb: 'Playlists' }
       }
     ]
   },

@@ -1,3 +1,4 @@
+import { SharedModule } from './../../shared/shared.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
@@ -20,12 +21,7 @@ import { AppLoaderComponent } from 'app/shared/services/app-loader/app-loader.co
 @NgModule({
   imports: [
     CommonModule,
-    MatListModule,
-    MatCardModule,
-    MatButtonModule,
-    MatIconModule,
-    MatTooltipModule,
-    FlexLayoutModule,
+    SharedModule,
     PerfectScrollbarModule,
     RouterModule.forChild(HomeRoutes)
   ],

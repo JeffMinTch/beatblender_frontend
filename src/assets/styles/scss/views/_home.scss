@@ -1,15 +1,50 @@
 .home-section {
-  padding: 80px 0;
+  // padding: 80px 0;
 }
+
+.home-sidenav .mat-sidenav-content {
+  overflow: hidden !important;
+}
+
+.landing-container {
+  width: 100%;
+  height: 100%;
+  // filter: blur(10px);
+  // background: rgba(202,202,202,0.9);
+  // margin: auto;
+  // width: 60%;
+  // height: 80%;
+  // backdrop-filter: blur(10px);
+  // webkit-backdrop-filter: blur(10px);
+}
+
+.landing-card {
+  min-width: 400px;
+  max-width: 600px;
+  margin: auto 40px 40px auto;
+  height: 250px;
+  width: 350px;
+  flex-direction: column;
+  
+}
+
 .scrollable {
   position: relative;
   width: 100%;
   height: 100vh;
 }
 .section-intro {
-  padding: 100px 0 30px;
-  background: #2b303b url(../../../images/backgrounds/studio.jpg) center center/cover no-repeat;
+  // padding: 100px 0 30px;
+  // background: var(--light-theme-accent);
+  // background-blend-mode: lighten;
+  background: #2b303b url(../../../images/backgrounds/window-studio.jpg) center center/cover no-repeat;
   color: #ffffff;
+  height: calc(100vh - 78px);
+  max-height: 800px;
+  width: 100%;
+  margin-bottom: 60px;
+
+  // filter: blur(2px);
   .egret {
     font-size: 36px;
     font-weight: 400;
@@ -85,3 +120,144 @@
   }
 }
 
+
+.home-section {
+  .home-section-title {
+    text-align: center; 
+    max-width: 90%;
+    font-size: 18px;
+    line-height: 50px;
+    span {
+      font-weight: 700; 
+      color: var(--primary-color);
+      font-family: 'Lazer84';
+    }
+  }
+
+  .highlight {
+    font-weight: 700; 
+    color: var(--primary-color); 
+    font-family: 'Lazer84';
+    padding: 0 8px;
+  }
+}
+
+.second-container {
+  width: 100%;
+  height: fit-content;
+  // background: var(--light-theme-accent);
+}
+
+.vision-card {
+  width: 33.33%;
+}
+
+.question-cards {
+  // background: url(../../../images/backgrounds/window-studio.jpg);
+  // background-size: cover;
+  // background-repeat: no-repeat;
+  // background-position: center;
+    
+}
+
+.question-card-container {
+  width: 50%;
+
+  mat-card {
+    box-shadow: none !important;
+    min-height: 300px;
+    background: var(--light-theme) !important;
+    // h3 {
+    //   color: var(--primary-color);
+    // }
+  }
+}
+
+app-benefit-card {
+  width: 33.33%;
+}
+
+.rounded-enum {
+  border: 2px solid var(--body-color);
+  border-radius: 50%;
+  padding: 8px;
+  font-weight: 900;
+  width: 40px;
+  height: 40px;
+  color: var(--body-color);
+  // background: var(--primary-light-color);
+}
+
+
+.step-card-title {
+  font-size: 22px;
+  color: var(--body-color);
+  font-weight: 700;
+}
+
+.license-card {
+  width: 220px;
+  height: 350px;
+  border-radius: 8px;
+  border: 2px solid;
+  background: white;
+}
+
+
+.licensing-process-container {
+  // background: var(--light-theme-accent);
+  padding: 32px;
+}
+
+// .benefits-container {
+  .left-container {
+    background-image: url(../../../images/backgrounds/soundgirl.jpg);
+    background-size: cover;
+    background-position: center;
+    border-radius: 8px;
+  }
+// }
+
+.process-illustration {
+  // background-image: url(../../../images/backgrounds/lp-test.gif);
+  // background-size: cover;
+  // background-repeat: none;
+  // background-position: center;
+  // border: 2px solid;
+  img {
+    width: 100%;
+    max-width: 900px;
+    height: 400px;
+  }
+}
+
+footer {
+  height: 300px;
+  width: 100%;
+  background: var(--primary-light-color);
+}
+
+video {
+  // width: 70%;
+  // max-width: 800px;
+  // height: 400px;
+}
+
+
+.pie-diagramm {
+  // background-image: url(../../../../assets/images/backgrounds/lp-4.svg);
+  // background-repeat: no-repeat;
+  // // background-size: contain;
+  // background-position: center;
+  // height: 900px;
+}
+
+
+.license-process-image {
+  background-image: url(../../../../assets/images/backgrounds/lp-3.svg);
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+  width: 100%;
+  height: 600px;
+}

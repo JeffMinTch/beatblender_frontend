@@ -1,61 +1,144 @@
-<mat-toolbar mat-ripple [ngStyle]="{background: sample?.sampleID === (playStateControlService.currentSampleID$ | async) ? '#ededed' : '#fafafa'}" 
-(click)="playState ? pause(sample?.sampleID === currentSampleID, sample?.sampleID) : play(sample?.sampleID === currentSampleID, sample?.sampleID)"
-style="border-left: none; border-right: none;"
-class="player-widget px-8 py-0" fxLayout="row" fxLayoutAlign="center center">
+<section fxLayout="column">
+  <mat-toolbar mat-ripple
+    [ngStyle]="{background: sample?.sampleID === (playStateControlService.currentSampleID$ | async) ? '#ededed' : '#fafafa'}"
+    (click)="playState ? pause(sample?.sampleID === currentSampleID, sample?.sampleID) : play(sample?.sampleID === currentSampleID, sample?.sampleID)"
+    style="border-left: none; border-right: none;" class="player-widget px-8 py-0" fxLayout="row"
+    fxLayoutAlign="center center">
     <!-- [routerLink]="['/shop/products/', product._id]" -->
     <!-- <div fxLayout="row" fxLayoutAlign="center center" class="category">
-    </div> -->
+      </div> -->
     <!-- <img [src]="sample?.imageDownLoadUri" alt=""> -->
-    <img src="{{'http://localhost:9090/api/web/public/media/image/' + sample?.sampleID}}" alt="" class="mat-elevation-z1">
+    <img src="{{'http://localhost:9090/api/web/public/media/image/' + sample?.sampleID}}" alt=""
+      class="mat-elevation-z1">
     <div fxFlex="1 1 auto" class="slider-container" fxLayout="row" fxLayoutAlign="start center">
       <!-- <mat-slider #audioSlider thumbLabel="true" class="slider" min="0"
-        [max]="sample?.sampleID === (playStateControlService.currentSampleID$ | async) ? getDuration() : durationFallback()"
-        [value]="sample?.sampleID === (playStateControlService.currentSampleID$ | async) ? getCurrentTime() : currentTimeFallback()"
-        step="0.02" (input)="onSliderChangeEnd($event)"
-        [disabled]="sample?.sampleID !== (playStateControlService.currentSampleID$ | async)">
-      </mat-slider> -->
+          [max]="sample?.sampleID === (playStateControlService.currentSampleID$ | async) ? getDuration() : durationFallback()"
+          [value]="sample?.sampleID === (playStateControlService.currentSampleID$ | async) ? getCurrentTime() : currentTimeFallback()"
+          step="0.02" (input)="onSliderChangeEnd($event)"
+          [disabled]="sample?.sampleID !== (playStateControlService.currentSampleID$ | async)">
+        </mat-slider> -->
       <!-- [value]="getValue(sample?.sampleID)"
-                [max]="getMax(sample?.sampleID)" -->
+                  [max]="getMax(sample?.sampleID)" -->
       <!-- value="0"
-              max="100"  -->
-              <div fxLayout="row" fxFlex class="ml-32" *ngIf="type === 'primary'">
-                <!-- <div fxFlex fxLayoutAlign="center center">
-    
-                </div> -->
-                <div fxFlex="30" fxLayout="row wrap" fxLayoutAlign="start center" class="p-8">
-                    <span fxFlex class="cell-content">{{sample?.artistName}}</span>
-                </div>
-                <div fxFlex="40" fxLayout="row wrap" fxLayoutAlign="start center" class="p-8">
-                    <span fxFlex class="cell-content">{{sample?.title}}</span>
-                </div>
-                <div fxFlex fxLayout="row wrap" fxLayoutAlign="start center" class="p-8">
-                    <span fxFlex class="cell-content">3:02 min</span>
-                </div>
-                <div fxFlex fxLayout="row wrap" fxLayoutAlign="start center" class="p-8">
-                    <span fxFlex class="cell-content">~2k</span>
-                </div>
-                <!-- <div fxFlex="10" fxLayout="row wrap" fxLayoutAlign="start center" class="p-8">
-                    <span></span>
-                </div> -->
-    
-              </div>       
+                max="100"  -->
+      <div fxLayout="row" fxFlex class="ml-32" *ngIf="type === 'primary'">
+        <!-- <div fxFlex fxLayoutAlign="center center">
+      
+                  </div> -->
+        <div fxFlex="30" fxLayout="row wrap" fxLayoutAlign="start center" class="p-8">
+          <span fxFlex class="cell-content">{{sample?.artistName}}</span>
+        </div>
+        <div fxFlex="40" fxLayout="row wrap" fxLayoutAlign="start center" class="p-8">
+          <span fxFlex class="cell-content">{{sample?.title}}</span>
+        </div>
+        <div fxFlex fxLayout="row wrap" fxLayoutAlign="start center" class="p-8">
+          <span fxFlex class="cell-content">3:02 min</span>
+        </div>
+        <div fxFlex fxLayout="row wrap" fxLayoutAlign="start center" class="p-8">
+          <span fxFlex class="cell-content">~2k</span>
+        </div>
+        <!-- <div fxFlex="10" fxLayout="row wrap" fxLayoutAlign="start center" class="p-8">
+                      <span></span>
+                  </div> -->
+
+      </div>
     </div>
     <!-- style="font-size: 32px;" -->
     <button mat-icon-button color="" class="mr-8" *ngIf="type === 'primary'">
       <mat-icon>more_vert</mat-icon>
     </button>
-    <button  mat-icon-button [ngStyle]="{background: sample?.sampleID === (playStateControlService.currentSampleID$ | async) ? 'var(--primary-color)' : '#fafafa',
-    border: sample?.sampleID === (playStateControlService.currentSampleID$ | async) ? '1px solid var(--primary-color)' : '1px solid var(--body-color)'
-
-  }" [ngClass]="sample?.sampleID === (playStateControlService.currentSampleID$ | async) ? 'mat-elevation-z1' : ''" fxLayout="row" fxLayoutAlign="center center">
+    <button mat-icon-button [ngStyle]="{background: sample?.sampleID === (playStateControlService.currentSampleID$ | async) ? 'var(--primary-color)' : '#fafafa',
+      border: sample?.sampleID === (playStateControlService.currentSampleID$ | async) ? '1px solid var(--primary-color)' : '1px solid var(--body-color)'
+      
+    }" [ngClass]="sample?.sampleID === (playStateControlService.currentSampleID$ | async) ? 'mat-elevation-z1' : ''"
+      fxLayout="row" fxLayoutAlign="center center">
       <!-- [ngStyle]="{color: sample?.sampleID === (playStateControlService.currentSampleID$ | async) ? 'var(--body-color)': 'grey'}"> -->
-      <mat-icon [ngStyle]="{color: sample?.sampleID === (playStateControlService.currentSampleID$ | async) ? 'var(--light-theme)': 'var(--body-color)'}">
-      {{sample?.sampleID === (playStateControlService.currentSampleID$ | async) &&
+      <mat-icon
+        [ngStyle]="{color: sample?.sampleID === (playStateControlService.currentSampleID$ | async) ? 'var(--light-theme)': 'var(--body-color)'}">
+        {{sample?.sampleID === (playStateControlService.currentSampleID$ | async) &&
         (playStateControlService.playState$ | async) ? 'pause' : 'play_arrow'}}
       </mat-icon>
     </button>
     <!-- <button mat-raised-button>Download</button> -->
     <!-- <button *ngIf="(playStateControlService.playState$ | async)" class="play-button" fxLayout="row" fxLayoutAlign="center center" (click)="pause()">
-          <mat-icon [ngStyle]="{color: sample?.sampleID === (playStateControlService.currentSampleID$ | async) ? '#304156' : 'rgb(202, 202, 202)'}">{{sample?.sampleID === (playStateControlService.currentSampleID$ | async) && (playStateControlService.playState$ | async) ? 'pause' : 'play_arrow'}}</mat-icon>
-        </button> -->
-      </mat-toolbar>
+      <mat-icon [ngStyle]="{color: sample?.sampleID === (playStateControlService.currentSampleID$ | async) ? '#304156' : 'rgb(202, 202, 202)'}">{{sample?.sampleID === (playStateControlService.currentSampleID$ | async) && (playStateControlService.playState$ | async) ? 'pause' : 'play_arrow'}}</mat-icon>
+    </button> -->
+  </mat-toolbar>
+  <!-- <section fxLayout="column" *ngIf="type === 'sample'"> -->
+  <ng-container *ngIf="type === 'sample' || type === 'playlist'">
+    <div class="info-wrap p-16">
+      <div class="main-info">
+        <h3 class="title">{{sample?.title}}</h3>
+        <p class=" p-line">by <span class="artist-name">{{sample?.artistName}}</span></p>
+        <ng-container *ngIf="type === 'sample'">
+          <p class=" p-line">
+            <strong>Category:</strong> {{sample?.genre}}
+          </p>
+          <p class=" p-line">
+            <strong>Tempo:</strong> {{sample?.tempo}} BPM
+          </p>
+          <p class=" p-line">
+            <strong>Moods:</strong>
+            <!-- <span-list aria-label="Fish selection"> -->
+            <!-- <span>#{{sample?.}}</span>
+                      <span>#{{sample?.region}}</span>
+                      <span>#{{sample?.songKey}}</span>
+                      <span>#Dmoll</span> -->
+            <span *ngFor="let mood of sample?.moods">{{mood}}</span>
+
+            <!-- </span-list> -->
+            <!-- <span *ngFor="let t of ">{{sample?.sampleTitle}} </span> -->
+          </p>
+          <p fxLayout="row wrap" class=" p-line">
+            <strong>Tags:</strong>
+            <!-- <span-list aria-label="Fish selection"> -->
+            <!-- <span>#{{sample?.}}</span>
+                      <span>#{{sample?.region}}</span>
+                      <span>#{{sample?.songKey}}</span>
+                      <span>#Dmoll</span> -->
+            <span *ngFor="let tag of sample?.tags">#{{tag}}</span>
+
+            <!-- </span-list> -->
+            <!-- <span *ngFor="let t of ">{{sample?.sampleTitle}} </span> -->
+          </p>
+          <p class=" p-line">
+            <strong>Available Formats:</strong>
+            <!-- <mat-chip-list aria-label="Fish selection"> -->
+            <!-- <mat-chip>mp3</mat-chip> -->
+            <!-- <mat-chip>wav</mat-chip> -->
+            <!-- <mat-chip color="primary" selected>Primary fish</mat-chip> -->
+            <!-- <mat-chip color="accent" selected>Accent fish</mat-chip> -->
+            <!-- </mat-chip-list> -->
+            <span>mp3</span>
+            <span>wav</span>
+          </p>
+        </ng-container>
+      </div>
+      <ng-container *ngIf="type === 'sample'">
+        <div class="actions">
+          <div class="price-rating">
+            <div class="price">
+              <span>LEP: {{sample?.lep}}</span>
+              <del class="text-muted">{{sample?.lep}}LEP</del>
+            </div>
+          </div>
+          <div class="add-to-cart">
+            <span fxFlex></span>
+            <button mat-icon-button>
+              <mat-icon>library_add</mat-icon>
+            </button>
+          </div>
+        </div>
+        <span fxFlex></span>
+
+      </ng-container>
+    </div>
+    <button *ngIf="type === 'sample'" fxFlex="50px" mat-stroked-button color="primary" class="full-width download-button">
+      <span class="fw-700 fs-16">Get A License</span>
+    </button>
+  </ng-container>
+
+
+  <!-- </section> -->
+
+</section>

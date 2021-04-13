@@ -91,6 +91,11 @@ export class UILibIconService {
     { 'name': 'undraw-terms', 'fileName': 'undraw-terms.svg'},
     { 'name': 'antlers', 'fileName': 'antlers.svg'},
     { 'name': 'tree', 'fileName': 'tree.svg'},
+    { 'name': 'signature', 'fileName': 'signature.svg'},
+    { 'name': 'pay', 'fileName': 'pay.svg'},
+    { 'name': 'creative-commons', 'fileName': 'creative-commons.svg'},
+    { 'name': 'logo-bars', 'fileName': 'logo-bars.svg'},
+
 
 
     

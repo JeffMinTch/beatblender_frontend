@@ -2,7 +2,11 @@ import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { Router } from '@angular/router'
 import { AppLoaderService } from '../../shared/services/app-loader/app-loader.service';
 // import PerfectScrollbar from 'perfect-scrollbar';
-import { LayoutService } from 'app/shared/services/layout.service';
+import { ILayoutConf, LayoutService } from 'app/shared/services/layout.service';
+import Typewriter from 'typewriter-effect/dist/core';
+import { NavigationService } from 'app/shared/services/navigation.service';
+import { Subscription } from 'rxjs';
+
 
 @Component({
   selector: 'app-home',
@@ -125,15 +129,36 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     // }
   ]
 
+  public panelOpenState = false;
+
+  public listenItems: any[];
+  public hasIconTypeMenuItem: boolean;
+  public iconTypeMenuTitle: string;
+  private menuItemsSub: Subscription;
+  public layoutConf: ILayoutConf;
+ 
+
   // private homePS: PerfectScrollbar;
   constructor(
     private router: Router,
     private loader: AppLoaderService,
-    public layout: LayoutService
+    public layout: LayoutService,
+    private navService: NavigationService,
+    // public themeService: ThemeService,
   ) { }
 
   ngOnInit() {
     this.mainVersion = this.versions[0]
+  
+    this.iconTypeMenuTitle = this.navService.iconTypeMenuTitle;
+    this.menuItemsSub = this.navService.listenItems$.subscribe(sampleMarketItem => {
+      this.listenItems = sampleMarketItem;
+      //Checks item list has any icon type.
+      this.hasIconTypeMenuItem = !!this.listenItems.filter(
+        item => item.type === "icon"
+      ).length;
+    });
+    this.layoutConf = this.layout.layoutConf;
   }
 
   ngOnDestroy() {
@@ -144,16 +169,46 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     // setTimeout(() => {
     //   this.homePS = new PerfectScrollbar('.scrollable')
     // });
+    var app = document.getElementById('title');
+
+    var typewriter = new Typewriter(app, {
+      loop: true,
+      delay: 75,
+      autoStart: true
+    });
+    // (app as HTMLElement).innerHTML = 'Enter the void';
+    typewriter
+    // .deleteChars(24)
+    .pauseFor(1000)
+    // .pasteString('BeatBlender Producer')
+    // .typeString('<span style="color: var(--body-color)">BeatBlender Producer </span>')
+    // .pauseFor(300)
+    .typeString('<span style="color: var(--body-color)">help each other.</span>')
+    .deleteChars(16)
+    .pauseFor(300)
+    .typeString('<strong style="color: var(--body-color)">create music together.')
+    // .deleteChars(48)
+    //   .pauseFor(1000)
+    //   .deleteChars(28)
+    //   .typeString('<strong style="color: var(--body-color)">Are you<span style="color: #27ae60;">In?</span></strong>')
+    //   .deleteChars(40)
+      .pauseFor(1000)
+      .start();
   }
 
   /****** Remove this (Only for demo) **********/
-  goToDashboard(v) {
-    let origin = window.location.origin;
-    window.location.href = `${origin}/${v.dest}/?layout=${v.conf}`;
-    console.log(!!null);
+  goToLicensing() {
+    // let origin = window.location.origin;
+    // window.location.href = `${origin}/${v.dest}/?layout=${v.conf}`;
+    // console.log(!!null);
+    
+    // this.loader.open();
+    this.router.navigateByUrl('/licensing/sample-market')
   }
-  goToMainDash() {
-    this.loader.open();
-    this.router.navigateByUrl('/dashboard/analytics')
+  goToListen() {
+    // this.loader.open();
+    this.router.navigateByUrl('/listen/find')
   }
+
+
 }

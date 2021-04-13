@@ -189,9 +189,13 @@ filter: drop-shadow(16px 0px 0 #fe2d52);
     width: 33.33%;
     float: left;
     height: fit-content;
-    &:hover .download-button {
-      background: map-get($default-primary-palette, main);
-      color: #fafafa;
+    // .download-button {
+      
+      // }
+      
+      &:hover .download-button {
+        background: var(--primary-color);
+        color: var(--light-theme);
       transition: all $transitionTiming $transitionDuration;
 
     }

@@ -1,3 +1,7 @@
+import { HomeSectionComponent } from './home-section/home-section.component';
+import { BenefitCardComponent } from './benefit-card/benefit-card.component';
+import { QuestionCardComponent } from './question-card/question-card.component';
+import { VisionCardComponent } from './vision-card/vision-card.component';
 import { PlaylistToolbarComponent } from './playlist-toolbar/playlist-toolbar.component';
 import { QuickAccessMenuComponent } from './quick-access-menu/quick-access-menu.component';
 import { MinMaxSliderComponent } from './min-max-slider/min-max-slider.component';
@@ -77,7 +81,11 @@ const components = [
   SelectComponent,
   MinMaxSliderComponent,
   QuickAccessMenuComponent,
-  PlaylistToolbarComponent
+  PlaylistToolbarComponent,
+  VisionCardComponent,
+  QuestionCardComponent,
+  BenefitCardComponent,
+  HomeSectionComponent
 ]
 
 @NgModule({

@@ -1,0 +1,28 @@
+.first-title {
+    color: var(--base-accent-color);
+    font-family: 'Lazer84';
+    font-size: 30px;
+    &::first-letter {
+        color: var(--accent-color);
+    }
+}
+
+.second-title {
+    // margin-bottom: 60px;
+    color: var(--body-color);
+
+}
+
+
+.home-section {
+    margin-bottom: 20px;
+}
+
+
+.header {
+    // background-image: url(../../../../assets/images/backgrounds/lp-3.svg);
+    // background-position: center;
+    // background-repeat: no-repeat;
+    // background-size: cover;
+    // min-height: calc(100vh - 78px);
+}

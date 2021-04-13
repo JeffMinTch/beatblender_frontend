@@ -1,3 +1,5 @@
+import { MatchMediaService } from './../../../shared/services/match-media.service';
+import { MediaChange } from '@angular/flex-layout';
 import { Page } from '../../../shared/models/page.model';
 import { SearchFilterFormMap } from '../../../shared/models/search-filter-form-map.model';
 import { MinMaxSlider } from '../../../shared/models/min-max-slider.model';
@@ -52,7 +54,6 @@ export class SampleMarketComponent implements OnInit, AfterViewInit {
   // @ViewChildren('audioSlider', { read: MatSlider }) private audioSliders: QueryList<MatSlider>;
   // @ViewChild('featuredImage', { static: false, read: ElementRef }) private featuredImage: ElementRef;
   // @ViewChildren('.mat-slider-track-background', { read: ElementRef }) private matSliderTrackBackground: QueryList<ElementRef>;
-  @ViewChild(MatSidenav) private sideNav: MatSidenav;
 
 
   private _playState: boolean;
@@ -120,8 +121,15 @@ export class SampleMarketComponent implements OnInit, AfterViewInit {
     private jwt: JwtAuthService,
     private ls: LocalStoreService,
     private audioWebService: AudioWebService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private layout: LayoutService,
+    private matchMedia: MatchMediaService
   ) {
+
+    this.matchMedia.onMediaChange.subscribe((data) => {
+      console.log('Data');
+      console.log(data);
+    });
 
 
     this.sampleLicensingMarketService.samples$.pipe(
@@ -492,7 +500,8 @@ export class SampleMarketComponent implements OnInit, AfterViewInit {
   }
 
   public toggleSidenav() {
-    this.sideNav.opened = !this.sideNav.opened;
+    this.layout.toggleSidenav();
+    // this.sideNav.opened = !this.sideNav.opened;
   }
 
   public applyFilter(searchFilterFormMap?: SearchFilterFormMap) {

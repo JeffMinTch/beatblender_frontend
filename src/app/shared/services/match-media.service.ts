@@ -8,7 +8,7 @@ import { BehaviorSubject } from 'rxjs';
 export class MatchMediaService {
   activeMediaQuery: string;
   onMediaChange: BehaviorSubject<string> = new BehaviorSubject<string>('');
-
+  
   constructor(private mediaObserver: MediaObserver) {
     this.activeMediaQuery = '';
     this.init();

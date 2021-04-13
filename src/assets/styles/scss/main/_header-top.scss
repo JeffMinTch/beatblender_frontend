@@ -80,3 +80,17 @@
     }
   }
 }
+
+
+.login-button {
+  color: var(--light-theme) !important;
+  // background: var(--primary-light-color) !important;
+  // background: var(--light-theme) !important; 
+  min-width: 250px !important;
+  height: 100%;
+  font-weight: 700 !important;
+  letter-spacing: 3px !important;
+  // border: 1px solid !important;
+  // border-radius: 32px !important;
+
+}

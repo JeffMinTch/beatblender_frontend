@@ -1,46 +1,543 @@
-<div class="scrollable" [perfectScrollbar]>
+<mat-sidenav-container fxLayout="row" class="full-width br-8 sidenav-container home-sidenav">
+
+  <!-- <mat-sidenav EgretSideNavToggle class="shop-sidebar" style="border-right: none;">
+    <div class="shop-filters-wrap " fxLayout="column" fxLayoutGap="5px">
+
+      <app-sidenav [items]="listenItems" [hasIconMenu]="hasIconTypeMenuItem" [iconMenuTitle]="iconTypeMenuTitle">
+      </app-sidenav>
+    </div>
+  </mat-sidenav> -->
+  <!-- <router-outlet></router-outlet> -->
+  <!-- <div class="scrollable"> -->
+
   <section class="home-section section-intro text-center">
-    <div class="container">
-        <span class="egret">Egret</span>
-        <img src="assets/images/5-star.png" alt="">
-        <h1>Angular 10+ Material Design Admin Template</h1>
-        <p>Quick start your project within <strong>few minutes</strong>. 
-          Seed project is included.</p>
-        <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutAlign="center center" class="mb-48">
-          <button mat-raised-button mat-lg-button (click)="goToDashboard(mainVersion)">MAIN DASHBOARD</button>
-          <span fxFlex="8px"></span>
-          <a href="https://themeforest.net/item/egret-angular-4-material-design-admin-template/20161805?ref=mh_rafi" target="_blank">
-            <button mat-raised-button mat-lg-button class="pink pink-500-fg">BUY EGRET</button>
-          </a>
-        </div>
-        <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutAlign="center center" class="pt-48">
-          <a href="http://demos.ui-lib.com/egret-doc/" mat-button color="accent" target="_blank">Documentation</a>
-          <a href="https://ui-lib.com/github-access/" mat-button color="warn" target="_blank">GitHub Access</a>
-        </div>
+    <div class="container landing-container" fxLayout="column">
+      <mat-card class="landing-card" fxLayout="column">
+        <mat-card-content fxFlex fxLayout="column">
+          <section>
+            <h2> <span style="color: var(--body-color);">Enter A New </span> <span
+                style="color: var(--accent-color);">Sample </span>Culture</h2>
+
+            <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutAlign="center center" class="mb-48">
+              <button color="primary" fxFlex fxLayoutAlign="center center" mat-stroked-button mat-lg-button
+                style="font-weight: 700; font-size: 16px;" (click)="goToListen()">
+                <mat-icon class="mr-8">headphones</mat-icon>
+                Listen Music
+              </button>
+              <span fxFlex="8px"></span>
+              <button fxFlex fxLayoutAlign="center center" mat-flat-button mat-lg-button color="accent"
+                style="color: var(--light-theme); font-weight: 700; font-size: 16px;" class=""
+                (click)="goToLicensing()">
+                <mat-icon class="mr-8"> store</mat-icon>
+                Sample Market
+              </button>
+            </div>
+          </section>
+
+
+
+
+        </mat-card-content>
+      </mat-card>
     </div>
   </section>
-  <section id="demos" class="home-section section-demos">
+  <section fxLayout>
+
+    <app-vision-card fxFlex iconName="ulb_partnership" title="Our Vision" class="vision-card">
+      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dignissimos, quam corporis. Quo et ex cum veritatis
+        odit qui nulla, veniam fugiat rerum, ullam expedita architecto animi quis molestiae. Culpa, eaque.</p>
+
+    </app-vision-card>
+    <app-vision-card fxFlex iconName="ulb_rocket" title="Our Mission" class="vision-card">
+      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dignissimos, quam corporis. Quo et ex cum veritatis
+        odit qui nulla, veniam fugiat rerum, ullam expedita architecto animi quis molestiae. Culpa, eaque.</p>
+
+    </app-vision-card>
+    <app-vision-card fxFlex iconName="ulb_success" title="Our Goal" class="vision-card">
+      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dignissimos, quam corporis. Quo et ex cum veritatis
+        odit qui nulla, veniam fugiat rerum, ullam expedita architecto animi quis molestiae. Culpa, eaque.</p>
+
+    </app-vision-card>
+  </section>
+  <app-home-section firstTitle="The BeatBlender Project." secondTitle="The Copyright System needs to change.">
+    <section fxFlex content fxLayout="column" fxLayoutAlign="center center">
+
+      <p class="home-section-title mb-16">The<span class="highlight"> BeatBlender</span> Open Source Project was founded
+        2020 by artists, sound enginneers and copyright lawyers that are convinced that the current
+        <span class="highlight" style="color: var(--accent-color);">copyright system</span> destroys a creative, diverse
+        and <span class="highlight">Free Music Culture</span> environment in terms of sampling.
+      </p>
+      <p class="home-section-title">We have created a sample licensing system that on the one hand allows artists to
+        sample high quality music commercially without additional costs, and on the other hand compensates the creators
+        of the embedded samples appropriately. </p>
+
+    </section>
+
+
+  </app-home-section>
+  <app-home-section firstTitle="copyright makes your life hard"
+    secondTitle="The problem with current copyright situation.">
+    <!-- <h3></h3> -->
+    <!-- <p class="home-section-title"></p> -->
+    <div content fxLayout="column" fxLayoutAlign="center center">
+      <p class="home-section-title" headerText>To clear sample rights artists usually have to <span>buy it</span> from
+        the <span>copyright owner</span> or use licenses under <span>creative commons</span> .</p>
+      <div fxLayout="row">
+        <div fxFlex>
+          <app-vision-card iconName="pay" title="Buying samples"
+            class="vision-card">
+            <div fxLayout="column">
+              <div fxLayout="column">
+                <div fxLayout="column" fxLayoutGap="20px">
+                  <div fxLayout fxLayoutGap="20px" style="background: var(--light-theme-accent);">
+                    <div fxFlex="20" fxLayout fxLayoutAlign="center center">
+                      <div  fxLayout fxLayoutAlign="center center" class="mat-elevation-z1 br-8" style="width: 90%; height: 90%; background: var(--light-theme);">
+                        <mat-icon style="color: var(--body-color);" inline="true" svgIcon="pay"></mat-icon>
+                      </div>
+
+                    </div>
+                    <div fxFlex fxLayout="column" fxLayoutAlign="center center">
+                      <h3 class="my-auto" style="color: var(--base-accent-color);">It's too expensive.</h3>
+                    </div>
+                  </div>
+                  <div fxFlex>
+                    <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Voluptas non excepturi sint mollitia eos omnis quo in quam perspiciatis, neque adipisci molestias sequi, assumenda optio est nihil nemo cupiditate. Ex voluptatem natus explicabo, id qui voluptate quod repudiandae quam maxime quo deleniti ratione incidunt, nemo alias eveniet! Voluptatem iure recusandae?</p>
+                    
+                  </div>
+                  
+                </div>
+                <div fxLayout fxLayoutGap="10px">
+                  <div fxFlex="20" fxLayout fxLayoutAlign="center center">
+                    <mat-icon inline="true" svgIcon="undraw-contract"></mat-icon>
+                  </div>
+                  <div fxFlex fxLayout="column" fxLayoutAlign="center center">
+                    <h4>Its too expensive.</h4>
+                    <p style="text-align: center;">Lorem ipsum dolor sit amet consectetur adipisicing elit. Blanditiis
+                      cum eos quis modi odit inventore eaque ipsam dolorem excepturi beatae.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </app-vision-card>
+        </div>
+        <div fxFlex>
+          <app-vision-card iconName="creative-commons" title="Creative Commons" class="vision-card">
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dignissimos, quam corporis. Quo et ex cum
+              veritatis
+              odit qui nulla, veniam fugiat rerum, ullam expedita architecto animi quis molestiae. Culpa, eaque.</p>
+          </app-vision-card>
+        </div>
+      </div>
+
+    </div>
+  </app-home-section>
+  <!-- <section fxFlex fxLayout="column">
+    <div fxLayout="column" fxLayoutAlign="center center">
+      <h4 style="text-align: center; color: var(--primary-color);">The BeatBlender Project.</h4>
+      <h2 style="text-align: center; color: var(--body-color); margin-bottom: 60px;">Why we founded the BeatBlender Project.
+      </h2>
+      <p style="text-align: center; max-width: 60%;">Start working with <span
+          style="font-weight: 700; color: var(--primary-color);">Landrick</span> that can provide everything you need to
+        generate awareness, drive traffic, connect.</p>
+
+    </div>
+    <div fxLayout>
+
+      <app-vision-card fxFlex iconName="ulb_partnership" title="Our Vision" class="vision-card">
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dignissimos, quam corporis. Quo et ex cum veritatis
+          odit qui nulla, veniam fugiat rerum, ullam expedita architecto animi quis molestiae. Culpa, eaque.</p>
+
+      </app-vision-card>
+      <app-vision-card fxFlex iconName="ulb_rocket" title="Our Mission" class="vision-card">
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dignissimos, quam corporis. Quo et ex cum veritatis
+          odit qui nulla, veniam fugiat rerum, ullam expedita architecto animi quis molestiae. Culpa, eaque.</p>
+
+      </app-vision-card>
+      <app-vision-card fxFlex iconName="ulb_success" title="Our Goal" class="vision-card">
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dignissimos, quam corporis. Quo et ex cum veritatis
+          odit qui nulla, veniam fugiat rerum, ullam expedita architecto animi quis molestiae. Culpa, eaque.</p>
+
+      </app-vision-card>
+    </div>
+
+  </section> -->
+  <app-home-section firstTitle="istead, Use BeatBlender." secondTitle="Your Possibilities Are Limitless.">
+    <p class="home-section-title" headerText>Start clearing your Sample Rights with <span
+        style="font-weight: 700; color: var(--primary-color);">BeatBlender</span>. Your possibilities and advantages are
+      limitless.</p>
+    <section content fxLayout="row">
+      <div fxFlex="45" class="left-container">
+      </div>
+      <div fxFlex fxLayout="row wrap">
+
+
+        <app-benefit-card iconName="ulb_block" text="Higher Quality">
+
+        </app-benefit-card>
+        <app-benefit-card iconName="ulb_money" text="Earn More">
+
+        </app-benefit-card>
+        <app-benefit-card iconName="ulb_paint_palette" text="More Creativity">
+
+        </app-benefit-card>
+        <app-benefit-card iconName="ulb_rocket_launch" text="Boost Production Time">
+
+        </app-benefit-card>
+        <app-benefit-card iconName="ulb_success" text="Career Boost">
+
+        </app-benefit-card>
+        <app-benefit-card iconName="ulb_partnership" text="Create Together">
+
+        </app-benefit-card>
+        <app-benefit-card iconName="ulb_partnership_1" text="Earn Together">
+
+        </app-benefit-card>
+        <app-benefit-card iconName="ulb_agreement" text="Only One License">
+
+        </app-benefit-card>
+        <app-benefit-card iconName="ulb_money" text="No Capital Needed">
+
+        </app-benefit-card>
+      </div>
+
+    </section>
+
+  </app-home-section>
+  <!-- <section fxLayout="column" fxLayoutAlign="center center" class="benefits-container" style="padding: 32px 64px;">
+
+    <h4
+      style="background: var(--light-theme); text-align: center; color: var(--primary-color); width: 100%; border-radius: 8px; padding: 8px;">
+      Your Benefits</h4>
+    <h2
+      style="background: var(--light-theme); color: var(--body-color); text-align: center; width: 100%; border-radius: 8px; padding: 8px;">
+      Why Producers join the BeatBlender Community?</h2>
+    <p style="text-align: center; max-width: 60%;">Start clearing your Sample Rights with <span
+        style="font-weight: 700; color: var(--primary-color);">BeatBlender</span>. Your possibilities and advantages are
+      limitless.</p>
+
+    <div fxLayout="row">
+      <div fxFlex="45" class="left-container">
+      </div>
+      <div fxFlex fxLayout="row wrap">
+
+
+        <app-benefit-card iconName="ulb_block" text="Higher Quality">
+
+        </app-benefit-card>
+        <app-benefit-card iconName="ulb_money" text="Earn More">
+
+        </app-benefit-card>
+        <app-benefit-card iconName="ulb_paint_palette" text="More Creativity">
+
+        </app-benefit-card>
+        <app-benefit-card iconName="ulb_rocket_launch" text="Boost Production Time">
+
+        </app-benefit-card>
+        <app-benefit-card iconName="ulb_success" text="Career Boost">
+
+        </app-benefit-card>
+        <app-benefit-card iconName="ulb_partnership" text="Create Together">
+
+        </app-benefit-card>
+        <app-benefit-card iconName="ulb_partnership_1" text="Earn Together">
+
+        </app-benefit-card>
+        <app-benefit-card iconName="ulb_agreement" text="Only One License">
+
+        </app-benefit-card>
+        <app-benefit-card iconName="ulb_money" text="No Capital Needed">
+
+        </app-benefit-card>
+      </div>
+
+    </div>
+  </section> -->
+
+  <section class="licensing-process-container" fxLayout="column" fxLayoutAlign="start center">
+    <h4 style="text-align: center; color: var(--primary-color);">Our Licensing System</h4>
+    <h2 style="text-align: center; color: var(--body-color);">How does the licensing process work?</h2>
+    <p style="text-align: center; max-width: 60%;">Start working with <span
+        style="font-weight: 700; color: var(--primary-color);">Landrick</span> that can provide everything you need to
+      generate awareness, drive traffic, connect.</p>
+    <div class="" fxLayout fxLayoutAlign="space-around center" style="width: 100%; border-radius: 32px;">
+      <div fxFlex fxLayout="column">
+        <div fxFlex fxLayoutAlign="center center" style="padding: 32px;">
+          <img style="width: 100%; object-fit: cover;" src="assets/images/illustrations/licensing-system-image-5.svg"
+            alt="">
+        </div>
+        <!-- <div fxFlex>
+          <img style="width: 100%; height: 100px;" src="assets/images/illustrations/licensing-system-image-2.svg" alt="">
+        </div> -->
+      </div>
+      <mat-card class="license-card" fxLayout="column">
+        <h4 style="text-align: center; border-bottom: 1px solid; margin-bottom: 10px; padding: 5px 0; font-size: 18px;">
+          Basic Licenses</h4>
+        <div fxFlex fxLayout="column" fxLayoutGap="10px" fxLayoutAlign="space-around">
+          <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="10px">
+            <div style="width: 30px; height: 30px;">
+              <mat-icon color="primary">done</mat-icon>
+            </div>
+            <span fxFlex>Play at Parties under 1000 People.</span>
+          </div>
+          <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="10px">
+            <div style="width: 30px; height: 30px;">
+              <mat-icon color="primary">done</mat-icon>
+            </div>
+            <span fxFlex>Distribute your Sound on BeatBlender with <span
+                style="color: var(--primary-color); font-weight: 900;">IncomeSharing</span>.</span>
+          </div>
+
+          <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="10px">
+            <div style="width: 30px; height: 30px;">
+              <mat-icon color="accent">
+                check_box_outline_blank
+              </mat-icon>
+            </div>
+            <span fxFlex>Extension Option</span>
+          </div>
+        </div>
+        <div fxLayoutAlign="end center">
+          <div fxFlex style="border-bottom: 1px solid; height: 30px;">
+
+          </div>
+          <div style="width: 30px; height: 30px;">
+            <mat-icon class="" svgIcon="signature"></mat-icon>
+          </div>
+
+        </div>
+        <span style="font-size: 10px;">Authorized by Copyright Owner</span>
+        <!-- <mat-card-title>Basic Licenses</mat-card-title> -->
+      </mat-card>
+      <div fxFlex fxLayout="column">
+        <!-- <div fxFlex>
+          <img style="width: 100%; height: 100px;" src="assets/images/illustrations/licensing-system-image-1.svg" alt="">
+        </div> -->
+        <div fxFlex fxLayoutAlign="center center" style="padding: 32px;">
+          <img style="width: 100%; object-fit: cover;" src="assets/images/illustrations/licensing-system-image-4.svg"
+            alt="">
+        </div>
+      </div>
+      <mat-card class="license-card" fxLayout="column">
+        <h4 style="text-align: center; border-bottom: 1px solid; margin-bottom: 10px; padding: 5px 0; font-size: 18px;">
+          Extended License</h4>
+        <div fxLayout="column" fxLayoutGap="10px" fxLayoutAlign="space-between">
+          <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="10px">
+            <div style="width: 30px; height: 30px;">
+              <mat-icon color="primary">done</mat-icon>
+            </div>
+            <span fxFlex>Commercially use on every event.</span>
+          </div>
+          <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="10px">
+            <div style="width: 30px; height: 30px;">
+              <mat-icon color="primary">done</mat-icon>
+            </div>
+            <span fxFlex>Distribute your music on every platform (e.g. Spotify, Soundcloud, Radio, ...)</span>
+          </div>
+          <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="10px">
+            <div style="width: 30px; height: 30px;">
+              <mat-icon color="primary">done</mat-icon>
+            </div>
+            <span fxFlex>No Income Sharing.</span>
+          </div>
+          <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="10px">
+            <div style="width: 30px; height: 30px;">
+              <mat-icon color="accent">
+                check_box_outline_blank
+              </mat-icon>
+            </div>
+            <span fxFlex>Extension Option</span>
+          </div>
+        </div>
+        <div fxFlex fxLayoutAlign="end center">
+          <div fxFlex style="border-bottom: 1px solid; height: 30px;">
+
+          </div>
+          <div style="width: 30px; height: 30px;">
+            <mat-icon class="" svgIcon="signature"></mat-icon>
+          </div>
+
+        </div>
+        <span style="font-size: 10px;">Authorized by Copyright Owner</span>
+        <!-- <mat-card-title>Basic Licenses</mat-card-title> -->
+      </mat-card>
+
+    </div>
+
+  </section>
+  <section fxLayout="row wrap" class="question-cards p-16">
+    <div fxFlex="50" fxLayoutAlign="center center" class="question-card-container">
+      <mat-card fxLayout="column" fxLayoutGap="20px">
+        <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="20px">
+          <div fxLayout fxLayoutAlign="center center" class="rounded-enum">1</div>
+          <span fxFlex class="step-card-title">Firstly, download a <span style="color: var(--primary-color);">Basic
+              License</span>.</span>
+        </div>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Alias neque porro eum laudantium repellendus
+          repellat fuga dolore beatae dicta, nam, consequuntur sunt quia blanditiis ducimus. Libero eligendi quidem
+          corrupti alias iusto incidunt, tenetur unde sint tempora sapiente hic delectus pariatur nemo, reiciendis illum
+          voluptatibus temporibus! Dolorum officia voluptas excepturi autem!</p>
+      </mat-card>
+    </div>
+
+    <div fxFlex="50" fxLayoutAlign="center center" class="question-card-container">
+      <mat-card fxLayout="column" fxLayoutGap="20px">
+        <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="20px">
+          <div fxLayout fxLayoutAlign="center center" class="rounded-enum">2</div>
+          <span fxFlex class="step-card-title">Extend the <span style="color: var(--primary-color);">Basic
+              License</span> to a <span style="color: var(--accent-color);">Full License</span>.</span>
+        </div>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Alias neque porro eum laudantium repellendus
+          repellat fuga dolore beatae dicta, nam, consequuntur sunt quia blanditiis ducimus. Libero eligendi quidem
+          corrupti alias iusto incidunt, tenetur unde sint tempora sapiente hic delectus pariatur nemo, reiciendis illum
+          voluptatibus temporibus! Dolorum officia voluptas excepturi autem!</p>
+      </mat-card>
+    </div>
+
+
+  </section>
+
+  <section fxLayout="column" fxLayoutAlign="center center">
+    <h4 style="text-align: center; color: var(--primary-color);">One Universal License Agreement</h4>
+    <h2 style="text-align: center; color: var(--body-color); margin-bottom: 60px;">One License Consists Of 2 Parts.</h2>
+    <p style="text-align: center; max-width: 60%;">Start working with <span
+        style="font-weight: 700; color: var(--primary-color);">Landrick</span> that can provide everything you need to
+      generate awareness, drive traffic, connect.</p>
+      <div class="license-process-image">
+        
+      </div>
+    <!-- <div fxLayout="row">
+      <section fxFlex fxLayout="column" class="question-cards p-16">
+        <div fxFlex fxLayoutAlign="center center" class="">
+          <mat-card fxLayout="column" fxLayoutGap="20px">
+            <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="20px">
+              <div fxLayout fxLayoutAlign="center center" class="rounded-enum">1</div>
+              <span fxFlex class="step-card-title">Firstly, download a <span style="color: var(--primary-color);">Basic
+                  License</span>.</span>
+            </div>
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Alias neque porro eum laudantium repellendus
+              repellat fuga dolore beatae dicta, nam, consequuntur sunt quia blanditiis ducimus. Libero eligendi quidem
+              corrupti alias iusto incidunt, tenetur unde sint tempora sapiente hic delectus pariatur nemo, reiciendis
+              illum voluptatibus temporibus! Dolorum officia voluptas excepturi autem!</p>
+          </mat-card>
+        </div>
+
+        <div fxFlex fxLayoutAlign="center center" class="">
+          <mat-card fxLayout="column" fxLayoutGap="20px">
+            <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="20px">
+              <div fxLayout fxLayoutAlign="center center" class="rounded-enum">2</div>
+              <span fxFlex class="step-card-title">Extend the <span style="color: var(--primary-color);">Basic
+                  License</span> to a <span style="color: var(--accent-color);">Full License</span>.</span>
+            </div>
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Alias neque porro eum laudantium repellendus
+              repellat fuga dolore beatae dicta, nam, consequuntur sunt quia blanditiis ducimus. Libero eligendi quidem
+              corrupti alias iusto incidunt, tenetur unde sint tempora sapiente hic delectus pariatur nemo, reiciendis
+              illum voluptatibus temporibus! Dolorum officia voluptas excepturi autem!</p>
+          </mat-card>
+        </div>
+      </section>
+      <div class="pie-diagramm" style="max-width: 600px; max-height: 600px; width: 100%; height: auto;"></div>
+    </div> -->
+
+    <!-- <div fxFlex>
+      <h2>What drives you?</h2>
+    </div> -->
+  </section>
+  <!-- <video width="500" controls>
+    <source src="https://www.youtube.com/watch?v=t_-C4JS0KGo">
+  </video> -->
+  <section fxLayout="column" fxLayoutAlign="center center">
+    <h4 style="text-align: center; color: var(--primary-color);">Karma Reward</h4>
+    <h2 style="text-align: center; color: var(--body-color); margin-bottom: 60px;">What is Karma Reward?</h2>
+    <p style="text-align: center; max-width: 60%;">Start working with <span
+        style="font-weight: 700; color: var(--primary-color);">Landrick</span> that can provide everything you need to
+      generate awareness, drive traffic, connect.</p>
+    <div fxFlex class="process-illustration" fxLayoutAlign="center center" style="width: 100%; height: fit-content;">
+      <img src="assets/images/backgrounds/lp-test3.gif" alt="">
+    </div>
+  </section>
+  <section fxLayout="column" fxLayoutAlign="center center">
+    <h4 style="text-align: center; color: var(--primary-color);">The Value of Music</h4>
+    <h2 style="text-align: center; color: var(--body-color); margin-bottom: 60px;">Every Sample Has A Sample Price</h2>
+    <p style="text-align: center; max-width: 60%;">Start working with <span
+        style="font-weight: 700; color: var(--primary-color);">Landrick</span> that can provide everything you need to
+      generate awareness, drive traffic, connect.</p>
+    <!-- <div fxFlex class="process-illustration" fxLayoutAlign="center center" style="width: 100%; height: fit-content;">
+      <img src="assets/images/backgrounds/lp-test3.gif" alt="">
+    </div> -->
+  </section>
+  <section fxLayout="column" fxLayoutAlign="center center"
+    style="height: fit-content; width: 100%; background: var(--light-theme-accent);">
+    <h4 style="text-align: center; color: var(--primary-color);">Video</h4>
+    <h2 style="text-align: center; color: var(--body-color); margin-bottom: 60px;">Watch Explanation Film.</h2>
+
+
+    <iframe width="663" height="373" src="https://www.youtube.com/embed/t_-C4JS0KGo" title="YouTube video player"
+      frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+      allowfullscreen></iframe>
+
+  </section>
+  <!-- <section>
+    <h2>One Extendable License</h2>
+  </section> -->
+  <!-- </div> -->
+
+  <footer></footer>
+  <!-- <section id="demos" class="home-section section-demos">
     <div class="container">
       <div class="text-center">
-          <h2 class="text-20 text-uppercase mt-0 mb-16">Limitless layout variaitons</h2>
+        <h2 class="text-20 text-uppercase mt-0 mb-16">Limitless layout variaitons</h2>
       </div>
       <div fxLayout="row wrap" fxLayout.lt-sm="column">
-        <div class="demo-box-wrap" fxFlex="33.33" *ngFor="let v of versions"> 
+        <div class="demo-box-wrap" fxFlex="33.33" *ngFor="let v of versions">
           <div class="text-center demo-box" [matTooltip]="v.name" matTooltipPosition="above">
-            <div (click)="goToDashboard(v)" class="p-0 screenshot">
+            <div class="p-0 screenshot">
               <img [src]="v.photo">
             </div>
-            <!-- <div class="caption">
-              <h3>{{v.name}}</h3>
-              <button mat-raised-button color="primary" (click)="goToDashboard(v)">View Demo</button>
-            </div> -->
+
           </div>
         </div>
       </div>
       <div class="text-center">
         <p>Configure your own layout using customizer.</p>
-        <button mat-fab color="primary" (click)="goToMainDash()"><mat-icon>settings</mat-icon></button>
+        <button mat-fab color="primary">
+          <mat-icon>settings</mat-icon>
+        </button>
       </div>
     </div>
-  </section>
-</div>
+  </section> -->
+  <!-- </div> -->
+</mat-sidenav-container>
+
+
+<!-- <div style="padding: 20px;">
+        <span style="color: white; font-size: 72px; font-weight: 700; border-radius: 8px; padding: 16px 32px; font-family: 'Lazer84';" class="egret"> <span style="color: var(--primary-color);">B</span>eat<span style="color: var(--accent-color);">B</span>lender</span>
+      </div> -->
+<!-- <h1 fxFlex style="font-family: 'Lazer84'; font-size: 50px;"> <span
+        style="background: var(--accent-color); padding: 4px 8px; color: var(--light-theme); border-top-left-radius: 12px; border-bottom-left-radius: 12px;">Beat</span>
+      <span class=""
+        style="background: var(--primary-color); color: var(--light-theme); padding: 4px 8px; border-radius: 0px; border-top-right-radius: 12px; border-bottom-right-radius: 12px;">Blender</span>
+    </h1>
+
+
+    <div style=" font-weight: 900; font-size: 25px;
+      border-radius: 8px; padding: 8px 16px;">
+      <p style="color: var(--light-theme); font-size: 24px;">BeatBlender Producers ...</p>
+      <span id="title">
+      </span>
+    </div>
+    <h2>Enter A New Sampling Era</h2>
+
+    <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutAlign="center center" class="mb-48">
+      <button mat-raised-button mat-lg-button style="background: var(--primary-light-color); font-weight: 700;"
+        (click)="goToListen()">Listen Music</button>
+      <span fxFlex="8px"></span>
+      <a target="_blank">
+        <button mat-raised-button mat-lg-button color="accent" style="color: white; font-weight: 700;" class=""
+          (click)="goToLicensing()">Sample Market</button>
+      </a>
+    </div>
+    <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutAlign="center center" class="pt-48">
+      <a href="http://demos.ui-lib.com/egret-doc/" mat-button color="accent" target="_blank">Documentation</a>
+      <a href="https://ui-lib.com/github-access/" mat-button color="warn" target="_blank">GitHub Access</a>
+    </div> -->

@@ -32,7 +32,7 @@ export class NavigationService {
   listenMenu: IMenuItem[] = [
     {
       type: 'separator',
-      name: 'Listen Music - Navigation'
+      name: 'Listen Music'
     },
     {
       name: 'All Music',
@@ -56,20 +56,11 @@ export class NavigationService {
       state: 'licensing/forms/upload-audio'
     },
     {
-      name: 'PlayLists',
-      type: 'dropDown',
-      tooltip: 'My Licenses',
-      icon: 'library_books',
-      state: 'licensing/my-licenses',
-      sub: [
-        { name: 'Basic Licenses', state: 'basic-licenses' },
-        {name: 'Extended Licenses', state: 'extended-licenses'},
-        // { name: 'How To Get A License', state: 'analytics' },
-        // { name: 'Sampling Rules', state: 'crypto' },
-        // { name: 'Video Tutorials', state: 'dark' },
-        // { name: 'FAQ', state: 'dark' }
-
-      ]
+      name: 'Playlists',
+      type: 'link',
+      tooltip: 'Playlists',
+      icon: 'queue_music',
+      state: 'listen/playlists'
     },
   ];
 
@@ -78,7 +69,7 @@ export class NavigationService {
   sampleMarketMenu: IMenuItem[] = [
     {
       type: 'separator',
-      name: 'Sample Market - Navigation'
+      name: 'Sample Market'
     },
     {
       name: 'Sample Market',

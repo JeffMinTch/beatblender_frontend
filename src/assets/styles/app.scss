@@ -90,6 +90,11 @@ $accent-color: map-get($default-accent-palette, main);
     --font-size-base: #{$font-size-base};
     // --primary-light: #dce6dd;
 }
+
+body {
+  font-family: 'Poppins' !important;
+}
+
 // @font-face {
 //   font-family: "Archivo";
 //   font-display: block;
@@ -115,5 +120,12 @@ $accent-color: map-get($default-accent-palette, main);
   @font-face {
     font-family: "Lazer84";
     src: url("./scss/fonts/lazer84/Lazer84.ttf") format("truetype");
+    font-display: block;
+  }
+
+
+  @font-face {
+    font-family: "Poppins";
+    src: url("./scss/fonts/Poppins/Poppins-Regular.ttf") format("truetype");
     font-display: block;
   }

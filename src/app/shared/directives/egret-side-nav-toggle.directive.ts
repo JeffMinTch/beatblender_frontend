@@ -1,3 +1,4 @@
+import { LayoutService } from 'app/shared/services/layout.service';
 import { Directive, Host, Self, Optional, OnDestroy, OnInit, SkipSelf } from '@angular/core';
 import { MediaChange, MediaObserver } from "@angular/flex-layout";
 import { Subscription } from "rxjs";
@@ -13,13 +14,23 @@ export class EgretSideNavToggleDirective implements OnInit, OnDestroy {
   constructor(
     private mediaObserver: MediaObserver,
     @Host() @Self() @Optional() 
-    public sideNav: MatSidenav
+    public sideNav: MatSidenav,
+    private layout: LayoutService
     ) { 
       console.log('Initalisiert');
   }
 
   ngOnInit() {
     this.initSideNav();
+
+  }
+  
+  ngAfterViewInit() {
+    
+      // this.layout.layoutConf$.subscribe(() => {
+        
+      //   this.sideNav.opened = !this.sideNav.opened;
+      // });
   }
 
   ngOnDestroy() {
@@ -46,5 +57,11 @@ export class EgretSideNavToggleDirective implements OnInit, OnDestroy {
       this.updateSidenav();
     });
   }
+
+  // toggleSidenav() {
+
+  // }
+
+
 
 }
