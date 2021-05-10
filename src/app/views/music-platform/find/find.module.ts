@@ -17,7 +17,8 @@ import { NgxPaginationModule } from 'ngx-pagination';
     SharedModule,
     RouterModule.forChild(FindRoutes),
     FlexLayoutModule,
-    NgxPaginationModule
+    NgxPaginationModule,
+    
 
   ]
 })

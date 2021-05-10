@@ -1,0 +1,26 @@
+.genres-container {
+    // width: 100%;
+}
+
+.genres-wrapper {
+    width: 33.33%;
+    height: 120px;
+}
+
+.genres-item {
+    width: 95%;
+    height: 95%;
+    cursor: pointer;
+    border-radius: 16px;
+    border: 1px solid var(--light-theme-accent);
+    &:hover {
+        background: var(--light-theme-accent);
+        // border: 2px solid var(--body-color);
+        h3 {
+            color: var(--body-color);
+        }
+        h3::first-letter {
+            color: var(--accent-color);
+        }
+    }
+}

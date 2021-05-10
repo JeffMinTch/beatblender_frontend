@@ -1,3 +1,4 @@
+import { ProfileModule } from './views/profile/profile.module';
 import { Routes } from '@angular/router';
 import { AdminLayoutComponent } from './shared/components/layouts/admin-layout/admin-layout.component';
 import { AuthLayoutComponent } from './shared/components/layouts/auth-layout/auth-layout.component';
@@ -39,6 +40,16 @@ export const rootRouterConfig: Routes = [
         path: 'listen',
         loadChildren: () => import('./views/music-platform/music-platform.module').then(m => m.MusicPlatformModule),
         data: { title: 'Listen', breadcrumb: 'All Music'}
+      },
+      {
+        path: 'profile',
+        loadChildren: () => import('./views/profile/profile.module').then(m => m.ProfileModule),
+        data: { title: 'Profile', breadcrumb: 'Profile' }
+      },
+      {
+        path: 'dashboard',
+        loadChildren: () => import('./views/dashboard/dashboard.module').then(m => m.DashboardModule),
+        data: { title: 'Dashboard', breadcrumb: 'Dashboard' }
       },
       {
         path: 'home',

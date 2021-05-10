@@ -1,0 +1,67 @@
+// @import '../../../../assets/styles/scss/variables';
+@import '../../../../assets/styles/scss/variables';
+// .dz-file-over {
+//     border: dotted 3px rgb(12, 12, 90);
+// }
+
+.header {
+    font-weight: 300;
+    font-weight: 900;
+    // color: #FFFFFF;
+    // background: #FFFFFF;
+    // text-shadow: 2px 2px 0 $body-color, 2px -2px 0 $body-color, -2px 2px 0 $body-color, -2px -2px 0 $body-color, 2px 0px 0 $body-color, 0px 2px 0 $body-color, -2px 0px 0 $body-color, 0px -2px 0 $body-color;
+}
+
+h1, h2, h3 {
+    font-weight: 700;
+    margin: 16px 0;
+    color: #6a6c74;
+}
+h1 {
+    font-size: 2.5rem;
+}
+h2 {
+    font-size: 2rem;
+}
+h3 {
+    font-size: 1.5rem;
+}
+
+.sample-info {
+    border-radius: 8px;
+    border: 1px solid var(--light-theme-accent);
+    > mat-card-title {
+        font-size: 1.2rem;
+        .file-type {
+            // background: white;
+            // border-radius: 4px;
+            // margin-left: auto;
+            // padding: 2px 8px;
+        }
+    }
+}
+
+.samples-form {
+    width: 100%;
+    img {
+        border-radius: 50%;
+        height: 100%;
+        width: auto;
+    }
+}
+
+.create-pseudonym-button {
+    background: var(--primary-light-color);
+    color: var(--body-color);
+    border-radius: 32px;
+    margin-right: 10px;
+}
+
+.artist-pseudonym-row {
+    
+}
+
+::ng-deep .artist-pseudonym-row .mat-form-field-wrapper {
+    padding-bottom: 0 !important;
+}
+

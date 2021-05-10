@@ -1,3 +1,73 @@
+<h1>Dashboard</h1>
+<div fxLayout="row wrap">
+  <div fxFlex="100" fxFlex.gt-sm="25" fxFlex.sm="50" [@animate]="{value:'*',params:{scale:'.9',delay:'300ms'}}">
+    <mat-card>
+      <mat-card-title fxLayoutAlign="start center">
+        <small class="text-muted">Karma Points</small>
+        <span fxFlex></span>
+        <!-- <mat-chip
+        class="icon-chip" 
+        color="primary" 
+        selected="true"><mat-icon>trending_up</mat-icon>20%</mat-chip> -->
+      </mat-card-title>
+      <mat-card-content>
+        <h3 class="m-0 font-normal">22,450</h3>
+        <small class="text-muted">Your Current Balance</small>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <div fxFlex="100" fxFlex.gt-sm="25" fxFlex.sm="50" [@animate]="{value:'*',params:{delay:'300ms',scale:'.9'}}">
+    <mat-card>
+      <mat-card-title>
+        <small class="text-muted">Listenings</small>
+        <span fxFlex></span>
+        <mat-chip
+        class="icon-chip" 
+        color="accent" 
+        selected="true"><mat-icon>trending_up</mat-icon>10%</mat-chip>
+      </mat-card-title>
+      <mat-card-content>
+        <h3 class="m-0 font-normal">11,567</h3>
+        <small class="text-muted">Times Played</small>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <div fxFlex="100" fxFlex.gt-sm="25" fxFlex.sm="50" [@animate]="{value:'*',params:{delay:'300ms',scale:'.9'}}">
+    <mat-card>
+      <mat-card-title>
+        <small class="text-muted">Earned</small>
+        <span fxFlex></span>
+        <mat-chip
+        class="icon-chip" 
+        color="accent" 
+        selected="true"><mat-icon>trending_up</mat-icon>9%</mat-chip>
+      </mat-card-title>
+      <mat-card-content>
+        <h3 class="m-0 font-normal">2,300$</h3>
+        <small class="text-muted">Dollar</small>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  <div fxFlex="100" fxFlex.gt-sm="25" fxFlex.sm="50" [@animate]="{value:'*',params:{delay:'300ms',scale:'.9'}}">
+    <mat-card>
+      <mat-card-title>
+        <small class="text-muted">Tracks</small>
+        <span fxFlex></span>
+        <mat-chip
+        class="icon-chip" 
+        color="warn" 
+        selected="true"><mat-icon>trending_down</mat-icon>2%</mat-chip>
+      </mat-card-title>
+      <mat-card-content>
+        <h3 class="m-0 font-normal">5</h3>
+        <small class="text-muted">Songs Uploaded</small>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>
+
 <div fxLayout="row wrap">
   <div fxLayout="column" fxFlex="100" fxFlex.gt-md="50">
     <!-- Time line -->
@@ -89,32 +159,7 @@
     </mat-card>
     <!-- End Time line -->
 
-    <mat-card class="default">
-      <mat-card-title>Uploaded Photos</mat-card-title>
-      <mat-card-content class="p-0">
-          <mat-grid-list cols="3" rowHeight="1:1" class="app-gallery">
-              <!-- Gallery item -->
-              <mat-grid-tile *ngFor="let photo of photos">
-                <img [src]="photo.url" alt="">
-                <!-- item detail, show on hover -->
-                <div class="gallery-control-wrap">
-                  <div class="gallery-control">
-                    <h4 class="photo-detail fz-1" [fxHide.lt-sm]="true">{{photo.name}}</h4>
-                    <span fxFlex></span>
-                    <button mat-icon-button [matMenuTriggerFor]="photoMenu" class="">
-                      <mat-icon>more_vert</mat-icon>
-                    </button>
-                    <mat-menu #photoMenu="matMenu">
-                      <button mat-menu-item><mat-icon>send</mat-icon>Send as attachment</button>
-                      <button mat-menu-item><mat-icon>favorite</mat-icon>Favorite</button>
-                      <button mat-menu-item><mat-icon>delete</mat-icon>Delete</button>
-                    </mat-menu>
-                  </div>
-                </div>
-              </mat-grid-tile>
-            </mat-grid-list>
-      </mat-card-content>
-    </mat-card>
+   
   </div>
   
   <div fxLayout="column" fxFlex="100" fxFlex.gt-md="50">
@@ -141,14 +186,14 @@
     </mat-card>
 
     <mat-card class="default">
-      <mat-card-title>Assigned Tasks</mat-card-title>
+      <mat-card-title>License Manager</mat-card-title>
       <mat-card-content class="p-0">
         <div class="list-tasktype">
           <div class="tasktype-item" *ngFor="let t of tasks">
             <mat-checkbox class="mr-16"></mat-checkbox>
             <span>{{t.text}}</span>
             <span fxFlex></span>
-            <mat-chip mat-sm-chip color="primary" [selected]="t.status ? true : false">{{t.status ? 'completed' : 'pending'}}</mat-chip>
+            <mat-chip mat-sm-chip color="primary" [selected]="t.status ? true : false">{{t.status ? 'Full License' : 'Basic License'}}</mat-chip>
             <button mat-icon-button mat-sm-button [matMenuTriggerFor]="taskMenu" class="tasktype-action ml-16">
                 <mat-icon class="text-muted">more_vert</mat-icon>
             </button>
@@ -175,7 +220,7 @@
     </mat-card>
 
     <mat-card class="default">
-      <mat-card-title>Activity</mat-card-title>
+      <mat-card-title>My Billings</mat-card-title>
       <mat-card-content class="p-0" fxLayout="column">
         <div class="activity-data">
           <ngx-datatable class="material bg-white" 

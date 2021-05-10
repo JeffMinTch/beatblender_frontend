@@ -129,3 +129,20 @@ body {
     src: url("./scss/fonts/Poppins/Poppins-Regular.ttf") format("truetype");
     font-display: block;
   }
+
+  .profile-sidenav-container .mat-drawer-content {
+    width: 100% !important;
+    overflow-x: hidden !important;
+  }
+
+  .tooltip-primary {
+    background-color: var(--primary-color) !important;
+    color: var(--light-theme) !important;
+    // font-size: 16px;
+  }
+
+  .tooltip-accent {
+    background-color: var(--primary-light-color) !important;
+    color: var(--body-color) !important;
+    // font-size: 16px;
+  }

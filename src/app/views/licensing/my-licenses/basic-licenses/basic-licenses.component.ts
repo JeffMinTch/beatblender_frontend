@@ -12,18 +12,32 @@ export interface PeriodicElement {
   c: string;
 }
 
-const ELEMENT_DATA: PeriodicElement[] = [
-  {position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H', c: 'H'},
-  {position: 2, name: 'Helium', weight: 4.0026, symbol: 'He', c: 'H'},
-  {position: 3, name: 'Lithium', weight: 6.941, symbol: 'Li', c: 'H'},
-  {position: 4, name: 'Beryllium', weight: 9.0122, symbol: 'Be', c: 'H'},
-  {position: 5, name: 'Boron', weight: 10.811, symbol: 'B', c: 'H'},
-  {position: 6, name: 'Carbon', weight: 12.0107, symbol: 'C', c: 'H'},
-  {position: 7, name: 'Nitrogen', weight: 14.0067, symbol: 'N', c: 'H'},
-  {position: 8, name: 'Oxygen', weight: 15.9994, symbol: 'O', c: 'H'},
-  {position: 9, name: 'Fluorine', weight: 18.9984, symbol: 'F', c: 'H'},
-  {position: 10, name: 'Neon', weight: 20.1797, symbol: 'Ne', c: 'H'},
+
+export interface BasicLicense {
+  image: string;
+  id: string,
+  title: string;
+  copyrightOwner: string,
+  extensionPrice: number;
+  downloadSampleLink: string;
+  downloadContractLink: string
+}
+
+const ELEMENT_DATA: BasicLicense[] = [
+  {image: 'typ.jpg', id: '010-312-313', title: 'I Got U', copyrightOwner: 'Jar Jar', extensionPrice: 12, downloadSampleLink: 'H', downloadContractLink: 'csacsac'},
+  {image: 'frau.jpg',id: '345-456-243', title: 'Ocean Drive', copyrightOwner: 'Duke Dumont', extensionPrice: 2, downloadSampleLink: 'H', downloadContractLink: 'csacsac'},
+  {image: 'typ2.jpg',id: '983-643-453', title: 'Pippi Langstrumpf', copyrightOwner: 'Astrid Lindgren', extensionPrice: 1, downloadSampleLink: 'H', downloadContractLink: 'csacsac'},
+  {image: 'typ4.jpg',id: '938-648-099', title: 'Ollala Muko', copyrightOwner: 'Unana Mana', extensionPrice: 8, downloadSampleLink: 'H', downloadContractLink: 'csacsac'},
+  {image: 'typ5.jpg',id: '664-595.302', title: 'Balla Balla', copyrightOwner: 'Pico', extensionPrice: 4, downloadSampleLink: 'H', downloadContractLink: 'csacsac'},
+  {image: 'typ6.jpg',id: '233-233-233', title: 'Natural Forest Sounds', copyrightOwner: 'The Pianist', extensionPrice: 5, downloadSampleLink: 'H', downloadContractLink: 'csacsac'},
+  {image: 'typ7.jpg',id: '340-444-657', title: 'Infinity Synth', copyrightOwner: 'Hackermann Sounds', extensionPrice: 233, downloadSampleLink: 'H', downloadContractLink: 'csacsac'},
+  {image: 'typ8.jpg',id: '202-323-124', title: 'Barischnikov No. 9', copyrightOwner: 'Donny Brasco', extensionPrice: 1200, downloadSampleLink: 'H', downloadContractLink: 'csacsac'},
+  {image: 'typ9.jpg',id: '367-022-119', title: 'Miyagi Do Sounds', copyrightOwner: 'Karate Kid', extensionPrice: 200, downloadSampleLink: 'H', downloadContractLink: 'csacsac'},
+  {image: 'typ10.jpg',id: '868-090-245', title: 'Aiaiai', copyrightOwner: 'Indigin Sounds', extensionPrice: 3, downloadSampleLink: 'H', downloadContractLink: 'csacsac'},
 ];
+
+
+
 
 
 
@@ -36,8 +50,9 @@ export class BasicLicensesComponent implements OnInit {
 
     // dataSource: MatTableDataSource<PeriodicElement>;
   // displayedColumns: string[];
-  dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
-  displayedColumns   = ['position', 'name', 'weight', 'symbol', 'c'];
+  dataSource = new MatTableDataSource<BasicLicense>(ELEMENT_DATA);
+  displayedColumns   = ['image','id', 'title', 'copyrightOwner', 'extensionPrice', 'downloadSampleLink', 'downloadContractLink'];
+
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   

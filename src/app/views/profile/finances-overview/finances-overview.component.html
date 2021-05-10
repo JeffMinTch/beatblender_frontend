@@ -1,0 +1,65 @@
+<div class="finances-overview m-8">
+    <!-- *ngIf="cart.length"  -->
+    <table class="finances-table cart-table" 
+    [@animate]="{value:'*',params:{delay: '100ms', x:'-50px'}}">
+      <thead>
+        <tr>
+          <th class=""></th>
+          <th class=""></th>
+          <th class="">Track Title</th>
+          <th class="">Withdrawable Income</th>
+          <!-- <th class="text-muted">Quantity</th> -->
+          <th class="">Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let sample of (sampleLicensingMarketService.samples$ | async) | paginate: { itemsPerPage: pageSize, currentPage: page, totalItems: count }; let i = index;">
+          <td><button mat-icon-button color="" class="play-button" (click)="removeProduct()"><mat-icon>play_arrow</mat-icon></button> </td>
+          <td><img class="sample-image mat-elevation-z1" src="{{'http://localhost:9090/api/web/public/media/image/' + sample?.sampleID}}" style="cursor: pointer"></td>
+          <td><span style="cursor: pointer" >{{sample?.title}}</span></td>
+          <td>{{sample?.lep | currency}}</td>
+          <!-- <td><input class="quantity-input default-bg" id="quantity" min="1" name="quantity" type="number" (change)="onQuantityChange()" [(ngModel)]="item.data.quantity"></td> -->
+          <!-- <td>{{sample?.lep * 0 | currency}}</td> -->
+          <td>{{sample?.lep * 0 | currency}}</td>
+
+        </tr>
+      </tbody>
+    </table>
+    
+    <!-- *ngIf="cart.length" -->
+    <div fxLayout="row" fxLayout.lt-md="column" [@animate]="{value:'*',params:{delay: '100ms', x:'50px'}}">
+      <div fxFlex></div>
+      <div fxFlex="50" class="mr-16 mb-16">
+        <mat-card class="m-0 cash-out-card">
+          <div class="line mb-16">
+            <span class="fw-500">Subtotal:</span>
+            <span fxFlex></span>
+            <span class="text-muted">${{subTotal}}</span>
+          </div>
+          <div class="line mb-16">
+            <span class="fw-500">VAT:</span>
+            <span fxFlex></span>
+            <span class="text-muted">{{vat}}%</span>
+          </div>
+          <mat-divider class=""></mat-divider>
+          <div class="line mb-16 pt-16">
+            <span class="fw-500">Total:</span>
+            <span fxFlex></span>
+            <span class="text-muted">${{total}}</span>
+          </div>
+          <mat-card-actions>
+            <span fxFlex></span>
+            <!-- <button mat-raised-button color="primary">Back To Shop</button> -->
+            <button mat-raised-button color="warn" routerLink="/profile/checkout">Cash Out</button>
+          </mat-card-actions>
+        </mat-card>
+      </div>
+    </div>
+    <!-- *ngIf="!cart.length" -->
+    <div *ngIf="!(sampleLicensingMarketService.samples$ | async)?.length" [@animate]="{value:'*',params:{delay: '100ms', y:'-50px'}}">
+      <mat-card class="text-center">
+        <p>Your cart is empty</p>
+        <button mat-raised-button color="accent">Go Back To Shop</button>
+      </mat-card>
+    </div>
+</div>

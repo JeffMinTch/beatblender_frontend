@@ -1,0 +1,31 @@
+<!-- <mat-card fxLayout="row"> -->
+<section class="playlist-card" mat-ripple [fxLayout]="align === 'left' ? 'row' : 'row-reverse'" fxLayoutGap="30px">
+    <!-- <div  fxLayout="row wrap" class="image-wrapper">
+        
+        <div class="image-container">
+            <img [src]="'../../../../assets/images/' + image1" alt="">
+        </div>
+        <div class="image-container" style="opacity: 0.7;">
+            <img [src]="'../../../../assets/images/' + image2" alt="">
+        </div>
+        <div class="image-container" style="opacity: 0.3;">
+            <img [src]="'../../../../assets/images/' + image3" alt="">
+        </div>
+        <div class="image-container" style="opacity: 0.1;">
+            <img [src]="'../../../../assets/images/' + image4" alt="">
+        </div>
+    </div>
+    <span fxFlex></span> -->
+    <div fxFlex fxLayout="column">
+        <div fxFlex fxLayout fxLayoutAlign="start center">
+            <h1 style="font-size: 20px; margin: 0 0 0 16px;">{{title}}</h1>
+        </div>
+        <!-- <div fxFlex fxLayout fxLayoutAlign="start start">
+            <h3 class="m-0" style="font-size: 22px;">By <i>{{creator}}</i></h3>
+        </div> -->
+    </div>
+    
+</section>
+<!-- <mat-divider></mat-divider> -->
+
+<!-- </mat-card> -->

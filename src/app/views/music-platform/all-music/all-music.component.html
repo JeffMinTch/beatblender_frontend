@@ -1,5 +1,88 @@
 
 <div fxLayout="column" fxLayoutGap="">
+  <!-- <h1 style="font-family: 'Lazer84';">Discover All Music</h1> -->
+    <mat-card class="default">
+        <h1 style="padding: 15px 0 0 15px;">BeatBlender Charts</h1>
+        <!-- <mat-card-title>Uploaded Photos</mat-card-title> -->
+        <mat-card-content class="p-0">
+          <div *ngFor="let sample of (sampleLicensingMarketService.samples$ | async) | paginate: { itemsPerPage: pageSize, currentPage: page, totalItems: count }; let i = index;"
+          [@animate]="{value:'*',params:{delay:'300ms',scale:'.9'}}"
+          >
+            <app-audio-panel *ngIf="i <= 4" [sample]="sample" type="primary"></app-audio-panel>
+
+        </div>
+          <div class="text-center">
+            <button mat-button class="full-width">View all</button>
+          </div>
+        </mat-card-content>
+      </mat-card>
+      <mat-card class="default">
+        <h1 style="padding: 15px 0 0 15px;">Discover Incredible Artists</h1>
+        <!-- <mat-card-title>Uploaded Photos</mat-card-title> -->
+        <mat-card-content class="p-0">
+            <mat-grid-list cols="3" rowHeight="1:1" class="app-gallery">
+                <!-- Gallery item -->
+                <mat-grid-tile *ngFor="let photo of photos">
+                  <img [src]="photo.url" alt="">
+                  <!-- item detail, show on hover -->
+                  <div class="gallery-control-wrap">
+                    <div class="gallery-control">
+                      <h4 class="photo-detail fz-1" [fxHide.lt-sm]="true">{{photo.name}}</h4>
+                      <span fxFlex></span>
+                      <button mat-icon-button [matMenuTriggerFor]="photoMenu" class="">
+                        <mat-icon>more_vert</mat-icon>
+                      </button>
+                      <mat-menu #photoMenu="matMenu">
+                        <button mat-menu-item><mat-icon>send</mat-icon>Send as attachment</button>
+                        <button mat-menu-item><mat-icon>favorite</mat-icon>Favorite</button>
+                        <button mat-menu-item><mat-icon>delete</mat-icon>Delete</button>
+                      </mat-menu>
+                    </div>
+                  </div>
+                </mat-grid-tile>
+              </mat-grid-list>
+        </mat-card-content>
+      </mat-card>
+      <mat-card class="default">
+        <h1 style="padding: 15px 0 0 15px;">Todays Charts</h1>
+        <!-- <mat-card-title>Uploaded Photos</mat-card-title> -->
+        <mat-card-content class="p-0">
+          <ng-container *ngFor="let sample of (sampleLicensingMarketService.samples$ | async) | paginate: { itemsPerPage: pageSize, currentPage: page, totalItems: count }; let i = index;">
+            <app-audio-panel *ngIf="i <= 4"
+            
+            [sample]="sample" type="primary"></app-audio-panel>
+
+          </ng-container>
+        </mat-card-content>
+      </mat-card>
+      
+      <mat-card class="default">
+        <h1 style="padding: 15px 0 0 15px;">Trending Today</h1>
+        <!-- <mat-card-title>Uploaded Photos</mat-card-title> -->
+        <mat-card-content class="p-0">
+            <mat-grid-list cols="3" rowHeight="1:1" class="app-gallery">
+                <!-- Gallery item -->
+                <mat-grid-tile *ngFor="let photo of photos">
+                  <img [src]="photo.url" alt="">
+                  <!-- item detail, show on hover -->
+                  <div class="gallery-control-wrap">
+                    <div class="gallery-control">
+                      <h4 class="photo-detail fz-1" [fxHide.lt-sm]="true">{{photo.name}}</h4>
+                      <span fxFlex></span>
+                      <button mat-icon-button [matMenuTriggerFor]="photoMenu" class="">
+                        <mat-icon>more_vert</mat-icon>
+                      </button>
+                      <mat-menu #photoMenu="matMenu">
+                        <button mat-menu-item><mat-icon>send</mat-icon>Send as attachment</button>
+                        <button mat-menu-item><mat-icon>favorite</mat-icon>Favorite</button>
+                        <button mat-menu-item><mat-icon>delete</mat-icon>Delete</button>
+                      </mat-menu>
+                    </div>
+                  </div>
+                </mat-grid-tile>
+              </mat-grid-list>
+        </mat-card-content>
+      </mat-card>
     <h1>Discover Artists</h1>
     <!-- <h2 class="mb-16" style="color: var(--body-color); padding: 8px 16px; width: fit-content; font-family: 'Lazer84'" ><span style="color: var(--primary-color);">D</span>iscover <span style="color: var(--accent-color);">A</span>rtists </h2> -->
     <mat-divider class="mb-16" ></mat-divider>
@@ -26,6 +109,8 @@
     
     </div>
     <mat-divider class="mb-16" ></mat-divider>
+
+    
 
     <h1>Todays Charts</h1>
     <!-- <h2 class="mb-16" style="color: var(--body-color); padding: 8px 16px; width: fit-content; font-family: 'Lazer84'" ><span style="color: var(--primary-color);">T</span>oday's <span style="color: var(--accent-color);">C</span>harts </h2> -->

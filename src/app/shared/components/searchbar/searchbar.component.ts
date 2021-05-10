@@ -21,8 +21,8 @@ export class SearchbarComponent implements OnInit {
   @ViewChild('searchInputTrigger', { static: false, read: MatAutocompleteTrigger }) private matSearchInputTrigger: MatAutocompleteTrigger;
   @ViewChild('auto', { static: false, read: MatAutocomplete }) private matAutoComplete: MatAutocomplete;
 
-  @Input() sortBy: string;
   @Input() page: number;
+  @Input() sortBy: string;
   @Input() pageSize: number;
   @Input() searchForm: FormGroup;
 

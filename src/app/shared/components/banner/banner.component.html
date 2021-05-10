@@ -1,0 +1,28 @@
+<div fxLayout="column" class="full-width">
+    <div fxFlex fxLayout [fxLayoutAlign]="align === 'left' ? 'start center' : 'end center'" style="width: 100%; height: 300px;">
+        <h1 [ngStyle]="addFirstTitleStyle()" style="max-width: 650px; color: var(--body-color); text-align: center;">{{firstTitle}}</h1>
+    
+    </div>
+    <section [fxLayout]="align === 'left' ? 'row' : 'row-reverse'" fxLayoutAlign="center center" fxLayoutGap="10px" fxFlex class="banner" [ngStyle]="setStyle()">
+        <!-- <div > -->
+    
+          <div fxFlex fxLayout class="mr-auto  full-width">
+            <h1 [ngStyle]="addFirstTitleStyle()" style="max-width: 550px; color: var(--light-theme); text-align: center;">{{title}}</h1>
+          </div>
+          <div fxFlex class="full-height">
+              <div style="transform: translateY(-150px);">
+                  <ng-content>
+                  </ng-content>
+
+              </div>
+          </div>
+          <!-- <div  fxFlex fxLayoutAlign="end end" class="full-height">
+            <div fxFlex fxLayout="column" fxLayoutAlign="center center" style="margin: 0 10px 10px 0;">
+              <img style="width: 350px; height: 350px; object-fit: cover;" src="../../../assets/images/backgrounds/featuresSounds-artists_2x.png" alt="">
+              <button mat-raised-button style="width: 80%;">Join BeatBlender.</button>
+            </div>
+          </div> -->
+    
+        <!-- </div> -->
+      </section>
+</div>

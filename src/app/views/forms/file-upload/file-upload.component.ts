@@ -1,20 +1,30 @@
+import { SimpleInputDialogComponent } from './../../../shared/components/dialogs/simple-input-dialog/simple-input-dialog.component';
+import { config } from './../../../../config';
+import { SelectMixedinsDialogComponent } from './../../../shared/components/dialogs/select-mixedins-dialog/select-mixedins-dialog.component';
 import { AudioUnitType } from './../../../shared/enums/audio-unit-type.enums';
 import { environment } from './../../../../environments/environment.prod';
 import {OAuthService} from 'angular-oauth2-oidc';
 import {AudioService} from './../../../shared/services/audio.service';
-import {filter, takeUntil} from 'rxjs/operators';
-import {ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {filter, skipWhile, takeUntil} from 'rxjs/operators';
+import {ChangeDetectorRef, Component, ElementRef, HostListener, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {FileItem, FileUploader, FileUploaderOptions} from 'ng2-file-upload';
-import {BehaviorSubject, Observable, ReplaySubject} from 'rxjs';
+import {BehaviorSubject, Observable, ReplaySubject, Subject} from 'rxjs';
 import {MatSnackBar, MatSnackBarConfig} from '@angular/material/snack-bar';
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
-import {MatAutocomplete} from '@angular/material/autocomplete';
+import {MatAutocomplete, MatAutocompleteTrigger} from '@angular/material/autocomplete';
 import {MatChipInputEvent} from '@angular/material/chips';
 import {PlayStateControlService} from 'app/shared/services/play-state-control.service';
 import {AudioState} from 'app/shared/models/audio-state.model';
 import {LayoutService} from 'app/shared/services/layout.service';
 import {JwtAuthService} from '../../../shared/services/auth/jwt-auth.service';
+import { MatCheckbox, MatCheckboxChange } from '@angular/material/checkbox';
+import { Sample } from 'app/shared/models/sample.model';
+import { SampleLicensingMarketService } from 'app/views/licensing/sample-licensing-market.service';
+import { AudioWebService } from 'app/shared/services/web-services/audio-web.service';
+import { HttpErrorResponse } from '@angular/common/http';
+import { MatOption } from '@angular/material/core';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 @Component({
     selector: 'app-file-upload',
     templateUrl: './file-upload.component.html',
@@ -23,7 +33,12 @@ import {JwtAuthService} from '../../../shared/services/auth/jwt-auth.service';
 export class FileUploadComponent implements OnInit, OnDestroy {
     @ViewChild('fruitInput') fruitInput: ElementRef<HTMLInputElement>;
     @ViewChild('auto') matAutocomplete: MatAutocomplete;
+    @ViewChild('sampleMarketCheckbox', { read: MatCheckbox }) sampleMarketCheckbox: MatCheckbox;
+    @ViewChild('beatblenderMusicCheckbox', { read: MatCheckbox }) beatblenderMusicCheckbox: MatCheckbox;
+    @ViewChild('searchInputTrigger', { static: false, read: MatAutocompleteTrigger }) private matSearchInputTrigger: MatAutocompleteTrigger;
 
+
+    checked: boolean;
     playState: boolean;
     currentSampleIndex: number;
     selectable = true;
@@ -57,11 +72,16 @@ export class FileUploadComponent implements OnInit, OnDestroy {
     public maximumMoods = 3;
     public maximumSampleTitle = 200;
 
+   
+
+
+
     genreList: string[] = ['Blues', 'Classical', 'Country', 'Electronic', 'Hip Hop/Rap', 'Jazz', 'Latin', 'Pop', 'RnB/Soul', 'Reggea', 'Rock', 'Spoken Word'];
     regionList: string[] = ['Northern Europe', 'Western Europe', 'Southern Europe', 'Eastern Europe', 'Middle East', 'Caribbean', 'Oceania, Pacific', 'Southern Africa', 'Northern Africa', 'Western Africa', 'Eastern Africa', 'South Asia/India', 'East Asia', 'North America', 'South America', 'Central America'];
     trackTypeList: string[] = ['Accordion', 'Bass', 'Drum', 'Edits', 'Flute', 'FX track', 'Guitar', 'Horns', 'Instrumental', 'Keyborads', 'Master', 'Percussion', 'Shruti Box', 'Sound FX', 'Strings', 'Vocals', 'Whistle'];
     songKeyList: string[] = ['A major', 'A minor', 'A flat major', 'A flat minor', 'B major', 'B minor', 'B flat major', 'B flat minor', 'C major', 'C minor', 'D major', 'D minor', 'D flat major', 'D flat minor', 'E major', 'E minor', 'E flat major', 'E flat minor', 'F major', 'F minor', 'G major', 'G minor', 'G flat major', 'G flat minor'];
     moodsList: string[] = ['ambient', 'angry', 'bouncy', 'calming', 'carefree', 'cheerful', 'cold', 'complex', 'cool', 'dark', 'disturbing', 'dramatic', 'dreamy', 'eerie', 'elegant', 'energetic', 'enthusiastic', 'epic', 'fun', 'funky', 'futuristic', 'gentle', 'gleeful', 'gloomy', 'groovy', 'happy', 'harsh', 'haunting', 'humorous', 'hypnotic', 'industrial', 'intense', 'intimate', 'joyous', 'laid-back', 'light', 'lively', 'manic', 'mellow', 'mystical', 'ominous', 'passionate', 'pastoral', 'peaceful', 'playful', 'poignant', 'quiet', 'rebellious', 'reflective', 'romantic', 'rowdy', 'sad', 'sentimental', 'sexy', 'smooth', 'soothing', 'sophisticated', 'spacey', 'spiritual', 'strange', 'sweet', 'theater', 'trippy', 'warm', 'whimsical'];
+    artistPseudonymList: string[] = ['MyFirstArtistName', 'MySecondArtistName', 'MyThirdArtistName'];
 
     constructor(
         private _snackbar: MatSnackBar,
@@ -71,7 +91,10 @@ export class FileUploadComponent implements OnInit, OnDestroy {
         private layoutService: LayoutService,
         private fb: FormBuilder,
         private jwt: JwtAuthService,
-        private oauthService: OAuthService
+        private oauthService: OAuthService,
+        private audioWebService: AudioWebService,
+    private sampleLicensingMarketService: SampleLicensingMarketService,
+    public dialog: MatDialog
     ) {
         this.uploadUrl = `${environment.apiURL.baseUrl}${environment.apiURL.audioPath.protected.root}${environment.apiURL.audioPath.protected.uploadSamples}`;
         // // https://stackoverflow.com/questions/60303518/angular-ng2-file-upload-input-file-filter-not-working-for-png-in-internet-explor
@@ -282,10 +305,17 @@ export class FileUploadComponent implements OnInit, OnDestroy {
         }
     }
 
+    
+
 
     public buildFileItemForm(): FormGroup {
 
         this.fileItemForm = this.fb.group({
+            'sampleType':  this.fb.control(true, [Validators.required]),
+            'trackType':  this.fb.control(true, [Validators.required]),
+            'artistPseudonymGroup':  this.fb.group({
+                'artistPseudonym': ['', [Validators.required]],
+            }),
             'descriptionForm': this.fb.group({
                 'sampleTitle': ['', [
                     Validators.required,
@@ -313,9 +343,10 @@ export class FileUploadComponent implements OnInit, OnDestroy {
                     Validators.required
                 ]]
             }),
-            'mixedIn': this.fb.group({
-                'audioUnits': [[]]
-            }),
+            // 'mixedIn': this.fb.group({
+            //     'audioUnits': [null, [Validators.required]]
+            // }),
+            'mixedIns': this.fb.control([], [Validators.required]),
             'ownershipDeclaration': this.fb.control('', [Validators.required])
         });
 
@@ -352,6 +383,8 @@ export class FileUploadComponent implements OnInit, OnDestroy {
         // })
         // return this.basicForm;
     }
+
+   
 
     // https://stackblitz.com/edit/angular-material-v9-mat-select-with-mat-chip-list?file=src%2Fapp%2Fselect-multiple-example.html
     onMoodRemoved(mood: string, item: FileItem): void {
@@ -415,6 +448,74 @@ export class FileUploadComponent implements OnInit, OnDestroy {
         console.log(item);
         console.log(this.formsMap.get(item));
     }
+
+    uploadAsSample(item: FileItem, change: MatCheckboxChange) {
+        if(this.formsMap.get(item).controls['trackType'].value) {
+            this.formsMap.get(item).controls['sampleType'].setValue(change.checked);
+        } else {
+            this.formsMap.get(item).controls['sampleType'].setValue(!change.checked);
+            this.sampleMarketCheckbox.checked = !change.checked;
+        }
+    }
+
+    uploadAsTrack(item: FileItem, change: MatCheckboxChange) {
+        if(this.formsMap.get(item).controls['sampleType'].value) {
+            this.formsMap.get(item).controls['trackType'].setValue(change.checked);
+        } else {
+            this.formsMap.get(item).controls['trackType'].setValue(!change.checked);
+            this.beatblenderMusicCheckbox.checked = !change.checked;
+        }
+    }
+
+    optionSelected(e: any) {
+
+    }
+
+    changeSelectedSample(e: any) {
+
+    }
+
+    
+      name;
+      
+      openMixedInsDialog(item: FileItem) {
+        // const dialogConfig = new MatDialogConfig();
+        // dialogConfig.hasBackdrop = true;
+        const dialogRef = this.dialog.open(SelectMixedinsDialogComponent, {
+            // width: '500px',
+            data: {mixedIns: this.formsMap.get(item).controls['mixedIns'].value },
+            // data: this.formsMap.get(item).controls['mixedIns'].value,
+            hasBackdrop: false
+          });
+      
+          dialogRef.afterClosed().subscribe((data) => {
+            console.log('The dialog was closed');
+            this.formsMap.get(item).controls['mixedIns'].setValue(data.mixedIns);
+            console.log(this.formsMap.get(item).controls['mixedIns'].value);
+            this.formsSubject.next(this.formsMap);
+          });
+      }
+
+      openCreateArtistPseudonymDialog(item: FileItem) {
+        const dialogRef = this.dialog.open(SimpleInputDialogComponent, {
+            // width: '500px',
+            data: { 
+                title: 'Create New Artist Pseudonym',
+                firstParagraph: 'loremvdsvvvvvvvvvvvvvvvvvvvvvvsvdsvsdvvvvvvvvvv',
+                inputLabel: 'Enter Your New Artist Pseudonym',
+                inputValue: this.formsMap.get(item).controls['artistPseudonym'].value
+            },
+            // data: this.formsMap.get(item).controls['mixedIns'].value,
+            hasBackdrop: false
+          });
+      
+          dialogRef.afterClosed().subscribe((data) => {
+            console.log('The dialog was closed');
+            this.formsMap.get(item).controls['artistPseudonym'].setValue(data.inputValue);
+            // console.log(this.formsMap.get(item).controls['mixedIns'].value);
+            this.formsSubject.next(this.formsMap);
+          });
+      }
 
 
     // selected(event: MatAutocompleteSelectedEvent): void {

@@ -24,6 +24,7 @@ import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { AuthConfigService } from 'config/auth-config.service';
 import { init_app, load_font } from 'app.init';
+// import { CreatePlaylistDialogComponent } from './components/dialogs/create-playlist-dialog/create-playlist-dialog.component';
 // import { BasicLicensesComponent } from './views/my-licenses/basic-licenses/basic-licenses.component';
 
 

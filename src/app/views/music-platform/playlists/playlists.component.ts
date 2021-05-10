@@ -1,3 +1,4 @@
+import { CreatePlaylistDialogComponent } from './../../../shared/components/dialogs/create-playlist-dialog/create-playlist-dialog.component';
 import { SampleLicensingMarketService } from './../../licensing/sample-licensing-market.service';
 import { Component, OnInit } from '@angular/core';
 import { PlayStateControlService } from 'app/shared/services/play-state-control.service';
@@ -9,6 +10,7 @@ import { map, share, takeUntil } from 'rxjs/operators';
 import { Sample } from 'app/shared/models/sample.model';
 import { HttpErrorResponse } from '@angular/common/http';
 import { egretAnimations } from 'app/shared/animations/egret-animations';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-playlists',
@@ -28,6 +30,8 @@ export class PlaylistsComponent implements OnInit {
   pageSize: number = 12;
   sortBy: string = 'title';
 
+  playlistName: string;
+
   constructor(
     public sampleLicensingMarketService: SampleLicensingMarketService,
     public playStateControlService: PlayStateControlService,
@@ -35,6 +39,7 @@ export class PlaylistsComponent implements OnInit {
     private loader: AppLoaderService,
     private jwt: JwtAuthService,
     private ls: LocalStoreService,
+    public dialog: MatDialog
   ) { }
 
   ngOnInit(): void {
@@ -88,6 +93,19 @@ export class PlaylistsComponent implements OnInit {
   initCurrentFile(sampleID: string) {
     // this.playStateControlService.saveIDCurrentPlayElement(sampleID);
     this.playStateControlService.emitCurrentSampleID(sampleID);
+  }
+
+  openDialog(): void {
+    const dialogRef = this.dialog.open(CreatePlaylistDialogComponent, {
+      width: '350px',
+      data: {playlistName: this.playlistName}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      // console.log('The dialog was closed');
+      this.playlistName = result;
+    });
+
   }
 
 

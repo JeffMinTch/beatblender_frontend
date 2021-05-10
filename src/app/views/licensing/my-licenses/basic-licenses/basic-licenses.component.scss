@@ -3,8 +3,7 @@
     overflow: hidden;
     min-height: 1200px;
     position: relative;
-    padding: 16px;
-    // width: 100%;
+    padding: 0 16px;
 }
 
 
@@ -25,11 +24,77 @@ table {
     width: 100%;
   }
 
+  tr {
+    td {
+      // background: var(--primary-light-color);
+      // border-left: 0.5px solid var(--base-focused-color); 
+      // border-right: 0.5px solid var(--base-focused-color); 
+      
+    }
+  }
+
   tr:hover {
-    background: var(--primary-light-color);
+    background: var(--base-focused-color);
+    font-weight: 900;
+    th {
+      background: var(--light-theme); 
+     }
+    
   }
   
   tr:active {
-    background: var(--primary-light-color);
-    color: #fafafa !important;
+    // background: var(--base-accent-color);
+    // color: #fafafa !important;
+    
+  }
+
+  td {
+    // min-height: 100px;
+    height: 80px;
+    cursor: pointer;
+  }
+
+  th {
+    color: var(--body-color);
+    font-weight: 600;
+  }
+
+  td, th {
+    text-align: center !important;
+    vertical-align: middle !important;
+  }
+
+  tr:hover {
+    button {
+      background: var(--light-theme);
+      border: 1px solid;
+    }
+  }
+
+  ::ng-deep .mat-sort-header-container {
+    justify-content: center !important;
+    text-align: center !important;
+}
+
+  mat-header-cell, mat-cell {
+    // justify-content: center !important;
+    text-align: center !important;
+    // padding-left: 4px;
+    // padding-right: 4px;
+  }
+
+ ::ng-deep mat-header-cell:first-of-type, 
+ ::ng-deep .mat-cell:first-of-type, 
+ ::ng-deep .mat-footer-cell:first-of-type {
+    padding-left: 0 !important;
+}
+
+  button {
+    width: 95%;
+    font-weight: 600;
+    padding-top: 2px;
+    // padding: 4px 0;
+    span {
+      line-height: 18px;
+    }
   }

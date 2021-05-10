@@ -10,7 +10,7 @@ export class HomeSectionComponent implements OnInit {
 
   @Input() firstTitle: string;
   @Input() secondTitle: string;
-  
+  @Input() align: 'left' | 'right;' = 'left';
 
   constructor() { }
 

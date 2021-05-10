@@ -9,6 +9,11 @@
     // background-size: cover;
 }
 
+.mat-card {
+    box-shadow: none !important;
+    border: 1px solid var(--light-theme-accent);
+}
+
 h2 {
     margin: 8px;
     background: var(--light-theme-accent);

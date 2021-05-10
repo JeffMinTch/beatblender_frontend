@@ -1,0 +1,38 @@
+.finances-overview {
+    border-radius: 8px;
+    border: 1px solid var(--light-theme-accent);
+    // width: 100%;
+
+}
+
+.finances-table {
+}
+
+.sample-image {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.play-button {
+    background: var(--light-theme-accent);
+}
+
+tbody tr {
+    cursor: pointer;
+}
+
+tbody tr:hover {
+    background: var(--light-theme-accent);
+    .play-button {
+        color: var(--primary-color);
+        // border: 1px solid;
+    }
+}
+
+.cash-out-card {
+    box-shadow: none !important;
+    border: 2px solid var(--light-theme-accent);
+    border-radius: 8px;
+}

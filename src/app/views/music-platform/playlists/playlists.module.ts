@@ -1,3 +1,4 @@
+import { FlexLayoutModule } from '@angular/flex-layout';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -9,10 +10,11 @@ import { PlaylistsRoutes } from './playlists.routing'
 @NgModule({
   declarations: [PlaylistsComponent],
   imports: [
-    CommonModule,
+    // CommonModule,
     SharedModule,
     RouterModule.forChild(PlaylistsRoutes),
-    NgxPaginationModule
+    FlexLayoutModule
+    // NgxPaginationModule
   ]
 })
 export class PlaylistsModule { }

@@ -1,0 +1,189 @@
+<h1 class="ml-16">
+    <!-- <div style="width: 64px; height: 64px;" class="mr-16">
+        <mat-icon style="font-size: 12px;" inline="true" svgIcon="undraw-upload"></mat-icon>
+      </div> -->
+    <!-- <mat-icon style="font-size: 30px;" inline="true">upgrade</mat-icon> -->
+    <span style="color: var(--primary-color);">M</span>
+    <span style="">anage </span>
+    <span style="color: var(--accent-color); font-weight: 600;"> A</span>
+    <span style="font-weight: 600; color: var(--base-accent-color);">udio</span>
+  </h1>
+<mat-accordion displayMode="flat">
+    <mat-expansion-panel hideToggle expanded="true" #expansionPanel class="expansion-panel"
+        *ngFor="let sample of (sampleLicensingMarketService.samples$ | async) | paginate: { itemsPerPage: pageSize, currentPage: page, totalItems: count }; let i = index;">
+        <mat-expansion-panel-header style="height: 60px; padding: 0;">
+            <app-audio-panel class="full-width" [sample]="sample" type="primary"></app-audio-panel>
+        </mat-expansion-panel-header>
+        <!-- <mat-panel-title>
+        This is the expansion title
+      </mat-panel-title> -->
+        <!-- <mat-panel-description>
+        This is a summary of the content
+      </mat-panel-description> -->
+        <!-- <div style="height: 50px; width: 100%; background: red;"> -->
+        <!-- <p>{{sample.artistName}}</p> -->
+        <!-- </div> -->
+        <mat-action-row fxLayout="column" fxLayoutGap="20px">
+            <!-- <div fxLayout="column"> -->
+                
+                <div fxLayout="row" fxLayoutGap="10px">
+                    <div fxFlex>
+                        <ng-container>
+                            <div fxFlex class="info-wrap p-16"
+                                style="border: 1px solid var(--light-theme-accent); border-radius: 16px;">
+                                <div class="main-info">
+                                    <div fxLayout fxLayoutAlign="space-between">
+                                        <h5 class="my-16">Sample Data:</h5>
+                                        <button mat-icon-button matTooltip="Edit Sample Data"
+                                        matTooltipClass="tooltip-accent" class="edit-button">
+                                            <mat-icon class="edit-icon">edit</mat-icon>
+                                        </button>
+                                    </div>
+                                    <!-- <h3 class="title">{{sample?.title}}</h3>
+                                    <p class=" p-line">by <span class="artist-name">{{sample?.artistName}}</span></p> -->
+                                    <ng-container>
+                                        <p class=" p-line">
+                                            <strong>
+                                                
+                                                Category:</strong> {{sample?.genre}}
+                                                
+                                        </p>
+                                        <p class=" p-line">
+                                            <strong>Tempo:</strong> {{sample?.tempo}} BPM
+                                        </p>
+                                        <p class=" p-line">
+                                            <strong>Moods:</strong>
+                                            <!-- <span-list aria-label="Fish selection"> -->
+                                            <!-- <span>#{{sample?.}}</span>
+                                          <span>#{{sample?.region}}</span>
+                                          <span>#{{sample?.songKey}}</span>
+                                          <span>#Dmoll</span> -->
+                                            <span *ngFor="let mood of sample?.moods">{{mood}}</span>
+
+                                            <!-- </span-list> -->
+                                            <!-- <span *ngFor="let t of ">{{sample?.sampleTitle}} </span> -->
+                                        </p>
+                                        <p fxLayout="row wrap" class=" p-line">
+                                            <strong>Tags:</strong>
+                                            <!-- <span-list aria-label="Fish selection"> -->
+                                            <!-- <span>#{{sample?.}}</span>
+                                          <span>#{{sample?.region}}</span>
+                                          <span>#{{sample?.songKey}}</span>
+                                          <span>#Dmoll</span> -->
+                                            <span *ngFor="let tag of sample?.tags">#{{tag}}</span>
+
+                                            <!-- </span-list> -->
+                                            <!-- <span *ngFor="let t of ">{{sample?.sampleTitle}} </span> -->
+                                        </p>
+                                        <p class=" p-line">
+                                            <strong>Available Formats:</strong>
+                                            <!-- <mat-chip-list aria-label="Fish selection"> -->
+                                            <!-- <mat-chip>mp3</mat-chip> -->
+                                            <!-- <mat-chip>wav</mat-chip> -->
+                                            <!-- <mat-chip color="primary" selected>Primary fish</mat-chip> -->
+                                            <!-- <mat-chip color="accent" selected>Accent fish</mat-chip> -->
+                                            <!-- </mat-chip-list> -->
+                                            <span>mp3</span>
+                                            <span>wav</span>
+                                        </p>
+                                        <p class=" p-line">
+                                            <strong>Description:</strong> Lorem ipsum dolor sit amet consectetur, adipisicing elit. Molestias odit autem consequatur quod asperiores atque ratione assumenda eum temporibus aut?
+                                        </p>
+                                        <p class=" p-line">
+                                            <strong>
+                                                
+                                                MixedIns:</strong> 3 MixedIns included
+                                                
+                                        </p>
+                                    </ng-container>
+                                </div>
+                                <!-- <ng-container>
+                            <div class="actions">
+                              <div class="price-rating">
+                                <div class="price">
+                                  <span>LEP: {{sample?.lep}}</span>
+                                  <del class="text-muted">{{sample?.lep}}LEP</del>
+                                </div>
+                              </div>
+                              <div class="add-to-cart">
+                                <span fxFlex></span>
+                                <button mat-icon-button>
+                                  <mat-icon>library_add</mat-icon>
+                                </button>
+                              </div>
+                            </div>
+                            <span fxFlex></span>
+                    
+                          </ng-container> -->
+                            </div>
+                            <button *ngIf="type === 'sample'" fxFlex="50px" mat-stroked-button color="primary"
+                                class="full-width download-button">
+                                <span class="fw-700 fs-16">Get A License</span>
+                            </button>
+                        </ng-container>
+                    </div>
+                    <!-- <span fxFlex></span> -->
+                    <div fxLayout="column" fxLayoutGap="10px">
+                        <div fxFlex fxLayout="column" fxLayoutGap="0" class="p-16"
+                            style="border: 1px solid var(--light-theme-accent); border-radius: 16px;">
+                            <div>
+                                <h5 class="my-16">Upload Audio To:</h5>
+                            </div>
+                            <div fxFlex fxLayoutAlign="start center" fxLayoutGap="20px">
+                                <mat-checkbox class="example-margin" checked="true">Sample Market</mat-checkbox>
+                                <mat-checkbox class="example-margin" color="primary" checked="true">BeatBlender Music
+                                </mat-checkbox>
+                            </div>
+                        </div>
+                        <div fxFlex fxLayout="column" fxLayoutGap="0" class="p-16"
+                            style="border: 1px solid var(--light-theme-accent); border-radius: 16px;">
+                            <div>
+                                <h5 class="my-16">Metadata:</h5>
+                            </div>
+                            <ng-container>
+                                <p class="p-line">
+                                    <strong>Upload Date:</strong> 22-02-2022
+                                </p>
+                                <p class="p-line">
+                                    <strong>File Size:</strong> 1.3 MB
+                                </p>
+                                <p class="p-line">
+                                    <strong>Available Formats:</strong>
+                                    <span class="mx-16 chip" style="background: var(--primary-color);
+                                    color: var(--light-theme);">mp3</span>
+                                    <span class="chip" style="background: var(--accent-color);
+                                    color: var(--light-theme);">wav</span>
+                                </p>
+                            </ng-container>
+                        </div>
+
+                    </div>
+                </div>
+                <!-- <div style="border: 1px solid var(--light-theme-accent); border-radius: 16px;">
+                    <h3>MixedIns</h3>
+                    <ng-container
+                        *ngFor="let sample of (sampleLicensingMarketService.samples$ | async) | paginate: { itemsPerPage: pageSize, currentPage: page, totalItems: count }; let i = index;">
+                        <app-audio-panel *ngIf="i < 3" [sample]="sample" type="primary"></app-audio-panel>
+                    </ng-container>
+                </div> -->
+                <!-- <mat-divider></mat-divider> -->
+                <div fxFlex fxLayoutAlign="end end">
+                    <button mat-flat-button color="primary"> <mat-icon>manage_accounts</mat-icon>  Manage MixedIns</button>
+                    <button mat-stroked-button color="warn"> <mat-icon>close</mat-icon> Delete Sample</button>
+                </div>
+            <!-- </div> -->
+
+        </mat-action-row>
+    </mat-expansion-panel>
+    <!-- <mat-expansion-panel>
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+                Self aware panel
+            </mat-panel-title>
+            <mat-panel-description>
+                Currently I am {{panelOpenState ? 'open' : 'closed'}}
+            </mat-panel-description>
+        </mat-expansion-panel-header>
+        <p>I'm visible because I am open</p>
+    </mat-expansion-panel> -->
+</mat-accordion>

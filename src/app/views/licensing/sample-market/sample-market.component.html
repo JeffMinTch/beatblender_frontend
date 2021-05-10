@@ -16,7 +16,7 @@
       [ngClass]="{'list-view': viewMode === 'list-view'}">
       <!-- Product Box -->
       <ng-container *ngIf="(sampleLicensingMarketService.samples$ | async)?.length <= 0 && (sampleLicensingMarketService.samples$ | async) != null"; else product>
-        <div fxFlex fxLayoutAlign="center" >
+        <div fxFlex fxLayoutAlign="center">
           <span class="fs-24">No samples match your request.</span>
         </div>
       </ng-container>

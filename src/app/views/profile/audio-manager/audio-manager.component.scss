@@ -1,0 +1,36 @@
+.expansion-panel {
+    box-shadow: none !important;
+}
+
+.mat-action-row {
+    border-top-color: var(--light-theme);
+    padding-top: 0;
+}
+
+.edit-button {
+    border: 1px solid var(--light-theme-accent);
+    .mat-icon {
+        font-size: 18px;
+        color: var(--body-color);
+        cursor: pointer;
+    }
+    &:hover {
+        // background: var(--light-theme-accent);
+        // border: 1px solid var(--primary-color);
+
+        .mat-icon {
+            color: var(--primary-color);
+        }
+    }
+}
+
+.chip {
+    
+    border-radius: 32px;
+    padding: 4px 16px;
+}
+
+
+::ng-deep .mat-expansion-indicator {
+    padding: 0 16px !important;
+}

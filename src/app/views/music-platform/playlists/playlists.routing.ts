@@ -4,6 +4,7 @@ import { PlaylistsComponent } from './playlists.component';
 export const PlaylistsRoutes: Routes = [
   {
     path: '',
-    component: PlaylistsComponent
-  }
+    component: PlaylistsComponent,
+  },
+  
 ];

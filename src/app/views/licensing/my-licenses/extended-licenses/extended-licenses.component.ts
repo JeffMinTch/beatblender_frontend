@@ -2,27 +2,50 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { BasicLicense } from '../basic-licenses/basic-licenses.component';
 
 
-export interface PeriodicElement {
-  name: string;
-  position: number;
-  weight: number;
-  symbol: string;
-  c: string;
+export interface FullLicense {
+  image: string;
+  id: string,
+  title: string;
+  extensionPrice: number;
+  downloadContractLink: string;
+  status: 'active' | 'inactive';
+  mixedIns: BasicLicense[];
+  // copyrightOwner: string,
+  // downloadSampleLink: string;
 }
 
-const ELEMENT_DATA: PeriodicElement[] = [
-  {position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H', c: 'H'},
-  {position: 2, name: 'Helium', weight: 4.0026, symbol: 'He', c: 'H'},
-  {position: 3, name: 'Lithium', weight: 6.941, symbol: 'Li', c: 'H'},
-  {position: 4, name: 'Beryllium', weight: 9.0122, symbol: 'Be', c: 'H'},
-  {position: 5, name: 'Boron', weight: 10.811, symbol: 'B', c: 'H'},
-  {position: 6, name: 'Carbon', weight: 12.0107, symbol: 'C', c: 'H'},
-  {position: 7, name: 'Nitrogen', weight: 14.0067, symbol: 'N', c: 'H'},
-  {position: 8, name: 'Oxygen', weight: 15.9994, symbol: 'O', c: 'H'},
-  {position: 9, name: 'Fluorine', weight: 18.9984, symbol: 'F', c: 'H'},
-  {position: 10, name: 'Neon', weight: 20.1797, symbol: 'Ne', c: 'H'},
+const ELEMENT_DATA: FullLicense[] = [
+  {
+    image: 'typ11.jpg', id: '040-498-657', title: 'A New Hope', extensionPrice: 12, downloadContractLink: '', status: 'inactive', mixedIns: [
+      { image: 'typ.jpg', id: '010-312-313', title: 'I Got U', copyrightOwner: 'Jar Jar', extensionPrice: 12, downloadSampleLink: 'H', downloadContractLink: 'csacsac' },
+      { image: 'frau.jpg', id: '345-456-243', title: 'Ocean Drive', copyrightOwner: 'Duke Dumont', extensionPrice: 2, downloadSampleLink: 'H', downloadContractLink: 'csacsac' },
+      { image: 'typ2.jpg', id: '983-643-453', title: 'Pippi Langstrumpf', copyrightOwner: 'Astrid Lindgren', extensionPrice: 1, downloadSampleLink: 'H', downloadContractLink: 'csacsac' },
+      
+    ]
+
+  },
+  {
+    image: 'typ11.jpg', id: '040-498-657', title: 'A New Hope', extensionPrice: 12, downloadContractLink: '',status: 'inactive', mixedIns: [
+      { image: 'typ.jpg', id: '010-312-313', title: 'I Got U', copyrightOwner: 'Jar Jar', extensionPrice: 12, downloadSampleLink: 'H', downloadContractLink: 'csacsac' },
+      { image: 'frau.jpg', id: '345-456-243', title: 'Ocean Drive', copyrightOwner: 'Duke Dumont', extensionPrice: 2, downloadSampleLink: 'H', downloadContractLink: 'csacsac' },
+      { image: 'typ2.jpg', id: '983-643-453', title: 'Pippi Langstrumpf', copyrightOwner: 'Astrid Lindgren', extensionPrice: 1, downloadSampleLink: 'H', downloadContractLink: 'csacsac' },
+      
+    ]
+
+  },
+  {
+    image: 'typ11.jpg', id: '040-498-657', title: 'A New Hope', extensionPrice: 12, downloadContractLink: '', status: 'inactive', mixedIns: [
+      { image: 'typ.jpg', id: '010-312-313', title: 'I Got U', copyrightOwner: 'Jar Jar', extensionPrice: 12, downloadSampleLink: 'H', downloadContractLink: 'csacsac' },
+      { image: 'frau.jpg', id: '345-456-243', title: 'Ocean Drive', copyrightOwner: 'Duke Dumont', extensionPrice: 2, downloadSampleLink: 'H', downloadContractLink: 'csacsac' },
+      { image: 'typ2.jpg', id: '983-643-453', title: 'Pippi Langstrumpf', copyrightOwner: 'Astrid Lindgren', extensionPrice: 1, downloadSampleLink: 'H', downloadContractLink: 'csacsac' },
+      
+    ]
+
+  }
+
 ];
 
 
@@ -33,19 +56,32 @@ const ELEMENT_DATA: PeriodicElement[] = [
 })
 export class ExtendedLicensesComponent implements OnInit {
 
-// dataSource: MatTableDataSource<PeriodicElement>;
+  // dataSource: MatTableDataSource<PeriodicElement>;
   // displayedColumns: string[];
-  dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
-  displayedColumns   = ['position', 'name', 'weight', 'symbol', 'c'];
+  dataSource = new MatTableDataSource<FullLicense>(ELEMENT_DATA);
+  displayedColumns = ['image', 'id', 'title', 'copyrightOwner', 'extensionPrice', 'downloadSampleLink', 'downloadContractLink'];
+  displayedFullLicenseColumns = ['image','id','title', 'extensionPrice', 'status'];
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
-  
+
   ngOnInit() {
     // this.displayedColumns = ['position', 'name', 'weight', 'symbol', 'c'];
   }
-  
+
   ngAfterViewInit(): void {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
+    // this.dataSource.d
+  }
+
+  getData(dataSource) {
+    const array: Array<any> = new Array<any>();
+    array.push(dataSource);
+    return array;
+  }
+
+  getMixedInTableData(mixedIns): MatTableDataSource<BasicLicense> {
+    const dataSource = new MatTableDataSource<BasicLicense>(mixedIns);
+    return dataSource;
   }
 }

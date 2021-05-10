@@ -1,4 +1,4 @@
-<div class="pt-8" fxLayout="column" fxLayoutGap="">
+<div class="pt-8" fxLayout="column" fxLayoutGap="10px">
     <app-searchbar [searchForm]="searchForm" (searchRequest)="applyFilter()"
         (searchStringChange)="changeSearchString($event)" (pageChange)="changePage($event)"
         (countChange)="changeCount($event)" (expandFilter)="toggleFilter($event)" (sidenavChange)="toggleSidenav()"
@@ -16,9 +16,9 @@
     <h1 class="pl-16">Search: Kräuter Kollektiv</h1>
     <app-playlist-toolbar></app-playlist-toolbar>
     
-    <div fxLayout="row" class="" style="height: 64px;">
+    <div fxLayout style="height: 64px;">
         <div fxFlex="64px"></div>
-        <div fxFlex class="ml-32">
+        <div fxFlex fxLayout class="ml-32">
             <!-- <div fxFlex fxLayoutAlign="center center">
     
                 </div> -->

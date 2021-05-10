@@ -60,6 +60,15 @@ export class LayoutService {
           case '/listen/playlists':
             this.layoutConf.footerFixed = true;
             break;
+            case '/profile/upload-audio':
+              this.layoutConf.footerFixed = true;
+              break;
+              case '/profile/manage-audio':
+              this.layoutConf.footerFixed = true;
+              break;
+              case '/profile/overview':
+              this.layoutConf.footerFixed = true;
+              break;
           default:
             this.layoutConf.footerFixed = false;
         }

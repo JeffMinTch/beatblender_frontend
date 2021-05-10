@@ -1,0 +1,612 @@
+<!-- <mat-sidenav-container> -->
+<!-- <mat-sidenav EgretSideNavToggle class="shop-sidebar">
+    <div class="shop-filters-wrap">
+      <form>
+        <h2 class="title pb-16 pl-16">Welcome to Sample Licensing Market!</h2>
+        <p class="pl-16 pb-8">
+          Let us introduce you to the BeatBlender Sample Licensing Market. Worldwide the first market to purchase
+          commercial royalities for quality samples whithout spending a dime.
+        </p>
+        <h3 class="title pb-16 pl-16">This doesn't sounds possible...</h3>
+        <p class="pl-16 pb-8">
+          Because there wasn't a licensing system like this before on the market. Due to the our innovative licensing
+          system is BeatBlender the most producer-friendly platform that ever existet. Its use leads to a free sampling
+          and producing culture.
+        </p>
+        <h3 class="title pb-16 pl-16">What are you?</h3>
+        <p class="pl-16 pb-8">
+          BeatBlending is a invitation to join the movement of a free sampling culture, where every musician benefits
+          from contributing to and retrieving resources from this platform. That's our guarantee!
+        </p>
+
+        <h3 class="title pb-16 pl-16">Lorem ipsum dolor sit?</h3>
+        <p class="pl-16 pb-8">
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sapiente eveniet dolore voluptatem ipsam dolorem non
+          molestias architecto fugit vitae rerum.
+        </p>
+
+        <h3 class="title pb-16 pl-16">Lorem ipsum dolor sit amet?</h3>
+        <p class="pl-16 pb-8">
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Reprehenderit error praesentium eius nemo placeat
+          nulla maxime necessitatibus nihil, molestiae quos accusantium, aliquam ab natus a cumque dignissimos
+          doloremque quasi vitae.
+        </p>
+
+        <h3 class="title pb-16 pl-16">Lorem ipsum dolor sit amet consectetur?</h3>
+        <p class="pl-16 pb-8">
+          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Veniam expedita exercitationem dignissimos veritatis
+          similique vel.
+        </p>
+
+      </form>
+    </div>
+  </mat-sidenav> -->
+  <section class="p-16" style="min-height: 1500px;">
+    <!-- <mat-card-title class="">
+        <div class="card-title-text">Upload Audio</div>
+        <mat-divider></mat-divider>
+      </mat-card-title> -->
+    <h1 class="">
+      <!-- <div style="width: 64px; height: 64px;" class="mr-16">
+          <mat-icon style="font-size: 12px;" inline="true" svgIcon="undraw-upload"></mat-icon>
+        </div> -->
+      <!-- <mat-icon style="font-size: 30px;" inline="true">upgrade</mat-icon> -->
+      <span style="color: var(--primary-color);">U</span>
+      <span style="">pload </span>
+      <span style="color: var(--accent-color); font-weight: 600;"> A</span>
+      <span style="font-weight: 600; color: var(--base-accent-color);">udio</span>
+    </h1>
+    <mat-divider></mat-divider>
+    <!-- <mat-card-content> -->
+    <div class="mb-16 mt-16">
+      <p style="font-size: 22px; color: var(--base-accent-color);">1. Step: Select one or multiple Samples you want to
+        upload</p>
+      <!-- <h3 style="color: var(--base-accent-color);">Select one or multiple Samples you want to upload</h3> -->
+      <input type="file" (onFileSelected)="onFileSelected($event)" ng2FileSelect [uploader]="uploader" multiple /><br />
+      <!-- <p>Single</p>
+          <input type="file" ng2FileSelect [uploader]="uploader" /> -->
+    </div>
+    <div class="mb-16">
+      <div ng2FileDrop [ngClass]="{'dz-file-over': hasBaseDropZoneOver}" (fileOver)="fileOverBase($event)"
+        [uploader]="uploader" class="fileupload-drop-zone mb-24">
+        Drop file here
+      </div>
+    </div>
+    <table *ngIf="uploader.queue.length" class="default-table mb-24" style="width: 100%">
+      <thead>
+        <tr>
+          <th width="30%">Name</th>
+          <th>Size</th>
+          <th>Progress</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody *ngIf="uploader.queue.length; else tableNoData">
+        <tr *ngFor="let item of uploader.queue">
+          <td><span fxLayout="row">
+              <mat-icon class="mr-8" inline="true">insert_drive_file</mat-icon>{{ item?.file?.name }}
+            </span></td>
+          <td>{{ item?.file?.size/1024/1024 | number:'.2' }} MB</td>
+          <td>
+            <div class="progress" style="margin-bottom: 0;">
+              <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': item.progress + '%' }"></div>
+              <mat-progress-bar class="" color="primary" mode="determinate" [value]="item.progress">
+              </mat-progress-bar>
+            </div>
+          </td>
+          <td class="">
+            <mat-icon *ngIf="item.isSuccess" color="primary">check</mat-icon>
+            <mat-icon *ngIf="item.isCancel" color="accent">cancel</mat-icon>
+            <mat-icon *ngIf="item.isError" color="warn">error</mat-icon>
+          </td>
+          <td nowrap>
+            <button mat-raised-button color="primary" class="mx-4" (click)="item.upload()"
+              [disabled]="item.isReady || item.isUploading || item.isSuccess">Upload</button>
+            <button mat-raised-button color="accent" class="mx-4" (click)="item.cancel()"
+              [disabled]="!item.isUploading">Cancel</button>
+  
+            <button mat-raised-button color="warn" class="mx-4" (click)="item.remove()">Remove</button>
+          </td>
+        </tr>
+      </tbody>
+      <ng-template #tableNoData>
+        <p [ngStyle]="{padding: '0 1.2rem'}">No samples added yet.</p>
+      </ng-template>
+    </table>
+    <!-- <mat-divider></mat-divider> -->
+    <!-- <h2 class="pb-8 pt-16 pl-8" *ngIf="uploader.queue.length">2. Add additional information for the sample(s) your want
+        to
+        upload to BeatBlender:
+      </h2> -->
+    <p *ngIf="uploader.queue.length" class="pt-16" style="font-size: 22px; color: var(--base-accent-color);">Add
+      2. Step: Add Audio Information</p>
+  
+    <section *ngFor="let item of uploader.queue; let i = index" class="sample-info my-16 mx-0 p-0">
+      <mat-card-title fxLayout="row" class="py-8 text-white mb-0">
+        <!-- 2.{{i + 1}} Add Sample Information for  -->
+        <span fxLayout="row" class="bg-white text-primary py-2 px-16 br-4 lh-36">
+          <mat-icon inline="true">audiotrack</mat-icon>
+          <span class="ml-8">{{item?.file?.name}}</span>
+        </span>
+        <button mat-stroked-button class="ml-16"
+          (click)="playState ? pauseFileItem(currentSampleIndex === i, i, item) : playFileItem(currentSampleIndex === i, i, item)">
+          <mat-icon color="primary">
+            {{i === (currentSampleSubject$ | async) && (playStateControlService.playState$ | async) ? 'pause' :
+            'play_arrow'}}
+          </mat-icon>
+        </button>
+        <button mat-stroked-button class="ml-16" (click)="item.remove()">
+          <mat-icon color="warn">close</mat-icon>
+        </button>
+        <span class="bg-white text-accent py-2 px-16 br-4 ml-auto lh-36">mp3</span>
+  
+      </mat-card-title>
+      <!-- <mat-divider></mat-divider> -->
+      <mat-card class="mx-0 mt-4" style="box-shadow: none !important;">
+        <!-- <button mat-raised-button (click)="isLinear = !isLinear" id="toggle-linear">
+            {{!isLinear ? 'Enable linear mode' : 'Disable linear mode'}}
+          </button> -->
+  
+  
+  
+        <mat-vertical-stepper linear="false" #stepper>
+          <mat-step>
+            <ng-template matStepLabel>Upload Audio To ...</ng-template>
+            <mat-label class="">Choose the Samples you've included in your Track. Before you can include a sample in your
+              track you need to download a Basic License in your Track. Select at least one.</mat-label>
+            <section class="mt-32" fxLayout="column">
+              <mat-checkbox #sampleMarketCheckbox class="mb-8" checked="true" (change)="uploadAsSample(item, $event)">
+                <span style="color: var(--accent-color); font-weight: 700;">Sample Market</span>
+              </mat-checkbox>
+              <mat-label class="mb-32 pl-16">Lorem ipsum dolor sit amet consectetur adipisicing elit. Tempora minima sit
+                maxime placeat! Eos voluptatibus natus, reiciendis mollitia cupiditate ullam a similique laboriosam velit
+                ipsa, earum, distinctio perspiciatis odit eaque quaerat minima eveniet. Fuga voluptatum fugiat qui hic,
+                animi velit.</mat-label>
+              <mat-checkbox #beatblenderMusicCheckbox class="mb-8" color="primary" checked="true"
+                (change)="uploadAsTrack(item, $event)"> <span
+                  style="color: var(--primary-color); font-weight: 700;">BeatBlender Music</span></mat-checkbox>
+              <mat-label class="pl-16">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Porro unde, fugit dolorem
+                corrupti sapiente molestias ducimus incidunt assumenda cupiditate dolor eaque suscipit aspernatur nostrum
+                voluptas nihil delectus sequi! Esse, earum.</mat-label>
+            </section>
+  
+          </mat-step>
+          <mat-step [stepControl]="(formsSubject | async)?.get(item).controls['artistPseudonymGroup']">
+            <form fxLayout="column" [formGroup]="(formsSubject | async)?.get(item).controls['artistPseudonymGroup']">
+              <ng-template matStepLabel>Choose your Artist Pseudonym</ng-template>
+              <mat-label class="">Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident ad blanditiis, beatae
+                enim laudantium iste! Sequi, aut laboriosam. Asperiores, iure.</mat-label>
+              <div fxFlex fxLayout fxLayoutAlign="space-between center" class="artist-pseudonym-row my-32">
+                <div fxFlex="55" class="">
+                  <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Choose Your Artist Pseudonym.</mat-label>
+                    <mat-select formControlName="artistPseudonym">
+                      <mat-option *ngFor="let artistPseudonym of artistPseudonymList" [value]="artistPseudonym">
+                        {{artistPseudonym}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+                <span>- Or -</span>
+                <button mat-flat-button class="create-pseudonym-button" (click)="openCreateArtistPseudonymDialog(item)">
+                  <mat-icon>add</mat-icon>
+                  Create New Pseudonym
+                </button>
+              </div>
+  
+            </form>
+           
+          </mat-step>
+  
+          <mat-step [stepControl]="(formsSubject | async)?.get(item).controls['descriptionForm']">
+            <form [formGroup]="(formsSubject | async)?.get(item).controls['descriptionForm']">
+              <ng-template matStepLabel>Enter Sample Data</ng-template>
+              <div fxLayout="column wrap">
+  
+  
+                <div fxLayout="row wrap" class="pr-16 py-8">
+  
+                  <div fxFlex="100" fxFlex.gt-xs="70" class="px-8">
+                    <mat-form-field appearance="outline" class="full-width" (keyup.enter)="$event.preventDefault()">
+                      <mat-label>Whats the name of your sample?</mat-label>
+                      <input matInput name="sampleTitle" formControlName="sampleTitle" value="" spellcheck="false"
+                        autocomplete="off">
+                      <!-- <mat-hint>Enter more than 2 letters</mat-hint> -->
+                      <mat-hint
+                        *ngIf="(formsSubject | async)?.get(item).controls['descriptionForm'].controls['sampleTitle'].valid || !(formsSubject | async)?.get(item).controls['descriptionForm'].controls['sampleTitle'].touched">
+                        Give your sample a name.</mat-hint>
+                      <mat-hint
+                        *ngIf="(formsSubject | async)?.get(item).controls['descriptionForm'].controls['sampleTitle'].hasError('required') && (formsSubject | async)?.get(item).controls['descriptionForm'].controls['sampleTitle'].touched"
+                        color="accent">Title for your sample is required.</mat-hint>
+                    </mat-form-field>
+                    <!-- <small
+                        *ngIf="(formsSubject | async)?.get(item).controls['descriptionForm'].controls['sampleTitle'].hasError('minlength') && (formsSubject | async)?.get(item).controls['descriptionForm'].controls['sampleTitle'].touched"
+                        class="form-error-msg"> Sampletitle require at least
+                        {{(formsSubject | async)?.get(item).controls['descriptionForm'].controls['sampleTitle'].errors.minlength.requiredLength}}
+                        characters </small>
+                      <small
+                        *ngIf="(formsSubject | async)?.get(item).controls['descriptionForm'].controls['sampleTitle'].hasError('maxlength') && (formsSubject | async)?.get(item).controls['descriptionForm'].controls['sampleTitle'].touched"
+                        class="form-error-msg"> Sampletitle can not contain more than
+                        {{(formsSubject | async)?.get(item).controls['descriptionForm'].controls['sampleTitle'].errors.maxlength.requiredLength}}
+                        characters </small> -->
+                  </div>
+  
+                  <div fxFlex="100" fxFlex.gt-xs="30" class="px-8">
+                    <mat-form-field appearance="outline" class="full-width">
+                      <mat-label>Tempo (BPM)</mat-label>
+                      <!-- <span matPrefix>Tempo (BPM) &nbsp;</span> -->
+                      <input formControlName="tempo" type="number" matInput placeholder="80" min="0" max="300">
+                      <!-- <mat-icon matSuffix>mode_edit</mat-icon> -->
+                      <span matSuffix>BPM</span>
+                      <mat-hint
+                        *ngIf="(formsSubject | async)?.get(item).controls['descriptionForm'].controls['tempo'].valid || !(formsSubject | async)?.get(item).controls['descriptionForm'].controls['tempo'].touched">
+                        Tempo in BPM.</mat-hint>
+                      <mat-hint *ngIf="
+                        ((formsSubject | async)?.get(item).controls['descriptionForm'].controls['tempo'].hasError('min')
+                        || (formsSubject | async)?.get(item).controls['descriptionForm'].controls['tempo'].hasError('max'))
+                        && (formsSubject | async)?.get(item).controls['descriptionForm'].controls['tempo'].touched">
+                        Please enter a value between {{minimumBPM}} and {{maximumBPM}}.
+                      </mat-hint>
+                      <mat-hint
+                        *ngIf="(formsSubject | async)?.get(item).controls['descriptionForm'].controls['tempo'].hasError('required') && (formsSubject | async)?.get(item).controls['descriptionForm'].controls['tempo'].touched">
+                        Tempo for your sample is required.</mat-hint>
+  
+  
+                    </mat-form-field>
+                  </div>
+                </div>
+  
+                <div fxLayout="row wrap" class="full-width pr-16 py-8">
+                  <div fxFlex="100" fxFlex.gt-xs="50" class="px-8">
+                    <mat-form-field appearance="outline" class="full-width">
+                      <mat-label>Select a genre.</mat-label>
+                      <mat-select formControlName="genre">
+                        <mat-option *ngFor="let genre of genreList" [value]="genre">
+                          {{genre}}
+                        </mat-option>
+                      </mat-select>
+                      <mat-hint
+                        *ngIf="(formsSubject | async)?.get(item).controls['descriptionForm'].controls['genre'].valid || !(formsSubject | async)?.get(item).controls['descriptionForm'].controls['genre'].touched">
+                        Select a genre that fits best.</mat-hint>
+                      <mat-hint
+                        *ngIf="(formsSubject | async)?.get(item).controls['descriptionForm'].controls['genre'].hasError('required') && (formsSubject | async)?.get(item).controls['descriptionForm'].controls['genre'].touched">
+                        Genre is required.</mat-hint>
+                    </mat-form-field>
+                    <!-- <small
+                        *ngIf="(formsSubject | async)?.get(item).controls['descriptionForm'].controls['genre'].hasError('required') && (formsSubject | async)?.get(item).controls['descriptionForm'].controls['genre'].touched"
+                        class="form-error-msg">2 Genres are required</small> -->
+                  </div>
+                  <div fxFlex="100" fxFlex.gt-xs="50" class="px-8">
+                    <!-- https://stackblitz.com/edit/angular-material-v9-mat-select-with-mat-chip-list?file=src%2Fapp%2Fselect-multiple-example.html -->
+                    <mat-form-field class="full-width" appearance="outline">
+                      <mat-label>Moods</mat-label>
+                      <mat-select
+                        [formControl]="(formsSubject | async)?.get(item).controls['descriptionForm'].controls['moods']"
+                        multiple>
+                        <mat-select-trigger>
+                          <mat-chip-list>
+                            <mat-chip
+                              *ngFor="let mood of (formsSubject | async)?.get(item).controls['descriptionForm'].controls['moods'].value"
+                              [removable]="true" (removed)="onMoodRemoved(mood, item)">
+                              {{ mood }}
+                              <mat-icon matChipRemove>cancel</mat-icon>
+                            </mat-chip>
+                          </mat-chip-list>
+                        </mat-select-trigger>
+  
+                        <mat-option *ngFor="let mood of moodsList" [value]="mood">{{mood}}</mat-option>
+  
+                      </mat-select>
+                      <mat-hint
+                        *ngIf="(formsSubject | async)?.get(item).controls['descriptionForm'].controls['moods'].valid || !(formsSubject | async)?.get(item).controls['descriptionForm'].controls['moods'].touched">
+                        Add up to {{maximumMoods}} moods.</mat-hint>
+                      <mat-hint *ngIf="
+                        ((formsSubject | async)?.get(item).controls['descriptionForm'].controls['moods'].hasError('minlength')
+                        || (formsSubject | async)?.get(item).controls['descriptionForm'].controls['moods'].hasError('maxlength')
+                        || (formsSubject | async)?.get(item).controls['descriptionForm'].controls['moods'].hasError('required')
+                        )
+                        && (formsSubject | async)?.get(item).controls['descriptionForm'].controls['moods'].touched">
+                        Please enter between {{minimumMoods}} and {{maximumMoods}} moods.
+                      </mat-hint>
+                    </mat-form-field>
+                    <!-- <mat-hint></mat-hint> -->
+                  </div>
+                </div>
+                <div fxLayout="row" class="pr-16 py-8 full-width">
+                  <div fxFlex="100" class="px-8">
+                    <mat-form-field class="full-width" appearance="outline">
+                      <mat-label>Enter Tags</mat-label>
+  
+                      <mat-chip-list
+                        [formControl]="(formsSubject | async)?.get(item).controls['descriptionForm'].controls['tags']"
+                        #tagsList aria-label="tags selection">
+                        <mat-chip
+                          *ngFor="let tag of (formsSubject | async)?.get(item).controls['descriptionForm'].controls['tags'].value"
+                          selectable="true" removable="true" (removed)="onTagRemoved(tag, item)">
+                          #{{tag}}
+                          <mat-icon matChipRemove>cancel</mat-icon>
+                        </mat-chip>
+                        <!-- formControlName="tags" -->
+                        <!-- [formControl]="(formsSubject | async)?.get(item).controls['descriptionForm'].controls['tags']" -->
+                        <input [matChipInputFor]="tagsList" [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                          matChipInputAddOnBlur="true" (matChipInputTokenEnd)="add($event, item)" autocomplete="off">
+                      </mat-chip-list>
+                      <mat-hint
+                        *ngIf="(formsSubject | async)?.get(item).controls['descriptionForm'].controls['tags'].valid || !(formsSubject | async)?.get(item).controls['descriptionForm'].controls['tags'].touched">
+                        Add up to {{maximumTags}} tags.</mat-hint>
+                      <mat-hint *ngIf="
+                        ((formsSubject | async)?.get(item).controls['descriptionForm'].controls['tags'].hasError('minlength')
+                        || (formsSubject | async)?.get(item).controls['descriptionForm'].controls['tags'].hasError('maxlength')
+                        || (formsSubject | async)?.get(item).controls['descriptionForm'].controls['tags'].hasError('required')
+                        ) && (formsSubject | async)?.get(item).controls['descriptionForm'].controls['tags'].touched">
+                        Please enter between {{minimumTags}} and {{maximumTags}} tags.
+                      </mat-hint>
+                    </mat-form-field>
+                  </div>
+                </div>
+              </div>
+              <div>
+                <button mat-raised-button
+                  [disabled]="!(formsSubject | async)?.get(item).controls['descriptionForm'].valid" matStepperNext
+                  (click)="upload(item)">Next</button>
+              </div>
+  
+  
+  
+  
+              <!-- <div fxFlex="100" fxFlex.gt-xs="50" class="pr-16"> -->
+  
+  
+              <!-- <div class="pb-16">
+                      <mat-form-field class="full-width">
+                        <mat-label>Select a Song Key.</mat-label>
+                        <mat-select formControlName="songKey">
+                          <mat-option *ngFor="let songKey of songKeyList" [value]="songKey">
+                            {{songKey}}
+                          </mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                    </div> -->
+  
+              <!-- <mat-form-field class="full-width">
+                      <input matInput name="genre" formControlName="genre" placeholder="genre" value="">
+                    </mat-form-field> -->
+              <!-- <div class="pb-16">
+                        <mat-form-field class="full-width">
+                          <input matInput type="email" name="email" formControlName="email" placeholder="Your Email" value="">
+                        </mat-form-field>
+                        <small *ngIf="basicForm.controls['email'].hasError('required') && basicForm.controls['email'].touched"
+                          class="form-error-msg"> Email is required </small>
+                        <small *ngIf="basicForm.controls['email'].hasError('email') && basicForm.controls['email'].touched"
+                          class="form-error-msg"> Invaild email address </small>
+                      </div>
+                      <div class="pb-16">
+                        <mat-form-field class="full-width">
+                          <input matInput name="website" formControlName="website"
+                            placeholder="Your Website (http://mhrafi.com)" value="">
+                        </mat-form-field>
+                        <small *ngIf="basicForm.controls['website'].hasError('url') && basicForm.controls['website'].touched"
+                          class="form-error-msg"> Invaild web address </small>
+                      </div>
+      
+                      <div class="pb-16">
+                        <mat-form-field class="full-width">
+                          <input matInput name="date" formControlName="date" placeholder="Date"
+                            [matDatepicker]="appDatepicker">
+      
+                          <mat-datepicker-toggle matSuffix [for]="appDatepicker"></mat-datepicker-toggle>
+                        </mat-form-field>
+                        <mat-datepicker #appDatepicker></mat-datepicker>
+                      </div> -->
+              <!-- <div fxFlex="100" fxFlex.gt-xs="50"> -->
+  
+  
+  
+              <!-- <div class="pb-16">
+                      <mat-form-field appearance="outline" class="full-width">
+                        <mat-label>Select three moods that describe your sound.</mat-label>
+                        <mat-select formControlName="moods">
+                          <mat-option *ngFor="let mood of moodsList" [value]="mood">
+                            {{mood}}
+                          </mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                      <small
+                        *ngIf="(formsSubject | async)?.get(item).controls['descriptionForm'].controls['moods'].hasError('required') && (formsSubject | async)?.get(item).controls['descriptionForm'].controls['moods'].touched"
+                        class="form-error-msg">Three moods are required</small>
+                    </div> -->
+  
+  
+  
+              <!-- </div> -->
+  
+  
+  
+              <!-- <div name="trackType" fxFlex="100" fxFlex.gt-xs="50">
+                    <div class="pb-16">
+                      <mat-form-field class="full-width">
+                        <mat-label>Select a Track Type.</mat-label>
+                        <mat-select formControlName="trackType">
+                          <mat-option *ngFor="let trackType of trackTypeList" [value]="trackType">
+                            {{trackType}}
+                          </mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                  <div fxLayout="column" fxFlex="100%" class="blended-samples">
+                    <label for="">Select the electronic samples that you have mixed in.</label>
+                    <input type="text"
+                           placeholder="Mixed in Samples"
+                           formControlName="mixedSamples"
+                           [matAutocomplete]="auto">
+                    <mat-autocomplete #auto="matAutocomplete">
+                      <mat-option *ngFor="let songKey of songKeys | async" [value]="songKey">
+                        {{songKey}}
+                      </mat-option>
+                    </mat-autocomplete>
+                  </div>
+                  <div fxFlex="">
+                    <div class="pb-16">
+                      <mat-form-field class="samples-form" fxLayout="column">
+                        <mat-chip-list #chipList aria-label="Fruit selection">
+                          <mat-chip class="pt-0 pb-0 pr-8 pl-0 d-flex" *ngFor="let fruit of fruits" [selectable]="selectable"
+                            [removable]="removable" (removed)="remove(fruit)">
+                            <img src="assets/images/faces/2.jpg" alt="">
+                            <span fxLayout="column" fxFlex="100" class="p-8">
+                              <span fxFlex="50" class="">{{fruit}}</span>
+                              <span fxFlex="50">by Jens</span>
+                            </span>
+                            <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                          </mat-chip>
+                          <input placeholder="New fruit..." #fruitInput [formControl]="fruitCtrl" [matAutocomplete]="auto"
+                            [matChipInputFor]="chipList" [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                            (matChipInputTokenEnd)="add($event)">
+                        </mat-chip-list>
+                        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+                          <mat-option *ngFor="let fruit of filteredFruits | async" [value]="fruit">
+                            <span>{{fruit}}</span>
+                          </mat-option>
+                        </mat-autocomplete>
+                      </mat-form-field>
+                    </div>
+                  </div> -->
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+              <!-- </div> -->
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+            </form>
+          </mat-step>
+          <!-- <mat-step [stepControl]="secondFormGroup">
+              <form [formGroup]="secondFormGroup">
+                <ng-template matStepLabel>Fill out your address</ng-template>
+                <mat-form-field>
+                  <mat-label>Address</mat-label>
+                  <input matInput formControlName="secondCtrl" placeholder="Ex. 1 Main St, New York, NY"
+                         required>
+                </mat-form-field>
+                <div>
+                  <button mat-button matStepperPrevious>Back</button>
+                  <button mat-button matStepperNext>Next</button>
+                </div>
+              </form>
+            </mat-step> -->
+          <mat-step [stepControl]="(formsSubject | async)?.get(item).controls['image']">
+            <ng-template matStepLabel>Choose Sample Image</ng-template>
+  
+            <form [formGroup]="(formsSubject | async)?.get(item).controls['image']">
+  
+            </form>
+  
+            <div class="mb-16 mt-16">
+              <!-- <p>Multiple</p> -->
+              <mat-label>Upload image for representation.</mat-label><br /><br />
+              <input type="file" accept="image/*" (onFileSelected)="onFileSelected($event)" ng2FileSelect
+                [uploader]="imageUploader" /><br />
+              <!-- <input type="file" (onFileSelected)="onFileSelected($event)" ng2FileSelect [uploader]="imageUploader" multiple/><br /> -->
+  
+              <!-- <p>Single</p>
+                  <input type="file" ng2FileSelect [uploader]="uploader" /> -->
+            </div>
+            <div class="mb-16">
+              <div ng2FileDrop [ngClass]="{'dz-file-over': hasBaseDropZoneOver}" (fileOver)="fileOverBase($event)"
+                [uploader]="imageUploader" class="fileupload-drop-zone mb-24">
+                Drop file here
+              </div>
+            </div>
+            <!-- <p>Please declare which samples you have mixed inside this sample.</p> -->
+            <div>
+  
+              <button [disabled]="!(formsSubject | async)?.get(item).controls['image'].valid" mat-raised-button
+                matStepperNext>Next</button>
+              <button mat-button matStepperPrevious>Back</button>
+              <button mat-button (click)="stepper.reset()">Reset</button>
+            </div>
+          </mat-step>
+          <mat-step>
+            <ng-template matStepLabel>Select MixedIns</ng-template>
+            <mat-label class="mb-16">Which Samples did you include in your Audio?</mat-label>
+            <div fxFlex fxLayout="column">
+              <mat-label class="mb-16">Lorem ipsum dolor sit amet consectetur adipisicing elit. Laboriosam ea veritatis
+                non quasi ut iste perspiciatis asperiores itaque iure odio.</mat-label>
+              <div fxLayout fxLayoutAlign="start center" class="mb-32">
+                <button (click)="openMixedInsDialog(item)" mat-raised-button color="primary" style="max-width: 30%;"
+                  class="mr-8">Choose MixedIn Samples</button>
+                <mat-hint
+                  *ngIf="(formsSubject | async)?.get(item).controls['mixedIns'].value.length === 0; else samplesSelectedHint">
+                  No MixedIn seleceted.</mat-hint>
+                <ng-template #samplesSelectedHint>
+                  <mat-hint>{{(formsSubject | async)?.get(item).controls['mixedIns'].value.length}} Sample<span
+                      *ngIf="(formsSubject | async)?.get(item).controls['mixedIns'].value.length > 1">s</span> selected.
+                  </mat-hint>
+                </ng-template>
+              </div>
+              <div fxLayout="column" *ngIf="(formsSubject | async)?.get(item).controls['mixedIns'].value.length > 0">
+                <h3 class="mb-32">Your MixedIn Samples</h3>
+                <div fxFlex fxLayout="column"
+                  *ngFor="let sample of (formsSubject | async)?.get(item).controls['mixedIns'].value; let i = index;">
+                  <!-- <span>{{i}}</span> -->
+                  <div fxFlex>
+                    <app-audio-panel [sample]="sample" type="primary"></app-audio-panel>
+                  </div>
+                </div>
+              </div>
+  
+            </div>
+  
+  
+          </mat-step>
+  
+        </mat-vertical-stepper>
+  
+  
+  
+  
+  
+  
+      </mat-card>
+      <!-- </mat-card-content> -->
+      <mat-divider class="mt-8"></mat-divider>
+  
+    </section>
+    <div *ngIf="uploader.queue.length">
+      <p>Queue progress:</p>
+      <div class="progress mb-16">
+        <mat-progress-bar class="" color="primary" mode="determinate" [value]="uploader.progress">
+        </mat-progress-bar>
+      </div>
+      <!-- [disabled]="!uploader.getNotUploadedItems().length" -->
+      <button mat-raised-button color="primary" class="mx-4" (click)="uploader.uploadAll()">Upload all</button>
+  
+      <button mat-raised-button color="accent" class="mx-4" (click)="uploader.cancelAll()"
+        [disabled]="!uploader.isUploading">Cancel all</button>
+  
+      <button mat-raised-button color="warn" class="mx-4" (click)="uploader.clearQueue()"
+        [disabled]="!uploader.queue.length">Remove all</button>
+    </div>
+    <!-- </mat-card-content> -->
+  </section>
+  <!-- </mat-sidenav-container> -->

@@ -3,13 +3,28 @@ import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { JwtAuthService } from "app/shared/services/auth/jwt-auth.service";
 import { User } from '../../shared/models/user.model';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
+import { ILayoutConf, LayoutService } from 'app/shared/services/layout.service';
+import { NavigationService } from 'app/shared/services/navigation.service';
+import { egretAnimations } from 'app/shared/animations/egret-animations';
 
 @Component({
   selector: "app-profile",
   templateUrl: "./profile.component.html",
 })
 export class ProfileComponent implements OnInit {
+
+
+  public panelOpenState = false;
+
+  public accountItems: any[];
+  public hasIconTypeMenuItem: boolean;
+  public iconTypeMenuTitle: string;
+  private menuItemsSub: Subscription;
+  public layoutConf: ILayoutConf;
+
+
+
   activeView: string = "overview";
   userInfo: Observable<UserInfo>;
   // Doughnut
@@ -46,10 +61,22 @@ export class ProfileComponent implements OnInit {
     },
   };
 
-  constructor(private router: ActivatedRoute, public jwtAuth: JwtAuthService) {}
+  constructor(private router: ActivatedRoute, public jwtAuth: JwtAuthService,private navService: NavigationService,
+    private layout: LayoutService) {}
 
   ngOnInit() {
     this.activeView = this.router.snapshot.params["view"];
     this.userInfo = this.jwtAuth.user$;
+
+
+    this.iconTypeMenuTitle = this.navService.iconTypeMenuTitle;
+    this.menuItemsSub = this.navService.accountItems$.subscribe(accountItem => {
+      this.accountItems = accountItem;
+      //Checks item list has any icon type.
+      this.hasIconTypeMenuItem = !!this.accountItems.filter(
+        item => item.type === "icon"
+      ).length;
+    });
+    this.layoutConf = this.layout.layoutConf;
   }
 }

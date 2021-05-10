@@ -1,0 +1,7 @@
+.billing-card,
+.total-overview-card,
+.empty-card {
+    box-shadow: none !important;
+    border: 1px solid var(--light-theme-accent);
+    border-radius: 8px;
+}

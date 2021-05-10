@@ -29,6 +29,74 @@ interface IBadge {
 @Injectable()
 export class NavigationService {
 
+  accountMenu: IMenuItem[] = [
+    {
+      type: 'separator',
+      name: 'My Account'
+    },
+    {
+      name: 'Dashboard',
+      type: 'link',
+      tooltip: 'Dashboard',
+      icon: 'dashboard',
+      state: 'profile/overview'
+    },
+    
+    {
+      name: 'My Licenses',
+      type: 'dropDown',
+      tooltip: 'My Licenses',
+      icon: 'library_books',
+      state: 'licensing/my-licenses',
+      sub: [
+        { name: 'Basic Licenses', state: 'basic-licenses' },
+        {name: 'Extended Licenses', state: 'extended-licenses'},
+        // { name: 'How To Get A License', state: 'analytics' },
+        // { name: 'Sampling Rules', state: 'crypto' },
+        // { name: 'Video Tutorials', state: 'dark' },
+        // { name: 'FAQ', state: 'dark' }
+
+      ]
+    },
+    {
+      name: 'Upload Audio',
+      type: 'dropDown',
+      tooltip: 'Upload Audio',
+      icon: 'upload',
+      state: 'profile',
+      sub: [
+        { name: 'Upload Sample', state: 'upload-audio' },
+        {name: 'Manage Audio', state: 'manage-audio'},
+        // { name: 'How To Get A License', state: 'analytics' },
+        // { name: 'Sampling Rules', state: 'crypto' },
+        // { name: 'Video Tutorials', state: 'dark' },
+        // { name: 'FAQ', state: 'dark' }
+      ]
+    },
+    {
+      name: 'Collaborations',
+      type: 'link',
+      tooltip: 'Collaborations',
+      icon: 'queue_music',
+      state: 'listen/playlists'
+    },
+    {
+      name: 'Finances',
+      type: 'link',
+      tooltip: 'Finances',
+      icon: 'account_balance_wallet',
+      state: 'profile/finances'
+    },
+    {
+      name: 'Settings',
+      type: 'link',
+      tooltip: 'Settings',
+      icon: 'settings',
+      state: 'listen/find'
+    },
+    
+  ];
+
   listenMenu: IMenuItem[] = [
     {
       type: 'separator',
@@ -53,7 +121,7 @@ export class NavigationService {
       type: 'link',
       tooltip: 'Documentation',
       icon: 'library_books',
-      state: 'licensing/forms/upload-audio'
+      state: 'listen/genres'
     },
     {
       name: 'Playlists',
@@ -72,13 +140,6 @@ export class NavigationService {
       name: 'Sample Market'
     },
     {
-      name: 'Sample Market',
-      type: 'link',
-      tooltip: 'Sample Market',
-      icon: 'storefront',
-      state: 'licensing/sample-market'
-    },
-    {
       name: 'How It Works',
       type: 'dropDown',
       tooltip: 'Documentation',
@@ -95,37 +156,39 @@ export class NavigationService {
       ]
     },
     {
-      name: 'Upload',
+      name: 'Sample Market',
       type: 'link',
-      tooltip: 'Documentation',
-      icon: 'library_books',
-      state: 'licensing/forms/upload-audio'
+      tooltip: 'Sample Market',
+      icon: 'storefront',
+      state: 'licensing/sample-market'
     },
-    {
-      name: 'My Licenses',
-      type: 'dropDown',
-      tooltip: 'My Licenses',
-      icon: 'library_books',
-      state: 'licensing/my-licenses',
-      sub: [
-        { name: 'Basic Licenses', state: 'basic-licenses' },
-        {name: 'Extended Licenses', state: 'extended-licenses'},
-        // { name: 'How To Get A License', state: 'analytics' },
-        // { name: 'Sampling Rules', state: 'crypto' },
-        // { name: 'Video Tutorials', state: 'dark' },
-        // { name: 'FAQ', state: 'dark' }
-
-      ]
-    },
+    // {
+    //   name: 'Upload',
+    //   type: 'link',
+    //   tooltip: 'Documentation',
+    //   icon: 'library_books',
+    //   state: 'licensing/forms/upload-audio'
+    // },
+    // {
+    //   name: 'My Licenses',
+    //   type: 'dropDown',
+    //   tooltip: 'My Licenses',
+    //   icon: 'library_books',
+    //   state: 'licensing/my-licenses',
+    //   sub: [
+    //     { name: 'Basic Licenses', state: 'basic-licenses' },
+    //     {name: 'Extended Licenses', state: 'extended-licenses'},
+    //   ]
+    // },
   ];
 
   iconMenu: IMenuItem[] = [
     {
       name: 'HOME',
       type: 'icon',
-      tooltip: 'Home',
-      icon: 'home',
-      state: 'home'
+      tooltip: 'Manage Account',
+      icon: 'person',
+      state: 'profile'
     },
     {
       name: 'MUSIC',
@@ -574,6 +637,8 @@ export class NavigationService {
   listenItems = new BehaviorSubject<IMenuItem[]>(this.listenMenu);
   listenItems$ = this.listenItems.asObservable();
 
+  accountItems = new BehaviorSubject<IMenuItem[]>(this.accountMenu);
+  accountItems$ = this.accountItems.asObservable();
 
   constructor() {}
 

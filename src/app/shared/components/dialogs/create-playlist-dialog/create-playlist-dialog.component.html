@@ -1,0 +1,12 @@
+<h1 mat-dialog-title>{{data.tite}}</h1>
+<div mat-dialog-content>
+  <p>{{data.firstParagraph}}</p>
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>{{data.inputLabel}}</mat-label>
+    <input autocomplete="off" matInput [(ngModel)]="data.inputValue">
+  </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <button mat-stroked-button (click)="onNoClick()">No Thanks</button>
+  <button mat-stroked-button color="primary" [mat-dialog-close]="data" cdkFocusInitial>Ok</button>
+</div>

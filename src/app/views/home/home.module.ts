@@ -23,7 +23,9 @@ import { AppLoaderComponent } from 'app/shared/services/app-loader/app-loader.co
     CommonModule,
     SharedModule,
     PerfectScrollbarModule,
-    RouterModule.forChild(HomeRoutes)
+    RouterModule.forChild(HomeRoutes),
+    FlexLayoutModule,
+
   ],
   declarations: [HomeComponent],
   

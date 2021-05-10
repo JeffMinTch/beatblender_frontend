@@ -1,9 +1,12 @@
 import { Component, OnInit } from '@angular/core';
+import { egretAnimations } from 'app/shared/animations/egret-animations';
 
 @Component({
   selector: 'app-profile-overview',
   templateUrl: './profile-overview.component.html',
-  styleUrls: ['./profile-overview.component.css']
+  styleUrls: ['./profile-overview.component.scss'],
+  animations: egretAnimations
+
 })
 export class ProfileOverviewComponent implements OnInit {
   activityData = [{
@@ -48,7 +51,8 @@ export class ProfileOverviewComponent implements OnInit {
   }, {
     text: 'Lorem, ipsum dolor sit amet',
     status: 1
-  }]
+  }
+]
 
   tickets = [{
     img: 'assets/images/face-1.jpg',
@@ -82,25 +86,7 @@ export class ProfileOverviewComponent implements OnInit {
     isOpen: false
   }]
 
-  photos = [{
-    name: 'Photo 1',
-    url: 'assets/images/sq-15.jpg'
-  }, {
-    name: 'Photo 2',
-    url: 'assets/images/sq-8.jpg'
-  }, {
-    name: 'Photo 3',
-    url: 'assets/images/sq-9.jpg'
-  }, {
-    name: 'Photo 4',
-    url: 'assets/images/sq-10.jpg'
-  }, {
-    name: 'Photo 5',
-    url: 'assets/images/sq-11.jpg'
-  }, {
-    name: 'Photo 6',
-    url: 'assets/images/sq-12.jpg'
-  }]
+  
 
   constructor() { }
 

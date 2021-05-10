@@ -1,3 +1,8 @@
+import { SimpleInputDialogComponent } from './dialogs/simple-input-dialog/simple-input-dialog.component';
+import { SelectMixedinsDialogComponent } from './dialogs/select-mixedins-dialog/select-mixedins-dialog.component';
+import { CreatePlaylistDialogComponent } from './dialogs/create-playlist-dialog/create-playlist-dialog.component';
+import { PlaylistCardComponent } from './playlist-card/playlist-card.component';
+import { BannerComponent } from './banner/banner.component';
 import { HomeSectionComponent } from './home-section/home-section.component';
 import { BenefitCardComponent } from './benefit-card/benefit-card.component';
 import { QuestionCardComponent } from './question-card/question-card.component';
@@ -13,7 +18,6 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { SharedMaterialModule } from '../shared-material.module';
 import { TranslateModule } from '@ngx-translate/core';
-import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { SharedPipesModule } from '../pipes/shared-pipes.module';
@@ -57,6 +61,7 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTabsModule } from '@angular/material/tabs';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 
 const components = [
@@ -85,12 +90,16 @@ const components = [
   VisionCardComponent,
   QuestionCardComponent,
   BenefitCardComponent,
-  HomeSectionComponent
+  HomeSectionComponent,
+  BannerComponent,
+  PlaylistCardComponent,
+  CreatePlaylistDialogComponent,
+  SelectMixedinsDialogComponent,
+  SimpleInputDialogComponent
 ]
 
 @NgModule({
   imports: [
-    CommonModule,
     FormsModule,
     ReactiveFormsModule,
     RouterModule,
@@ -101,7 +110,7 @@ const components = [
     SharedDirectivesModule,
     SharedMaterialModule,
     MatSliderModule,
-    FlexLayoutModule,
+    // FlexLayoutModule,
     MatIconModule,
     MatButtonModule,
     MatCardModule,
@@ -118,7 +127,7 @@ const components = [
     MatExpansionModule,
     MatSnackBarModule,
     MatListModule,
-
+NgxPaginationModule
 
   ],
   declarations: components,

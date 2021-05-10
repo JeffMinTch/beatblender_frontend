@@ -1,3 +1,4 @@
+import { NgxPaginationModule } from 'ngx-pagination';
 import { ArtistCardComponent } from './../../../shared/components/artist-card/artist-card.component';
 import { AllMusicRoutes } from './all-music.routing';
 import { SharedModule } from './../../../shared/shared.module';
@@ -15,7 +16,8 @@ import { RouterModule } from '@angular/router';
     CommonModule,
     FlexLayoutModule,
     RouterModule.forChild(AllMusicRoutes),
-    SharedModule
+    SharedModule,
+    NgxPaginationModule
   ]
 })
 export class AllMusicModule { }

@@ -33,6 +33,16 @@ export const MusicPlatformRoutes: Routes = [
         path: 'playlists',
         loadChildren: () => import('./playlists/playlists.module').then(m => m.PlaylistsModule),
         data: { title: 'Playlists', breadcrumb: 'Playlists' }
+      },
+      {
+        path: 'playlists/:id',
+        loadChildren: () => import('./playlist-detail/playlist-detail.module').then(m => m.PlaylistDetailModule),
+        data: { title: 'Playlist', breadcrumb: 'Playlist' }
+      },
+      {
+        path: 'genres',
+        loadChildren: () => import('./genres/genres.module').then(m => m.GenresModule),
+        data: { title: 'Genres', breadcrumb: 'Genres' }
       }
     ]
   },

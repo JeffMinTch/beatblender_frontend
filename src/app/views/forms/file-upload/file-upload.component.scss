@@ -27,6 +27,8 @@ h3 {
 }
 
 .sample-info {
+    border-radius: 8px;
+    border: 1px solid var(--light-theme-accent);
     > mat-card-title {
         font-size: 1.2rem;
         .file-type {
@@ -45,5 +47,20 @@ h3 {
         height: 100%;
         width: auto;
     }
+}
+
+.create-pseudonym-button {
+    background: var(--primary-light-color);
+    color: var(--body-color);
+    border-radius: 32px;
+    margin-right: 10px;
+}
+
+.artist-pseudonym-row {
+    
+}
+
+::ng-deep .artist-pseudonym-row .mat-form-field-wrapper {
+    padding-bottom: 0 !important;
 }
 

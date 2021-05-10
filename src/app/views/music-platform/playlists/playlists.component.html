@@ -1,6 +1,43 @@
-<h1>My Playlists</h1>
-<!-- <app-audio-panel [sample]="sample" type="sample"></app-audio-panel> -->
-<ng-container #product>
+<!-- <h1 class="">
+  
+  <span style="color: var(--primary-color);">M</span>
+  <span style="">y </span>
+  <span style="color: var(--accent-color); font-weight: 600;"> P</span>
+  <span style="font-weight: 600; color: var(--body-color);">laylists</span> 
+</h1>
+<p class="py-8">Overview and manage all your Basic Licenses. Basic Licenses enbale you
+  without having payed anything yet to use the sample commercially in your own produtions.
+  Lorem, ipsum dolor sit amet consectetur adipisicing elit. Voluptas quidem placeat unde ut rem vitae error
+  temporibus, ad exercitationem accusantium!
+</p> -->
+<section class="m-8" fxLayout="column" style="border: 1px solid var(--light-theme-accent); border-radius: 8px;">
+  <!-- <app-playlist-toolbar></app-playlist-toolbar> -->
+  <section fxFlex fxLayout fxLayoutAlign="end end" class="py-16" style="">
+    <button mat-flat-button class="shuffle-button" (click)="openDialog()">
+      <mat-icon>add</mat-icon>
+      New Playlist
+    </button>
+  </section>
+  <app-playlist-card routerLink="23tr-64nf-5343-m8m6-3241" title="Coding/Hacking/Feeling like a 80s Hero" creator="Kavinsky" image1="hiphop.jpg"
+    image2="frau.jpg" image3="lsd.jpg" image4="vinyl.jpg"></app-playlist-card>
+  <app-playlist-card align="left" routerLink="23tr-64nf-5343-m8m6-3241" title="Showering" creator="Duke Dumont"
+    image1="retro.png" image2="rock.jpg" image3="synth2.jpg" image4="tape.png"></app-playlist-card>
+  <app-playlist-card routerLink="23tr-64nf-5343-m8m6-3241" title="I feel it coming" creator="Kavinsky" image1="face-6.jpg"
+    image2="lsd2.jpg" image3="m17.jpg" image4="retro.png"></app-playlist-card>
+  <app-playlist-card align="left" routerLink="23tr-64nf-5343-m8m6-3241" title="Dresden Afterhours" creator="Duke Dumont"
+    image1="synth1.jpg" image2="photo-2.jpg" image3="synth2.jpg" image4="sq-face-220.jpg"></app-playlist-card>
+  <app-playlist-card routerLink="23tr-64nf-5343-m8m6-3241" title="Generatorausfall" creator="Kavinsky" image1="hiphop.jpg"
+    image2="frau.jpg" image3="lsd.jpg" image4="vinyl.jpg"></app-playlist-card>
+  <!-- <app-playlist-card align="right" routerLink="23tr-64nf-5343-m8m6-3241" title="Ocean Drive" creator="Duke Dumont"
+    image1="retro.png" image2="rock.jpg" image3="synth2.jpg" image4="tape.png"></app-playlist-card>
+  <app-playlist-card routerLink="23tr-64nf-5343-m8m6-3241" title="Nightcall" creator="Kavinsky" image1="hiphop.jpg"
+    image2="frau.jpg" image3="lsd.jpg" image4="vinyl.jpg"></app-playlist-card>
+  <app-playlist-card align="right" routerLink="23tr-64nf-5343-m8m6-3241" title="Ocean Drive" creator="Duke Dumont"
+    image1="retro.png" image2="rock.jpg" image3="synth2.jpg" image4="tape.png"></app-playlist-card> -->
+
+</section>
+
+<!-- <ng-container #product>
     <div fxLayout="row" class="product-wrap"
       *ngFor="let sample of (sampleLicensingMarketService.samples$ | async) | paginate: { itemsPerPage: pageSize, currentPage: page, totalItems: count }; let i = index;"
       [@animate]="{value:'*',params:{delay: (i*300)+'ms', y:'300px'}}"
@@ -47,4 +84,4 @@
 
       </div>
     </div>
-  </ng-container>
+  </ng-container> -->

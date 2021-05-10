@@ -1,0 +1,25 @@
+<h1 mat-dialog-title>Choose MixedIn Samples</h1>
+<div mat-dialog-content>
+  <p>Which Samples did you include in your Track?</p>
+  <p>You can include samples in your track when you have a Basic License.</p>
+  <!-- <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Sample</mat-label>
+    <input autocomplete="off" matInput [(ngModel)]="data.name">
+  </mat-form-field> -->
+  <section>
+    <!-- *ngFor="let sample of (sampleLicensingMarketService.samples$ | async) | paginate: { itemsPerPage: pageSize, currentPage: page, totalItems: count }; let i = index;" -->
+     <div fxLayout *ngFor="let sample of (sampleLicensingMarketService.samples$ | async) | paginate: { itemsPerPage: pageSize, currentPage: page, totalItems: count }; let i = index;" 
+     [@animate]="{value:'*',params:{delay: (i*300)+'ms', y:'300px'}}">
+         <div fxFlex="60px" fxLayoutAlign="start center" style="background: var(--light-theme-color);">
+             <mat-checkbox [checked]="checkBox(sample)" (change)="handleMixedIn($event, sample)" class="ml-8"></mat-checkbox>
+         </div>
+         <div fxFlex>
+            <app-audio-panel [sample]="sample" type="primary"></app-audio-panel>
+         </div>
+     </div> 
+  </section>
+</div>
+<div mat-dialog-actions>
+  <button mat-stroked-button class="ml-auto" color="accent"  (click)="onNoClick()">Cancel</button>
+  <button mat-flat-button color="primary" [mat-dialog-close]="data" cdkFocusInitial>Choose Selected Samples</button>
+</div>

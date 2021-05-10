@@ -1,10 +1,12 @@
-<mat-card style="background: var(--light-theme); box-shadow: none !important;">
-    <div style="width: 60px; height: 60px; font-size: 40px;">
-        <mat-icon color="accent" inline="true" [svgIcon]="iconName"></mat-icon>
-    </div>
-    <h3 style="color: var(--body);">{{title}}</h3>
-    <div>
-        <ng-content>
+<mat-card fxLayout="column" fxLayoutAlign="center center"
+    style="background: var(--light-theme);">
+    <!-- <div style="width: 60px; height: 60px; font-size: 40px;"> -->
+    <!-- <mat-icon color="accent" inline="true" [svgIcon]="iconName"></mat-icon> -->
+    <!-- </div> -->
+    <h3 [ngStyle]="setTitleColor()" style="text-align: center;">{{title}}</h3>
+    <ng-content select="[image]"></ng-content>
+    <div class="full-width">
+        <ng-content select="[content]">
         </ng-content>
     </div>
 </mat-card>

@@ -1,7 +1,7 @@
 .mat-card {
     // min-height: 150px;
     background: var(--light-theme);
-    box-shadow: none !important;
+    // box-shadow: none !important;
     &:hover {
         transform: scale(1.05);
         transition: all var(--transition-duration) var(--transition-timing);

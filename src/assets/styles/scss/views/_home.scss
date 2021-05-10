@@ -121,18 +121,23 @@
 }
 
 
-.home-section {
-  .home-section-title {
-    text-align: center; 
-    max-width: 90%;
-    font-size: 18px;
-    line-height: 50px;
-    span {
-      font-weight: 700; 
-      color: var(--primary-color);
-      font-family: 'Lazer84';
-    }
+.home-section-title {
+  // text-align: center;
+  text-align: center; 
+  max-width: 90%;
+  font-size: 18px;
+  line-height: 50px;
+  span {
+    font-weight: 700; 
+    color: var(--primary-color);
+    // font-family: 'Lazer84';
   }
+.home-section {
+  }
+
+
+
+  
 
   .highlight {
     font-weight: 700; 
@@ -150,6 +155,9 @@
 
 .vision-card {
   width: 33.33%;
+  p {
+    font-size: 20px;
+  }
 }
 
 .question-cards {
@@ -261,3 +269,33 @@ video {
   width: 100%;
   height: 600px;
 }
+
+
+.simple-card {
+  .simple-card-icon-container {
+    width: 170px;
+    height: auto;
+  }
+}
+
+
+.artist-image {
+  border-radius: 50%;
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+}
+
+.banner {
+  img {
+
+  }
+}
+
+
+.artist-name {
+  color: var(--base-disabled-color);
+  text-align: left;
+}
+
+

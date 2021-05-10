@@ -23,7 +23,9 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     SharedPipesModule,
     SharedDirectivesModule,
     SharedMaterialModule,
-    FlexLayoutModule,
+    // NgxPaginationModule
+
+    // FlexLayoutModule,
     // ParallaxModule,
     // ParallaxC
 
@@ -38,11 +40,13 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     AppLoaderService,
   ],
   exports: [
+    CommonModule,
     SharedComponentsModule,
     SharedPipesModule,
     SharedDirectivesModule,
     SharedMaterialModule,
-    FlexLayoutModule
+    // NgxPaginationModule
+    // FlexLayoutModule
   ]
 })
 export class SharedModule { }

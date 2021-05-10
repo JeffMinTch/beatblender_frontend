@@ -1,0 +1,14 @@
+<!-- <h1 class="mb-16"><span style="color: var(--primary-color);">G</span>enres</h1>
+<p class="py-8">Overview and manage all your Basic Licenses. Basic Licenses enbale you
+    without having payed anything yet to use the sample commercially in your own produtions.
+    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Voluptas quidem placeat unde ut rem vitae error
+    temporibus, ad exercitationem accusantium!
+</p> -->
+<section class="genres-container pt-16" fxLayout="row wrap">
+    <section routerLink="find" *ngFor="let genre of genreList" fxLayout fxLayoutAlign="center center" 
+        class="genres-wrapper">
+        <div fxLayout fxLayoutAlign="center center" class="genres-item" mat-ripple>
+            <h3 style="text-align: center; color: var(--base-accent-color);">{{genre}}</h3>
+        </div>
+    </section>
+</section>
