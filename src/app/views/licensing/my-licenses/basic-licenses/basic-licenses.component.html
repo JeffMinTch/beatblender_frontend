@@ -19,38 +19,38 @@
             <!-- <div></div> -->
           </th>
           <td mat-cell *matCellDef="let element">
-            <img class="mat-elevation-z1" style="width: 50px; height: 50px; object-fit: cover; border-radius: 8px;" [src]="'../../../../../assets/images/' + element.image" alt="">
+            <img src="{{'http://localhost:9090/api/web/public/media/image/' + element.sample.sampleID}}" class="mat-elevation-z1" style="width: 50px; height: 50px; object-fit: cover; border-radius: 8px;" alt="">
           </td>
         </ng-container>
         <!-- Position Column -->
         <ng-container matColumnDef="id">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> LicenseID </th>
-          <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+          <td mat-cell *matCellDef="let element"> {{element.basicLicenseID}} </td>
         </ng-container>
 
         <!-- Name Column -->
         <ng-container matColumnDef="title">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Title </th>
-          <td mat-cell *matCellDef="let element"> {{element.title}} </td>
+          <td mat-cell *matCellDef="let element"> {{element.sample.audioUnit.title}} </td>
         </ng-container>
 
         <!-- Weight Column -->
         <ng-container matColumnDef="copyrightOwner">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Copyright Owner </th>
-          <td mat-cell *matCellDef="let element"> {{element.copyrightOwner}} </td>
+          <td mat-cell *matCellDef="let element"> {{element.sample.audioUnit.artistAlias.artistName}} </td>
         </ng-container>
 
         <!-- Extension Price Column -->
         <ng-container matColumnDef="extensionPrice">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Extension Price </th>
-          <td mat-cell *matCellDef="let element"> {{element.extensionPrice}} </td>
+          <td mat-cell *matCellDef="let element"> {{element.lep}} </td>
         </ng-container>
 
         <!-- Symbol Column -->
         <ng-container matColumnDef="downloadSampleLink">
           <th mat-header-cell *matHeaderCellDef mat-sort-header></th>
           <td mat-cell *matCellDef="let element">
-            <button mat-stroked-button color="primary" fxLayout="column">
+            <button (click)="downloadAudioFile(element)" mat-stroked-button color="primary" fxLayout="column">
               <div fxLayout="column" fxLayoutAlign="center center">
                 <mat-icon>library_music</mat-icon>
                 <span class="ml-8" style="font-size: 10px;">Download Audio File</span>
@@ -64,7 +64,7 @@
         <ng-container matColumnDef="downloadContractLink">
           <th mat-header-cell *matHeaderCellDef mat-sort-header></th>
           <td mat-cell *matCellDef="let element">
-            <button mat-stroked-button color="accent">
+            <button (click)="downloadBasicLicenseFile(element)" mat-stroked-button color="accent">
               <div fxLayout="column" fxLayoutAlign="center center">
                 <mat-icon>description</mat-icon>
                 <span class="ml-8" style="font-size: 10px;">Download Basic License</span>
@@ -80,7 +80,7 @@
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr  mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
       </table>
-      <mat-paginator [pageSizeOptions]="[10, 25, 100]"></mat-paginator>
+      <!-- <mat-paginator [pageSizeOptions]="[10, 25, 100]"></mat-paginator> -->
 
     </div>
 

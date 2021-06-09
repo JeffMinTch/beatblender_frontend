@@ -1,9 +1,11 @@
+import { JwtAuthService } from 'app/shared/services/auth/jwt-auth.service';
 import { PlayStateControlService } from './../../services/play-state-control.service';
-import { Component, Input, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, Input, OnInit, ChangeDetectorRef, Output, EventEmitter } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 import { Sample } from 'app/shared/models/sample.model';
 import { AudioService } from 'app/shared/services/audio.service';
 import { AudioState } from 'app/shared/models/audio-state.model';
+import { AudioUnit } from 'app/shared/models/audio-unit.model';
 
 export type AudioPanelType = 'primary' | 'sample' | 'playlist';
 
@@ -14,8 +16,10 @@ export type AudioPanelType = 'primary' | 'sample' | 'playlist';
 })
 export class AudioPanelComponent implements OnInit {
 
-  @Input() sample: Sample;
+  @Input() audioUnit: Sample;
   @Input() type: AudioPanelType;
+
+  @Output() downloadEvent = new EventEmitter();
 
   public playState: boolean;
   public currentSampleID: string;
@@ -23,7 +27,8 @@ export class AudioPanelComponent implements OnInit {
   constructor(
     public playStateControlService: PlayStateControlService,
     private audioService: AudioService,
-    private changeDetectorRef: ChangeDetectorRef
+    private changeDetectorRef: ChangeDetectorRef,
+    // private jwt: JwtAuthService
     ) { }
 
   ngOnInit(): void {
@@ -84,5 +89,13 @@ export class AudioPanelComponent implements OnInit {
 
   }
 
+  downloadBasicLicense(): void {
+    this.downloadEvent.emit();
+  }
+
+  // disableDownloadButton() {
+  //   const userID = this.jwt.getUserInfo().sub;
+  //   this.sample.
+  // }
 
 }

@@ -1,3 +1,4 @@
+import { SimpleDialogComponent } from './dialogs/simple-dialog/simple-dialog.component';
 import { SimpleInputDialogComponent } from './dialogs/simple-input-dialog/simple-input-dialog.component';
 import { SelectMixedinsDialogComponent } from './dialogs/select-mixedins-dialog/select-mixedins-dialog.component';
 import { CreatePlaylistDialogComponent } from './dialogs/create-playlist-dialog/create-playlist-dialog.component';
@@ -95,7 +96,8 @@ const components = [
   PlaylistCardComponent,
   CreatePlaylistDialogComponent,
   SelectMixedinsDialogComponent,
-  SimpleInputDialogComponent
+  SimpleInputDialogComponent,
+  SimpleDialogComponent
 ]
 
 @NgModule({

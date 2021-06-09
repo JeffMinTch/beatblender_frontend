@@ -10,6 +10,7 @@ import { OAuthService } from 'angular-oauth2-oidc';
 import { SelectMixedinsDialogComponent } from 'app/shared/components/dialogs/select-mixedins-dialog/select-mixedins-dialog.component';
 import { SimpleInputDialogComponent } from 'app/shared/components/dialogs/simple-input-dialog/simple-input-dialog.component';
 import { AudioState } from 'app/shared/models/audio-state.model';
+import { Sample } from 'app/shared/models/sample.model';
 import { AudioService } from 'app/shared/services/audio.service';
 import { JwtAuthService } from 'app/shared/services/auth/jwt-auth.service';
 import { LayoutService } from 'app/shared/services/layout.service';
@@ -67,7 +68,8 @@ export class FileUploadComponent implements OnInit, OnDestroy {
     public minimumMoods = 1;
     public maximumMoods = 3;
     public maximumSampleTitle = 200;
-
+    public minimumSamplePrice = 1;
+    public maximumSamplePrice = 1000000000;
 
 
 
@@ -177,10 +179,13 @@ export class FileUploadComponent implements OnInit, OnDestroy {
             console.log('Yuhee');
             // tslint:disable-next-line:max-line-length
             formData.append('audioUnitType', 'Sample');
-            formData.append('artistAlias', 'The Beatles');
             formData.append('sampleImage', ((this.fileItemForm.controls['image'] as FormGroup).controls['file'].value as FileItem)._file); // note comma separating key and value
             // formData.append('someField2', 'testValue1');
             const formGroup: FormGroup = this.formsMap.get(fileItem);
+            formData.append('sampleType', formGroup.controls['sampleType'].value);
+            formData.append('trackType', formGroup.controls['trackType'].value);
+            formData.append('artistAlias', (formGroup.controls['artistPseudonymGroup'] as FormGroup).controls['artistPseudonym'].value);
+            formData.append('samplePrice', (formGroup.controls['samplePriceGroup'] as FormGroup).controls['samplePrice'].value);
             formData.append('genre', (formGroup.controls['descriptionForm'] as FormGroup).controls['genre'].value as string);
             ((formGroup.controls['descriptionForm'] as FormGroup).controls['moods'].value as string[]).forEach((mood) => {
                 formData.append('moods', mood);
@@ -192,6 +197,10 @@ export class FileUploadComponent implements OnInit, OnDestroy {
             formData.append('tempo', (formGroup.controls['descriptionForm'] as FormGroup).controls['tempo'].value);
             // formData.append('genre', (formGroup.controls['descriptionForm'] as FormGroup).controls['moods'].value as string);
             // form.append('genre', JSON.stringify(this.fileItemForm.));
+            (formGroup.controls['mixedIns'].value as Array<Sample>).map(sample => sample.sampleID).forEach((sampleId: string) => {
+                this.console.log(sampleId);
+                formData.append('mixedInID', sampleId);
+            });
         };
 
 
@@ -314,6 +323,14 @@ export class FileUploadComponent implements OnInit, OnDestroy {
             'artistPseudonymGroup': this.fb.group({
                 'artistPseudonym': ['', [Validators.required]],
             }),
+            'samplePriceGroup': this.fb.group({
+                'samplePrice': [this.minimumSamplePrice, [
+                    Validators.required, 
+                    Validators.min(this.minimumSamplePrice),
+                    Validators.max(this.maximumSamplePrice)
+                ]],
+            }),
+
             'descriptionForm': this.fb.group({
                 'sampleTitle': ['', [
                     Validators.required,
@@ -453,6 +470,11 @@ export class FileUploadComponent implements OnInit, OnDestroy {
         } else {
             this.formsMap.get(item).controls['sampleType'].setValue(!change.checked);
             this.sampleMarketCheckbox.checked = !change.checked;
+        }
+        if(!this.sampleMarketCheckbox.checked) {
+            (this.formsMap.get(item).controls['samplePriceGroup'] as FormGroup).controls['samplePrice'].disable();
+        } else {
+            (this.formsMap.get(item).controls['samplePriceGroup'] as FormGroup).controls['samplePrice'].enable();
         }
     }
 

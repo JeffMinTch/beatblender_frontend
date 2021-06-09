@@ -1,5 +1,5 @@
 import { LayoutService, ILayoutConf } from './../../../shared/services/layout.service';
-import { Component, OnInit, ViewChild, AfterViewInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit, ViewEncapsulation, ChangeDetectorRef } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
 
 @Component({
@@ -13,7 +13,8 @@ export class LicensingComponent implements OnInit, AfterViewInit {
   layoutConf: ILayoutConf;
 
   constructor(
-    private layout: LayoutService
+    private layout: LayoutService,
+    private cdr: ChangeDetectorRef
   ) { }
   
   ngOnInit(): void {
@@ -21,11 +22,10 @@ export class LicensingComponent implements OnInit, AfterViewInit {
   }
   
   ngAfterViewInit(): void {
-    // this.layout.layoutConf$.subscribe((layoutConf: ILayoutConf) => {
-    //   this.sideNav.opened = !this.sideNav.opened;
-    //   // this.layoutConf = layoutConf;
-      
-    // });
+    
+    // this.sideNav.opened = false;
   }
+
+  
 
 }

@@ -151,6 +151,8 @@ export class LayoutService {
   }
 
   toggleSidenav():void {
+    console.log('Toggle');
+    console.log(this.layoutConf);
     if(this.layoutConf.sidebarStyle === 'full') {
       this.layoutConf.sidebarStyle = 'closed';
     } else if(this.layoutConf.sidebarStyle === 'closed') {
@@ -158,6 +160,8 @@ export class LayoutService {
     } else {
       throw new Error("Sidenav has wrong state");
     }
+    // this.publishLayoutChange(this.layoutConf);
+    console.log('Toggle Sidenav');
   }
 
 

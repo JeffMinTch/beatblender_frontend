@@ -8,7 +8,7 @@
   </mat-form-field> -->
   <section>
     <!-- *ngFor="let sample of (sampleLicensingMarketService.samples$ | async) | paginate: { itemsPerPage: pageSize, currentPage: page, totalItems: count }; let i = index;" -->
-     <div fxLayout *ngFor="let sample of (sampleLicensingMarketService.samples$ | async) | paginate: { itemsPerPage: pageSize, currentPage: page, totalItems: count }; let i = index;" 
+     <div fxLayout *ngFor="let sample of (basicLicenseSubject$ | async); let i = index;" 
      [@animate]="{value:'*',params:{delay: (i*300)+'ms', y:'300px'}}">
          <div fxFlex="60px" fxLayoutAlign="start center" style="background: var(--light-theme-color);">
              <mat-checkbox [checked]="checkBox(sample)" (change)="handleMixedIn($event, sample)" class="ml-8"></mat-checkbox>
@@ -16,7 +16,7 @@
          <div fxFlex>
             <app-audio-panel [sample]="sample" type="primary"></app-audio-panel>
          </div>
-     </div> 
+     </div>
   </section>
 </div>
 <div mat-dialog-actions>

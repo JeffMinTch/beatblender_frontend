@@ -1,3 +1,6 @@
+import { TrackResponse } from './../../../../shared/models/track-response.model';
+import { HttpErrorResponse } from '@angular/common/http';
+import { LicenseWebService } from './../../../../shared/services/web-services/license-web.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -58,13 +61,25 @@ export class ExtendedLicensesComponent implements OnInit {
 
   // dataSource: MatTableDataSource<PeriodicElement>;
   // displayedColumns: string[];
-  dataSource = new MatTableDataSource<FullLicense>(ELEMENT_DATA);
+  dataSource = new MatTableDataSource<any>([]);
   displayedColumns = ['image', 'id', 'title', 'copyrightOwner', 'extensionPrice', 'downloadSampleLink', 'downloadContractLink'];
   displayedFullLicenseColumns = ['image','id','title', 'extensionPrice', 'status'];
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
+  constructor(
+    private licenseWebService: LicenseWebService
+  ) {
+    
+  }
+
   ngOnInit() {
+    this.licenseWebService.getAllTracks().subscribe((trackResponse: Array<TrackResponse>) => {
+      console.log(trackResponse);
+      this.dataSource = new MatTableDataSource<any>(trackResponse);
+    }, (error: Error) => {
+      throw error;
+    });
     // this.displayedColumns = ['position', 'name', 'weight', 'symbol', 'c'];
   }
 

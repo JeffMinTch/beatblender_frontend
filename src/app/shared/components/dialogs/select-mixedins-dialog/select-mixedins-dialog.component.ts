@@ -1,3 +1,4 @@
+import { LicenseWebService } from './../../../services/web-services/license-web.service';
 import { element } from 'protractor';
 import { Sample } from './../../../models/sample.model';
 import { ChangeDetectionStrategy, ChangeDetectorRef, ViewContainerRef, ViewEncapsulation } from '@angular/core';
@@ -11,6 +12,7 @@ import { JwtAuthService } from 'app/shared/services/auth/jwt-auth.service';
 import { LocalStoreService } from 'app/shared/services/local-store.service';
 import { egretAnimations } from 'app/shared/animations/egret-animations';
 import { number } from 'ngx-custom-validators/src/app/number/validator';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-select-mixedins-dialog',
@@ -28,6 +30,8 @@ export class SelectMixedinsDialogComponent implements OnInit, AfterViewInit {
   sortBy: string = 'title';
   count: number = 0;
 
+  public basicLicenseSubject$: Subject<any> = new Subject<any>();
+
 
 
   constructor(public dialogRef: MatDialogRef<SelectMixedinsDialogComponent>,
@@ -35,6 +39,7 @@ export class SelectMixedinsDialogComponent implements OnInit, AfterViewInit {
     public sampleLicensingMarketService: SampleLicensingMarketService,
     private jwt: JwtAuthService,
     private ls: LocalStoreService,
+    private licenseWebService: LicenseWebService
     // public cdr: ChangeDetectorRef
   ) { }
   
@@ -47,6 +52,7 @@ export class SelectMixedinsDialogComponent implements OnInit, AfterViewInit {
   }
   ngAfterViewInit(): void {
     this.retrieveSamples();
+    this.fetchAllBasicLicenses();
     // let that = this;
     // setTimeout(() => {
     // }, 1000);
@@ -56,6 +62,31 @@ export class SelectMixedinsDialogComponent implements OnInit, AfterViewInit {
   onNoClick(): void {
     this.dialogRef.close(this.data);
   }
+
+  public fetchAllBasicLicenses(): void {
+    this.licenseWebService.getAllBasicLicense().subscribe((data: Array<any>) => {
+      const samples: Array<Sample> = new Array<Sample>();
+      data.forEach(data => {
+        samples.push({
+          sampleID: data.sample.sampleID,
+          title: data.sample.audioUnit.title,
+          genre: data.sample.audioUnit.genre,
+          tempo: data.sample.audioUnit.tempo,
+          moods: data.sample.audioUnit.moods,
+          tags: data.sample.audioUnit.tags,
+          audioFileName: data.sample.audioUnit.audioFileName,
+          imageFileName: data.sample.audioUnit.imageFileName,
+          lep: data.sample.audioUnit.lep,
+          artistName: data.sample.audioUnit.artistAlias.artistName
+        })
+      });
+      console.log(samples);
+      this.basicLicenseSubject$.next(samples);
+      console.log('Basic Licenses');
+      console.log(data);
+    });
+  }
+
   public retrieveSamples(): void {
     const params = this.sampleLicensingMarketService.getRequestParams(this.sortBy, this.page, this.pageSize);
     this.sampleLicensingMarketService.getAudioFiles(params).pipe(

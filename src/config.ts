@@ -20,7 +20,9 @@ export const config = {
         root: '/public/user'
       },
       protected: {
-        root: '/protected/user'
+        root: '/protected/user',
+        userData: '/user-data'
+        
       }
     },
     licensePath: {
@@ -35,16 +37,22 @@ export const config = {
         },
         basicLicense: {
           root: '/basic-license',
-          getBasicLicense: '/get-basic-license'
+          getBasicLicense: '/get-basic-license',
+          getAll: '/get-all',
+          getAllTracks: '/get-all-tracks'
+          
         }
       }
     },
     mediaPath: {
       public: {
-        root: '/public/media'
+        root: '/public/media',
+        audio: '/audio'
       },
       protected: {
-        root: '/protected/media'
+        root: '/protected/media',
+        getAudioFile: '/get-audio-file',
+        getBasicLicenseFile: '/get-basic-license-file'
       }
     }
   

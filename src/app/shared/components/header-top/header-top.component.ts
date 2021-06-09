@@ -17,6 +17,7 @@ export class HeaderTopComponent implements OnInit, OnDestroy {
   menuItemSub: Subscription;
   egretThemes: any[] = [];
   currentLang = 'en';
+  userData: any;
   availableLangs = [{
     name: 'English',
     code: 'en',
@@ -58,6 +59,10 @@ export class HeaderTopComponent implements OnInit, OnDestroy {
       this.menuItems = mainItems
       // console.log(this.menuItems);
     })
+
+    this.jwtAuth.userData$.subscribe(userData => {
+      this.userData = userData;
+    });
   }
   ngOnDestroy() {
     this.menuItemSub.unsubscribe()

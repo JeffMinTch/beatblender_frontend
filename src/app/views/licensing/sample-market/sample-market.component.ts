@@ -1,3 +1,5 @@
+import { SimpleDialogComponent } from './../../../shared/components/dialogs/simple-dialog/simple-dialog.component';
+import { LicenseWebService } from './../../../shared/services/web-services/license-web.service';
 import { MatchMediaService } from './../../../shared/services/match-media.service';
 import { MediaChange } from '@angular/flex-layout';
 import { Page } from '../../../shared/models/page.model';
@@ -34,6 +36,9 @@ import { MatOption, MatOptionSelectionChange } from '@angular/material/core';
 import { SidenavContent } from 'app/shared/models/sidenav-content.model';
 import { HttpErrorResponse } from '@angular/common/http';
 import { style } from '@angular/animations';
+import { MatDialog } from '@angular/material/dialog';
+import { asLiteral } from '@angular/compiler/src/render3/view/util';
+import { Router } from '@angular/router';
 // import { MinMaxSlider } from 'app/shared/models/min-max-slider.model';
 
 
@@ -121,9 +126,12 @@ export class SampleMarketComponent implements OnInit, AfterViewInit {
     private jwt: JwtAuthService,
     private ls: LocalStoreService,
     private audioWebService: AudioWebService,
+    private licenseWebService: LicenseWebService,
     private fb: FormBuilder,
     private layout: LayoutService,
-    private matchMedia: MatchMediaService
+    private matchMedia: MatchMediaService,
+    public dialog: MatDialog,
+    private router: Router
   ) {
 
     this.matchMedia.onMediaChange.subscribe((data) => {
@@ -501,6 +509,9 @@ export class SampleMarketComponent implements OnInit, AfterViewInit {
 
   public toggleSidenav() {
     this.layout.toggleSidenav();
+    // setTimeout(() => {
+    //   this.changeDetectorRef.detectChanges();
+    // }, 1000);
     // this.sideNav.opened = !this.sideNav.opened;
   }
 
@@ -527,6 +538,63 @@ export class SampleMarketComponent implements OnInit, AfterViewInit {
     // })
     // ;
     
+  }
+
+  downloadBasicLicense(sample: Sample) {
+    this.loader.open();
+    this.licenseWebService.getBasicLicense(sample).subscribe(data => {
+      this.loader.close();
+      // console.log(data);
+      const dialogRef = this.dialog.open(SimpleDialogComponent, {
+        width: '550px',
+        // data: {name: this.name, animal: this.animal}
+        data: {
+          title: 'Congratulations!',
+          firstParagraph: `Now you own a Basic License for ${sample.audioUnit.title} by ${sample.audioUnit.artistAlias.artistName}.`,
+          submitButton: 'Manage Samples',
+          // route: ''
+          cancelButton: 'Keep digging'
+      },
+      // data: this.formsMap.get(item).controls['mixedIns'].value,
+      hasBackdrop: false
+      });
+  
+      dialogRef.afterClosed().subscribe(result => {
+        console.log('The dialog was closed');
+        this.router.navigate(['licensing', 'my-licenses', 'extended-licenses']);
+
+        // this.animal = result;
+      });
+    }, (httpErrorResponse: HttpErrorResponse) => {
+      this.loader.close();
+      console.log(httpErrorResponse);
+      if(httpErrorResponse.error.status === 400) {
+        
+      }
+
+      switch(httpErrorResponse.error.status as Number) {
+        case 400:
+          const dialogRef = this.dialog.open(SimpleDialogComponent, {
+            width: '550px',
+            // data: {name: this.name, animal: this.animal}
+            data: {
+              title: 'Not Working!',
+              firstParagraph: httpErrorResponse.error.message,
+              // submitButton: 'Keep digging',
+              // route: ''
+              cancelButton: 'Keep digging'
+          },
+          // data: this.formsMap.get(item).controls['mixedIns'].value,
+          hasBackdrop: true
+          });
+          dialogRef.afterClosed().subscribe(result => {
+            console.log('The dialog was closed');
+            // this.animal = result;
+          });
+          break;
+      }
+      // window.alert(JSON.stringify(error));
+    });
   }
 
 

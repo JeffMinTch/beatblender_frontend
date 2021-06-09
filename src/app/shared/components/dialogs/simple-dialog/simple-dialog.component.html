@@ -1,0 +1,9 @@
+<h1 mat-dialog-title>{{data.title}}</h1>
+<div mat-dialog-content>
+  <p>{{data.firstParagraph}}</p>
+  
+</div>
+<div mat-dialog-actions>
+  <button class="ml-auto" mat-stroked-button (click)="onNoClick()">{{data.cancelButton}}</button>
+  <button color="primary" *ngIf="data.submitButton" mat-flat-button [mat-dialog-close]="data" cdkFocusInitial>{{data.submitButton}}</button>
+</div>

@@ -5,7 +5,7 @@ import { takeUntil } from 'rxjs/operators';
 import * as moment from "moment";
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { PlayStateControlService } from './play-state-control.service';
-import {Sample} from '../models/sample.model';
+import { Sample } from '../models/sample.model';
 import { CurrentFile } from '../models/current-file.model';
 // import { FileUploadService } from './file-upload.service';
 import WaveSurfer from 'wavesurfer.js/dist/wavesurfer.js';
@@ -20,22 +20,22 @@ import { MatSliderChange } from '@angular/material/slider';
 })
 export class AudioService implements OnDestroy {
 
-  public audioServiceDestroyed$: Subject<void> = new Subject<void>(); 
+  public audioServiceDestroyed$: Subject<void> = new Subject<void>();
   private subjectAudioFile = new Subject<Array<any>>();
   audioFileEmitted$ = this.subjectAudioFile.asObservable();
   audioFileSubscription: Subscription;
   currentTime: number;
   duration: number;
   private _playState: boolean;
-  
-  
+
+
 
   constructor(
-    private compComService: ComponentCommunicationService, 
+    private compComService: ComponentCommunicationService,
     private playStateControlService: PlayStateControlService,
     // public changeDetectorRef: ChangeDetectorRef
-    ) {
-      // this.createWavesurferObj();
+  ) {
+    // this.createWavesurferObj();
     // this.audioFileSubscription = this.audioFileEmitted$.subscribe(audioContainerArray => {
     //   let file = audioContainerArray[0];
     //   let index = audioContainerArray[1];
@@ -57,19 +57,19 @@ export class AudioService implements OnDestroy {
       // this.changeDetectorRef.detectChanges();
     });
   }
-  
+
   ngOnDestroy(): void {
     this.audioServiceDestroyed$.next();
   }
 
-  
+
   public wavesurfer;
-  
+
   public isPlayerReady = false;
   primaryColor: string = window.getComputedStyle(document.documentElement).getPropertyValue('--primary');
   whiteColor: string = window.getComputedStyle(document.documentElement).getPropertyValue('--white');
   whiteSuperColor: string = window.getComputedStyle(document.documentElement).getPropertyValue('--white-super');
-  
+
   themeColor: string = window.getComputedStyle(document.documentElement).getPropertyValue('--theme');
   themeLightColor: string = window.getComputedStyle(document.documentElement).getPropertyValue('--theme-super');
   themeDarkColor: string = window.getComputedStyle(document.documentElement).getPropertyValue('--theme-dark');
@@ -77,7 +77,7 @@ export class AudioService implements OnDestroy {
 
 
   onReadylistener;
-  counter:number=0;
+  counter: number = 0;
   public audioState = new Subject<any>();
   audioState$ = this.audioState.asObservable();
   emitAudioState(state: AudioState) {
@@ -95,34 +95,34 @@ export class AudioService implements OnDestroy {
 
   stop() {
     this.wavesurfer.stop();
-    
+
   }
 
-  
+
 
   createWavesurferObj() {
     // this.wavesurfer = null;
-    if(this.wavesurfer) {
+    if (this.wavesurfer) {
       this.wavesurfer.destroy();
     }
     this.wavesurfer = WaveSurfer.create({
       container: '#waveform',
-      barWidth: 5,
-      barRadius: 3,
+      barWidth: 3,
+      barRadius: 1,
       hideScrollbar: true,
-      cursorWidth: 1,
+      cursorWidth: 3,
       // scrollParent: true,
       barGap: 2,
       barHeight: 1.5,
       // // container: '#waveform',
       backend: 'WebAudio',
-      height: 40, 
+      height: 40,
       fillParent: true,
       backgroundColor: '#ededed',
       // // progressColor: '#03a9f4',
       // #051136
       // #0081ff
-      
+
       progressColor: '#d69090',
       responsive: true,
       // waveColor: 'transparent',
@@ -130,7 +130,8 @@ export class AudioService implements OnDestroy {
       // waveColor: '#dce6dd',
       // zoom: 50,
       // cursorColor: '#efefef',
-      cursorColor: 'transparent',
+      cursorColor: '#658566',
+      // cursorWidth: 3,
       plugins: [
         // TimelinePlugin.create({
         //   // plugin options ...
@@ -143,7 +144,14 @@ export class AudioService implements OnDestroy {
         // }),
         CursorPlugin.create({
           // plugin options ...
-          color: 'pink',
+          color: 'black',
+          customShowTimeStyle: {
+            // 'background-color': 'black',
+            'color': 'black',
+            'font-weight': '900',
+            padding: '2px',
+            'font-size': '14px',
+          },
           showTime: true,
           style: 'solid',
           followCursorY: true
@@ -156,7 +164,7 @@ export class AudioService implements OnDestroy {
       // this.wavesurfer.setCurrentTime(0);
       // this.playStateControlService.savePlayState(false);
       // // this.changeDetectorRef.markForCheck()
-      if(this.playState) {
+      if (this.playState) {
         this.play();
       }
       // this.emitAudioState({
@@ -170,7 +178,7 @@ export class AudioService implements OnDestroy {
       console.log('AudioTrack Paused');
       // this.wavesurfer.setCurrentTime(0);
       // this.playStateControlService.savePlayState(false);
-      
+
       // // this.changeDetectorRef.markForCheck()
       this.emitAudioState({
         status: "finish",
@@ -183,7 +191,7 @@ export class AudioService implements OnDestroy {
       console.log('AudioTrack FInished');
       // this.playStateControlService.savePlayState(false);
       this.playStateControlService.emitPlayState(false);
-      setTimeout(()=> {
+      setTimeout(() => {
         this.wavesurfer.setCurrentTime(0);
       }, 100)
       // this.changeDetectorRef.markForCheck()
@@ -194,42 +202,42 @@ export class AudioService implements OnDestroy {
       });
     });
     this.wavesurfer.on("audioprocess", (mycurrentTime: number) => {
-    this.counter++;   
-      if(this.counter === 10) {
+      this.counter++;
+      if (this.counter === 10) {
 
         this.emitAudioState({
           status: "playing",
           currentTime: this.wavesurfer.getCurrentTime(),
           duration: this.wavesurfer.getDuration() as number
         });
-        this.counter=0;
+        this.counter = 0;
       }
 
     });
     this.wavesurfer.on("ready", () => {
       this.isPlayerReady = true;
       this.compComService.emitAudioLoaded();
-      if(this.playState) {
+      if (this.playState) {
 
         this.play();
       }
-      
+
     });
 
     console.log(this.wavesurfer);
 
   }
 
-  getTrackLength():Observable<number> {
-   return this.wavesurfer.getDuration();
+  getTrackLength(): Observable<number> {
+    return this.wavesurfer.getDuration();
   }
-  
 
-  loadAudio(sampleID):void {
+
+  loadAudio(sampleID): void {
     this.isPlayerReady = false;
     this.wavesurfer.load(`http://localhost:9090/api/web/public/media/audio/${sampleID}`);
 
-  //  let load =  this.wavesurfer.load(`http://localhost:9090/api/samplepool/downloadFile/${userName}/${fileName}`); 
+    //  let load =  this.wavesurfer.load(`http://localhost:9090/api/samplepool/downloadFile/${userName}/${fileName}`); 
   }
 
   toggleMute() {
@@ -241,7 +249,7 @@ export class AudioService implements OnDestroy {
   }
 
   loadPlayAudio(sampleID): void {
-    this.isPlayerReady = false;    
+    this.isPlayerReady = false;
     this.wavesurfer.load(`http://localhost:9090/api/web/public/media/audio/${sampleID}`);
     // this.wavesurfer.load(`http://localhost:9090/api/samplepool/downloadFile/${userName}/${fileName}`); 
   }
@@ -265,17 +273,17 @@ export class AudioService implements OnDestroy {
 
   toggle = false;
   setWaveColor(color: string) {
-    if(this.toggle) {
+    if (this.toggle) {
       this.wavesurfer.setProgressColor(this.primaryColor);
       this.toggle = !this.toggle;
     } else {
       this.wavesurfer.setProgressColor(color);
-      this.toggle= !this.toggle;
+      this.toggle = !this.toggle;
 
     }
   }
 
-  
+
 
 
 
@@ -284,10 +292,10 @@ export class AudioService implements OnDestroy {
   emitAudioStateUpdate(currentFile: CurrentFile) {
     this.audioStateViewUpdate.next(event);
   }
-  
 
 
-  
+
+
 
 
   private subjectPausePressed = new Subject<any>();
@@ -303,7 +311,7 @@ export class AudioService implements OnDestroy {
     this.subjectAudioFile.next(audioContainerArray);
   }
 
-  set playState(playState: boolean){
+  set playState(playState: boolean) {
     this._playState = playState;
   }
 
@@ -311,7 +319,7 @@ export class AudioService implements OnDestroy {
     return this._playState;
   }
 
-  
+
 }
 
 

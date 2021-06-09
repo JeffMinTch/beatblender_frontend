@@ -1,3 +1,4 @@
+import { UserWebService } from './../web-services/user-web.service';
 import { AuthConfig, NullValidationHandler, ValidationHandler } from 'angular-oauth2-oidc';
 import { authConfig } from './../../../../config/auth.config';
 import { OAuthService, UserInfo } from 'angular-oauth2-oidc';
@@ -14,7 +15,7 @@ import { environment } from "environments/environment";
 const DEMO_TOKEN =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1YjhkNDc4MDc4NmM3MjE3MjBkYzU1NzMiLCJlbWFpbCI6InJhZmkuYm9ncmFAZ21haWwuY29tIiwicm9sZSI6IlNBIiwiYWN0aXZlIjp0cnVlLCJpYXQiOjE1ODc3MTc2NTgsImV4cCI6MTU4ODMyMjQ1OH0.dXw0ySun5ex98dOzTEk0lkmXJvxg3Qgz4ed";
 
-const DEMO_USER: User = {
+const DEMO_USER = {
   id: "5b700c45639d2c0c54b354ba",
   displayName: "Watson Joyce",
   role: "SA",
@@ -28,19 +29,23 @@ export class JwtAuthService {
   token;
   isAuthenticated: Boolean;
   userInfo: UserInfo;
+  userData: any;
   user$ = (new BehaviorSubject<UserInfo>(null));
+  public userData$ = (new BehaviorSubject<any>(null));
   tokenEvents: Subject<any> = new Subject<any>();
   signingIn: Boolean;
   return: string;
   JWT_TOKEN: string;
   APP_USER: string;
+  APP_USER_DATA: any;
 
   constructor(
     private ls: LocalStoreService,
     private http: HttpClient,
     private router: Router,
     private route: ActivatedRoute,
-    private oauthService: OAuthService
+    private oauthService: OAuthService,
+    private userWebService: UserWebService
   ) {
     this.route.queryParams
       .subscribe(params => this.return = params['return'] || '/');
@@ -74,6 +79,7 @@ export class JwtAuthService {
           this.setUserAndToken(this.oauthService.getAccessToken(), userInfo, loggedIn);
         });
         this.oauthService.setupAutomaticSilentRefresh();
+        
       }  else {
         this.setUserAndToken(null, null, false);
       }
@@ -114,7 +120,13 @@ export class JwtAuthService {
               this.oauthService.setupAutomaticSilentRefresh();
               if(this.oauthService.hasValidAccessToken()) {
                 this.oauthService.loadUserProfile().then((userInfo: UserInfo) => {
+                  
                   this.setUserAndToken(this.oauthService.getAccessToken(), userInfo, this.oauthService.hasValidAccessToken());
+                });
+                this.userWebService.getUserData().subscribe((userData) => {
+                  console.log("User Data");
+                  console.log(userData);
+                  this.setUserData(userData);
                 });
               } else {
                 this.setUserAndToken(null, null, false);
@@ -211,16 +223,29 @@ export class JwtAuthService {
     return this.ls.getItem(this.APP_USER);
   }
 
+  getUserData(): any {
+
+  }
+
   setUserAndToken(token: String, userInfo: UserInfo, isAuthenticated: Boolean) {
     this.isAuthenticated = isAuthenticated;
     this.token = token;
     this.userInfo = userInfo;
+    console.log('User Info');
+    console.log(userInfo);
     this.user$.next(userInfo);
     this.ls.setItem(this.JWT_TOKEN, token);
     this.ls.setItem(this.APP_USER, userInfo);
   }
 
+  setUserData(userData: any) {
+    this.userData$.next(userData);
+    this.userData = userData;
+    this.ls.setItem(this.APP_USER_DATA, userData);
+  }
+
   getRole(): string {
+    // console.log(this.)
     const roles: Array<string> = this.userInfo.realm_access.roles;
     if(roles.includes('app-super-admin')) {
       return 'Super Admin';

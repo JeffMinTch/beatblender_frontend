@@ -1,8 +1,12 @@
+import { MediaWebService } from './../../../../shared/services/web-services/media-web.service';
+import { LicenseWebService } from './../../../../shared/services/web-services/license-web.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-
+import { environment } from 'environments/environment';
+import {saveAs as importedSaveAs} from "file-saver";
+import { Subject } from 'rxjs';
 
 export interface PeriodicElement {
   name: string;
@@ -50,19 +54,51 @@ export class BasicLicensesComponent implements OnInit {
 
     // dataSource: MatTableDataSource<PeriodicElement>;
   // displayedColumns: string[];
-  dataSource = new MatTableDataSource<BasicLicense>(ELEMENT_DATA);
+  dataSource; 
   displayedColumns   = ['image','id', 'title', 'copyrightOwner', 'extensionPrice', 'downloadSampleLink', 'downloadContractLink'];
+  basicLicenseSubject$: Subject<any> = new Subject<any>();
+  // @ViewChild(MatPaginator) paginator: MatPaginator;
+  // @ViewChild(MatSort) sort: MatSort;
 
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-  @ViewChild(MatSort) sort: MatSort;
+  constructor(
+    private mediaWebService: MediaWebService,
+    private licenseWebService: LicenseWebService
+    ) {
+  }
   
   ngOnInit() {
+    this.licenseWebService.getAllBasicLicense().subscribe((data:any) => {
+      console.log(data);
+      this.basicLicenseSubject$.next(data);
+      this.dataSource = new MatTableDataSource<BasicLicense>(data);
+    })
     // this.displayedColumns = ['position', 'name', 'weight', 'symbol', 'c'];
   }
   
   ngAfterViewInit(): void {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
+    // this.dataSource.paginator = this.paginator;
+    // this.dataSource.sort = this.sort;
+  }
+
+  downloadAudioFile(element: any) {
+    console.log(element);
+    const API: string = `${environment.apiURL.baseUrl + environment.apiURL.mediaPath.public.root + environment.apiURL.mediaPath.public.audio}/${element.sample.sampleID}`;
+    // window.location.href = API;
+
+    this.mediaWebService.downloadFile(API).subscribe(blob => {
+      // console.log(blob);
+  //     const url= window.URL.createObjectURL(blob);
+  // window.location.href= API;
+  // window.saveAs(blob, element.sample.audioUnit.audioFileName)
+      importedSaveAs(blob, element.sample.audioUnit.audioFileName);
+  }
+)
+  }
+  
+
+  downloadBasicLicenseFile(element) {
+    const API = `${environment.apiURL.baseUrl + environment.apiURL.mediaPath.protected.root + environment.apiURL.mediaPath.protected.getBasicLicenseFile}/${element.sample.sampleID}/${element.downloader.uuid}`;
+    window.location.href = API;
   }
 
 

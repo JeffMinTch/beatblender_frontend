@@ -1,10 +1,8 @@
-<footer class="main-footer mat-elevation-z7">
-  <div class="container-dynamic d-flex">
-    <div class="toolbar" fxLayout="row" fxLayoutAlign="center center">
+<footer class="main-footer" style="position: relative;">
+  <div class="container-dynamic d-flex" style="">
+    <!-- <div class="toolbar" fxLayout="row" fxLayoutAlign="center center">
       
       <div class="player" fxLayout="row nowrap">
-        <!-- <ng-container *ngFor="let sample of sampleLicensingMarketService.samples$ | async; let i = index"> -->
-          <!-- *ngIf="sample?.sampleID === (playStateControlService.currentSampleID$ | async)"  -->
           <button 
           class="player-button" 
           (click)="previousNext('prev')"
@@ -14,7 +12,6 @@
           onclick="this.blur()">
             <mat-icon class="skip-previous player-icon" aria-hidden="false" aria-label="skip previous track">skip_previous_outline</mat-icon>
           </button>
-        <!-- </ng-container> -->
         <button *ngIf="!(playStateControlService.playState$ | async)" 
                 type="button" 
                 mat-icon-button 
@@ -28,7 +25,6 @@
             play_arrow_outline
           </mat-icon>
         </button>
-        <!-- <ng-template #pause> -->
           <button 
             *ngIf="(playStateControlService.playState$ | async)"
             type="button" 
@@ -42,20 +38,13 @@
             aria-label="Example home icon">
             pause
           </mat-icon>
-          <!-- [disabled]="isSamples()"  -->
           </button>
-        <!-- </ng-template> -->
-          <!-- <mat-icon #playerPauseIcon (click)="changeToPlayView($event)"
-            class="play-arrow player-icon player-pause-icon icon-control-pause" aria-hidden="false"
-            aria-label="Example home icon">pause
-          </mat-icon> -->
-          <!-- <ng-container *ngFor="let sample of sampleLicensingMarketService.samples$ | async"> -->
+        
             <button (click)="previousNext('next')" type="button" mat-icon-button onclick="this.blur()"
               [disabled]="isLast()" class="player-button next-button-player">
               <mat-icon class="skip-next player-icon icon-control-end rewind-icon" aria-hidden="false"
                 aria-label="Example home icon">skip_next</mat-icon>
             </button>
-          <!-- </ng-container> -->
       </div>
       <div class="player-tools" fxFlex fxLayout="row nowrap" fxLayoutALign="start center">
         <button mat-icon-button (click)="toggleMute()" [disabled]="sampleLicensingMarketService.samplesLoading$ | async" type="button" mat-icon-button
@@ -63,14 +52,18 @@
             <mat-icon inline="true" class="mute-icon" aria-hidden="false" aria-label="Example home icon">{{getMute() ? 'volume_off' : 'volume_mute'}}</mat-icon>
           </button>
       </div>
+    </div> -->
+    <!-- <div> -->
+      <div [fxHide.lt-md]="true" class="waveform-container" #waveFormContainer>
+        <div id="waveform" #waveform>
+          
+        </div>
+
+      <!-- </div> -->
+
     </div>
-    <div [fxHide.lt-md]="true" class="waveform-container" #waveFormContainer>
-      <!-- [ngClass]="{'waveform-background': isPanelOpen(expansionPanelHeader)}" -->
-      <div id="waveform" #waveform>
-        
-      </div>
-    </div>
-    <ng-container *ngFor="let sample of sampleLicensingMarketService.samples$ | async">
+    
+    <!-- <ng-container *ngFor="let sample of sampleLicensingMarketService.samples$ | async">
     <div  *ngIf="sample?.sampleID === (playStateControlService.currentSampleID$ | async)" class="current-audio-container">
       <div fxLayoutAlign="center center">
         <img class="mat-elevation-z1" src="{{'http://localhost:9090/api/web/public/media/image/' + sample?.sampleID}}" alt="">
@@ -80,45 +73,75 @@
           <span fxLayout="row">{{sample?.title}}</span>
         </div>
       </div>
-    </ng-container>
-    <!-- <div class="player-wrap">
-      <section class="player-container">
-        <button class="player-button previous-button-player" (click)="previousNext('prev')"
-          [disabled]="isFirstPlaying()" type="button" mat-icon-button onclick="this.blur()">
-          <mat-icon class="skip-previous player-icon" aria-hidden="false" aria-label="skip previous track">skip_previous
-          </mat-icon>
+    </ng-container> -->
+    
+  </div>
+  <div fxLayout fxLayoutAlign="space-between" class="player-top mat-elevation-z9" style="z-index: -1;">
+    <div class="toolbar" fxLayout="row" fxLayoutAlign="center center">
+    
+    <div class="player" fxLayout="row nowrap">
+        <button 
+        
+        class="player-button" 
+        (click)="previousNext('prev')"
+        [disabled]="isFirst()" 
+        type="button"
+        mat-icon-button 
+        onclick="this.blur()">
+          <mat-icon class="skip-previous player-icon" aria-hidden="false" aria-label="skip previous track">skip_previous_outline</mat-icon>
         </button>
-        <button type="button" mat-icon-button onclick="this.blur()" class="player-button">
-          <mat-icon #playerPlayIcon (click)="changeToPauseView($event)"
-            class="play-arrow player-icon player-play-icon icon-control-play disable-active" aria-hidden="false"
-            aria-label="Example home icon">play_arrow
-          </mat-icon>
-          <mat-icon #playerPauseIcon (click)="changeToPlayView($event)"
-            class="play-arrow player-icon player-pause-icon icon-control-pause" aria-hidden="false"
-            aria-label="Example home icon">pause
-          </mat-icon>
+      <button *ngIf="!(playStateControlService.playState$ | async)" 
+              type="button" 
+              mat-icon-button 
+              (click)="play()" 
+              [disabled]="sampleLicensingMarketService.samplesLoading$ | async"
+              onclick="this.blur()" 
+              class="player-button">
+        <mat-icon
+          class="player-icon" aria-hidden="false" 
+          aria-label="Example home icon">
+          play_arrow_outline
+        </mat-icon>
+      </button>
+        <button 
+          *ngIf="(playStateControlService.playState$ | async)"
+          type="button" 
+          mat-icon-button 
+          (click)="pause()" 
+          onclick="this.blur()" 
+          class="player-button">
+          <mat-icon color="primary"
+          class="player-icon" 
+          aria-hidden="false"
+          aria-label="Example home icon">
+          pause
+        </mat-icon>
         </button>
-
-        <button (click)="previousNext('next')" type="button" mat-icon-button onclick="this.blur()"
-          [disabled]="isLastPlaying()" class="player-button next-button-player">
-          <mat-icon class="skip-next player-icon icon-control-end rewind-icon" aria-hidden="false"
-            aria-label="Example home icon">skip_next</mat-icon>
-        </button>
-      </section>
-      <div style="display: flex; height: 100%; width: 100%; z-index: 1;"></div>
-      <div class="utilities-container">
-        <div class="mute-container">
-          <button mat-icon-button *ngIf="!isMuted" (click)="toggleMute()" type="button" mat-icon-button
-            onclick="this.blur()" class="mute-button" style="">
-            <mat-icon class="mute-icon" aria-hidden="false" aria-label="Example home icon" style="">volume_mute</mat-icon>
+      
+          <button (click)="previousNext('next')" type="button" mat-icon-button onclick="this.blur()"
+            [disabled]="isLast()" class="player-button next-button-player">
+            <mat-icon class="skip-next player-icon icon-control-end rewind-icon" aria-hidden="false"
+              aria-label="Example home icon">skip_next</mat-icon>
           </button>
-          <button *ngIf="isMuted" (click)="toggleMute()" type="button" mat-icon-button onclick="this.blur()"
-            class="mute-button" style="">
-            <mat-icon class="mute-icon" aria-hidden="false" aria-label="Example home icon" style="">volume_off</mat-icon>
-          </button>
+    </div>
+    <div class="player-tools" fxFlex fxLayout="row nowrap" fxLayoutALign="start center">
+      <button mat-icon-button (click)="toggleMute()" [disabled]="sampleLicensingMarketService.samplesLoading$ | async" type="button" mat-icon-button
+          onclick="this.blur()" class="mute-button" style="">
+          <mat-icon inline="true" class="mute-icon" aria-hidden="false" aria-label="Example home icon">{{getMute() ? 'volume_off' : 'volume_mute'}}</mat-icon>
+        </button>
+    </div>
+  </div>
+  <ng-container *ngFor="let sample of sampleLicensingMarketService.samples$ | async">
+    <div  *ngIf="sample?.sampleID === (playStateControlService.currentSampleID$ | async)" class="current-audio-container">
+      <div fxLayoutAlign="center center">
+        <img class="" src="{{'http://localhost:9090/api/web/public/media/image/' + sample?.sampleID}}" alt="">
+      </div>  
+        <div class="current-audio-info" fxLayout="column">
+          <span fxLayout="row">{{sample?.artistName}}</span>
+          <span fxLayout="row">{{sample?.title}}</span>
         </div>
       </div>
-    </div> -->
-
+    </ng-container>
+  <!-- <div> -->
   </div>
 </footer>
