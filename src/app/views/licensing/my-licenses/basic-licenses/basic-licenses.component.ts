@@ -82,7 +82,7 @@ export class BasicLicensesComponent implements OnInit {
 
   downloadAudioFile(element: any) {
     console.log(element);
-    const API: string = `${environment.apiURL.baseUrl + environment.apiURL.mediaPath.public.root + environment.apiURL.mediaPath.public.audio}/${element.sample.sampleID}`;
+    const API: string = `${environment.apiURL.baseUrl + environment.apiURL.mediaPath.public.root + environment.apiURL.mediaPath.public.audio}/${element.sample.audioUnit.audioUnitID}`;
     // window.location.href = API;
 
     this.mediaWebService.downloadFile(API).subscribe(blob => {

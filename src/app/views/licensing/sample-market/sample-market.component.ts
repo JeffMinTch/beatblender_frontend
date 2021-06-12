@@ -1,44 +1,35 @@
 import { SimpleDialogComponent } from './../../../shared/components/dialogs/simple-dialog/simple-dialog.component';
 import { LicenseWebService } from './../../../shared/services/web-services/license-web.service';
 import { MatchMediaService } from './../../../shared/services/match-media.service';
-import { MediaChange } from '@angular/flex-layout';
-import { Page } from '../../../shared/models/page.model';
 import { SearchFilterFormMap } from '../../../shared/models/search-filter-form-map.model';
 import { MinMaxSlider } from '../../../shared/models/min-max-slider.model';
 import { Selection } from '../../../shared/models/selection.model';
-import { filter, debounceTime, throttle } from 'rxjs/operators';
+import { debounceTime } from 'rxjs/operators';
 import { AudioWebService } from '../../../shared/services/web-services/audio-web.service';
 import { LocalStoreService } from '../../../shared/services/local-store.service';
 import { JwtAuthService } from 'app/shared/services/auth/jwt-auth.service';
 import { LayoutService } from '../../../shared/services/layout.service';
 import { SampleSearchQuery } from 'app/shared/models/sample-search-query.model';
-
-import { ComponentCommunicationService } from '../../../shared/services/component-communication.service';
 import { AudioService } from '../../../shared/services/audio.service';
-import { delay, share, takeUntil } from 'rxjs/operators';
+import { share, takeUntil } from 'rxjs/operators';
 import { PlayStateControlService } from '../../../shared/services/play-state-control.service';
-import { QueryList, ViewChildren, Renderer2, AfterViewInit, ChangeDetectorRef, AfterViewChecked, ChangeDetectionStrategy, ViewEncapsulation, HostListener, OnDestroy } from '@angular/core';
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators, AbstractControl } from '@angular/forms';
-import { MatSidenav } from '@angular/material/sidenav';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { AfterViewInit, ChangeDetectorRef, ChangeDetectionStrategy, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { egretAnimations } from 'app/shared/animations/egret-animations';
 import { AppLoaderService } from 'app/shared/services/app-loader/app-loader.service';
-import { Observable, Subscription, BehaviorSubject, Subject } from 'rxjs';
+import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { SampleLicensingMarketService } from '../sample-licensing-market.service';
 import { Sample } from 'app/shared/models/sample.model';
 import { AudioState } from 'app/shared/models/audio-state.model';
-import { MatSlider, MatSliderChange } from '@angular/material/slider';
-import { CloudService } from 'app/shared/services/cloud-service.service';
-import { MatAutocomplete, MatAutocompleteTrigger } from '@angular/material/autocomplete';
-import { MatOption, MatOptionSelectionChange } from '@angular/material/core';
+import { MatSliderChange } from '@angular/material/slider';
 import { SidenavContent } from 'app/shared/models/sidenav-content.model';
 import { HttpErrorResponse } from '@angular/common/http';
-import { style } from '@angular/animations';
 import { MatDialog } from '@angular/material/dialog';
-import { asLiteral } from '@angular/compiler/src/render3/view/util';
 import { Router } from '@angular/router';
+import { SamplePage } from '../../../shared/models/sample-page.model';
+import { PaginationRequestParams } from 'app/shared/models/pagination-request-params.model';
 // import { MinMaxSlider } from 'app/shared/models/min-max-slider.model';
 
 
@@ -87,12 +78,12 @@ export class SampleMarketComponent implements OnInit, AfterViewInit {
 
   currentTime: number;
   duration: number;
-  
+
 
   page: number = 1;
   pageSize: number = 12;
   sortBy: string = 'title';
-  count:number = 0;
+  count: number = 0;
 
   selectedGenres: string[];
   selectedRegions: string[];
@@ -103,7 +94,7 @@ export class SampleMarketComponent implements OnInit, AfterViewInit {
   // public genreList: string[] = ['Blues', 'Classical', 'Country', 'Electronic', 'Hip Hop/Rap', 'Jazz', 'Latin', 'Pop', 'RnB/Soul', 'Reggea', 'Rock', 'Spoken Word'];
   public regionList: string[] = ['Northern Europe', 'Western Europe', 'Southern Europe', 'Eastern Europe', 'Middle East', 'Caribbean', 'Oceania, Pacific', 'Southern Africa', 'Northern Africa', 'Western Africa', 'Eastern Africa', 'South Asia/India', 'East Asia', 'North America', 'South America', 'Central America'];
   public trackTypeList: string[] = ['Accordion', 'Bass', 'Drum', 'Edits', 'Flute', 'FX track', 'Guitar', 'Horns', 'Instrumental', 'Keyborads', 'Master', 'Percussion', 'Shruti Box', 'Sound FX', 'Strings', 'Vocals', 'Whistle'];
-  
+
   moodsList: string[];
   genreList: string[];
   categoryList: Array<string>;
@@ -147,20 +138,21 @@ export class SampleMarketComponent implements OnInit, AfterViewInit {
           this.playStateControlService.emitPlayState(false);
         }
         this.loader.close();
-        if(samples.length > 0) {
+        if (samples.length > 0) {
           this.audioService.createWavesurferObj();
-          this.audioService.loadPlayAudio(samples[0].sampleID);
+          this.audioService.loadPlayAudio(samples[0].audioUnit.audioUnitID);
         }
         return samples;
       }),
       takeUntil(this.sampleLicensingMarketService.sampleLicensingMarketDestroyed$),
     ).subscribe((samples: Array<Sample>) => {
-      if(samples.length > 0) {
-        this.initCurrentFile(samples[0].sampleID);
+      console.log(samples);
+      if (samples.length > 0) {
+        this.initCurrentFile(samples[0].audioUnit.audioUnitID);
       }
     });
 
-    
+
     this.retrieveSamples();
 
     // this.suggestionsSubject$.subscribe((suggestions: Array<Sample>) => {
@@ -170,15 +162,16 @@ export class SampleMarketComponent implements OnInit, AfterViewInit {
 
   public retrieveSamples(): void {
     const params = this.sampleLicensingMarketService.getRequestParams(this.sortBy, this.page, this.pageSize);
-    this.sampleLicensingMarketService.getAudioFiles(params).pipe(
+    this.sampleLicensingMarketService.initSamples(params).pipe(
       share(),
-    ).subscribe((response) => {
+      map((res: SamplePage) => { return res })
+    ).subscribe((response: SamplePage) => {
       console.log("Response");
       console.log(response);
       const { samples, totalItems } = response;
       this.count = totalItems;
       this.sampleLicensingMarketService.samples$.next(samples);
-      
+
     }, (error) => {
       if (error instanceof HttpErrorResponse) {
         if (error.status === 401) {
@@ -190,9 +183,9 @@ export class SampleMarketComponent implements OnInit, AfterViewInit {
     });
   }
 
-  
 
-  
+
+
 
 
 
@@ -215,16 +208,16 @@ export class SampleMarketComponent implements OnInit, AfterViewInit {
       // throttle()
 
       debounceTime(500)
-      
-      ).subscribe((response) => {
 
-        this.responseReceived = true;
+    ).subscribe((response: SamplePage) => {
+
+      this.responseReceived = true;
       console.log('Apply')
       const { samples, totalItems } = response;
       this.count = totalItems;
-      
+
       this.sampleLicensingMarketService.samples$.next(samples);
-    
+
     }
     );
 
@@ -270,7 +263,7 @@ export class SampleMarketComponent implements OnInit, AfterViewInit {
     // this.sampleLicensingMarketService.getMoods().subscribe((moodsList: Array<string>) => {
     //   this.moodsList = moodsList;
     // });
-    
+
     // this.genres$ = this.sampleLicensingMarketService.getGenres();
     // this.filterForm = this.buildFilterForm(this.sampleLicensingMarketService.initialFilters);
     this.searchForm = this.sampleLicensingMarketService.buildSearchForm();
@@ -370,7 +363,7 @@ export class SampleMarketComponent implements OnInit, AfterViewInit {
 
 
 
-  
+
 
   // setActiveCategory(category) {
   //   this.activeCategory = category;
@@ -382,12 +375,12 @@ export class SampleMarketComponent implements OnInit, AfterViewInit {
   //   this.filterForm.controls['genre'].setValue(genre);
   // }
 
-  
 
 
-  initCurrentFile(sampleID: string) {
+
+  initCurrentFile(audioUnitID: string) {
     // this.playStateControlService.saveIDCurrentPlayElement(sampleID);
-    this.playStateControlService.emitCurrentSampleID(sampleID);
+    this.playStateControlService.emitCurrentSampleID(audioUnitID);
   }
 
 
@@ -434,7 +427,7 @@ export class SampleMarketComponent implements OnInit, AfterViewInit {
   //   this.blurSearchInput();
   //   const sampleIDs: number[] = [];
   //   this.sampleLicensingMarketService.sampleSearchQueries.forEach((query) => {
-      
+
   //     sampleIDs.push(query.id);
   //   });
   //   this.loader.open();
@@ -455,7 +448,7 @@ export class SampleMarketComponent implements OnInit, AfterViewInit {
   //   this.searchInput.nativeElement.blur();
   // }
 
-  
+
 
 
 
@@ -474,8 +467,8 @@ export class SampleMarketComponent implements OnInit, AfterViewInit {
   set currentSampleID(currentSampleID: string) {
     this._currentSampleID = currentSampleID;
   }
-  
-  
+
+
 
   public openFilter() {
     this.sampleLicensingMarketService.toggleFilter$.next({ toggleState: true, apply: SidenavContent.Filter });
@@ -487,7 +480,7 @@ export class SampleMarketComponent implements OnInit, AfterViewInit {
     this.applyFilter(this.searchFilterFormMap);
     // this.retrieveSamples();
   }
-  
+
   changePage(page: number) {
     this.page = page;
     this.initSearchFilterFormMap(this.selectionList, this.minMaxList);
@@ -516,17 +509,18 @@ export class SampleMarketComponent implements OnInit, AfterViewInit {
   }
 
   public applyFilter(searchFilterFormMap?: SearchFilterFormMap) {
-    if(searchFilterFormMap) {
+    if (searchFilterFormMap) {
       this.searchFilterFormMap = searchFilterFormMap;
     }
-    const page: Page = {
-      sortBy: this.sortBy,
-      pageNo: 0,
-      pageSize: this.pageSize
-    }
+    // const paginationRequestParams: PaginationRequestParams = ;
+    // {
+    //   sortBy: this.sortBy,
+    //   pageNo: 0,
+    //   pageSize: this.pageSize
+    // }
     this.responseReceived = false;
     // (this.searchForm.controls['search'] as FormControl).value.title as string
-    this.audioWebService.applySearchFilter(this.searchString, this.searchFilterFormMap, page);
+    this.audioWebService.applySearchFilter(this.searchString, this.searchFilterFormMap, new PaginationRequestParams(this.sortBy, 0, this.pageSize));
     // .pipe(
     //   debounceTime(5000)
     // )
@@ -537,10 +531,11 @@ export class SampleMarketComponent implements OnInit, AfterViewInit {
     //   this.sampleLicensingMarketService.samples$.next(samples);
     // })
     // ;
-    
+
   }
 
   downloadBasicLicense(sample: Sample) {
+    console.log(sample);
     this.loader.open();
     this.licenseWebService.getBasicLicense(sample).subscribe(data => {
       this.loader.close();
@@ -554,11 +549,11 @@ export class SampleMarketComponent implements OnInit, AfterViewInit {
           submitButton: 'Manage Samples',
           // route: ''
           cancelButton: 'Keep digging'
-      },
-      // data: this.formsMap.get(item).controls['mixedIns'].value,
-      hasBackdrop: false
+        },
+        // data: this.formsMap.get(item).controls['mixedIns'].value,
+        hasBackdrop: false
       });
-  
+
       dialogRef.afterClosed().subscribe(result => {
         console.log('The dialog was closed');
         this.router.navigate(['licensing', 'my-licenses', 'extended-licenses']);
@@ -568,11 +563,11 @@ export class SampleMarketComponent implements OnInit, AfterViewInit {
     }, (httpErrorResponse: HttpErrorResponse) => {
       this.loader.close();
       console.log(httpErrorResponse);
-      if(httpErrorResponse.error.status === 400) {
-        
+      if (httpErrorResponse.error.status === 400) {
+
       }
 
-      switch(httpErrorResponse.error.status as Number) {
+      switch (httpErrorResponse.error.status as Number) {
         case 400:
           const dialogRef = this.dialog.open(SimpleDialogComponent, {
             width: '550px',
@@ -583,9 +578,9 @@ export class SampleMarketComponent implements OnInit, AfterViewInit {
               // submitButton: 'Keep digging',
               // route: ''
               cancelButton: 'Keep digging'
-          },
-          // data: this.formsMap.get(item).controls['mixedIns'].value,
-          hasBackdrop: true
+            },
+            // data: this.formsMap.get(item).controls['mixedIns'].value,
+            hasBackdrop: true
           });
           dialogRef.afterClosed().subscribe(result => {
             console.log('The dialog was closed');

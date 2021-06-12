@@ -506,7 +506,9 @@ export class FileUploadComponent implements OnInit, OnDestroy {
         });
 
         dialogRef.afterClosed().subscribe((data) => {
+
             console.log('The dialog was closed');
+            this.console.log(data);
             this.formsMap.get(item).controls['mixedIns'].setValue(data.mixedIns);
             console.log(this.formsMap.get(item).controls['mixedIns'].value);
             this.formsSubject.next(this.formsMap);

@@ -9,6 +9,8 @@ import { Sample } from 'app/shared/models/sample.model';
 import { Subject } from 'rxjs';
 import { map, debounceTime, skipWhile, skipUntil } from 'rxjs/operators';
 import { MatAutocomplete, MatAutocompleteTrigger, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import { Track } from 'app/shared/models/track.model';
+import { SamplePage } from 'app/shared/models/sample-page.model';
 
 @Component({
   selector: 'app-searchbar',
@@ -47,10 +49,10 @@ export class SearchbarComponent implements OnInit {
   public isFilterOpen: boolean = false;
   // private isSidenavOpen;
 
-  public suggestionsSubject$: Subject<Array<Sample>> = new Subject<Array<Sample>>();
+  public suggestionsSubject$: Subject<Array<Sample | Track>> = new Subject<Array<Sample | Track>>();
 
 
-  public suggestions: Array<Sample>;
+  public suggestions: Array<Sample | Track>;
   public suggestionsCount = 0;
 
   public selectedSearchOption: MatOption = null;
@@ -64,12 +66,12 @@ export class SearchbarComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.suggestionsSubject$.subscribe((suggestions: Array<Sample>) => {
+    this.suggestionsSubject$.subscribe((suggestions: Array<Sample | Track>) => {
       this.suggestions = suggestions;
     });
 
     this.sampleLicensingMarketService.samples$.pipe(
-      map((samples: Array<Sample>) => {
+      map((samples: Array<Sample | Track>) => {
         // (this.searchInput.nativeElement as HTMLInputElement).value = '';
         this.matSearchInputTrigger.closePanel();
         this.selectedSearchOption = null;
@@ -119,7 +121,7 @@ export class SearchbarComponent implements OnInit {
           }
         //  return this.searchbarEmpty
         }),
-      ).subscribe((response) => {
+      ).subscribe((response: SamplePage) => {
 
         // if (!this.searchbarEmpty) {
         this.suggestionsCount = response.totalItems;
@@ -186,7 +188,8 @@ export class SearchbarComponent implements OnInit {
 
   // }
 
-  public handleSearchbar(searchString: string, sample?: Sample) {
+  public handleSearchbar(searchString: string, sample?: Sample | Track) {
+    console.log(sample);
     if (searchString) {
       if (this.counter > 0) {
         this.fetchSamples();
@@ -208,16 +211,18 @@ export class SearchbarComponent implements OnInit {
     this.searchRequest.emit();
   }
 
-  convertSuggestionsToSamples(sample?: Sample) {
-    if (sample) {
-      const index = this.suggestions.indexOf(sample);
-      const removedSample: Array<Sample> = this.suggestions.splice(index, 1);
+  convertSuggestionsToSamples(audioUnit?: Sample | Track) {
+    if (audioUnit) {
+      const index = this.suggestions.indexOf(audioUnit);
+      const removedSample: Array<Sample | Track> = this.suggestions.splice(index, 1);
       this.suggestions.unshift(removedSample[0]);
       this.selectedSearchOption = null;
     }
     this.pageChange.emit(1);
     this.countChange.emit(this.suggestionsCount);
-    this.sampleLicensingMarketService.samples$.next(this.suggestions);
+    // if(audioUnit instanceof Sample) {
+      this.sampleLicensingMarketService.samples$.next(this.suggestions as Array<Sample>);
+    // }
   }
 
   // public searchRequest(sample?: )
@@ -234,15 +239,12 @@ export class SearchbarComponent implements OnInit {
     }
   }
 
-  public displaySample(sample: Sample): string {
+  public displaySample(audioUnit: Sample | Track): string {
 
 
-    if (sample) {
-      return sample.title;
+    if (audioUnit) {
+      return audioUnit.audioUnit.title;
       // return sample.title + ' ' + '(' + sample.artistName + ')';
-
-
-
     } else {
       return '';
     }

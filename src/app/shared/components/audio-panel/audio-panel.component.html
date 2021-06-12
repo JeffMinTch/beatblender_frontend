@@ -1,7 +1,7 @@
 <section fxLayout="column">
   <mat-toolbar mat-ripple
-    [ngStyle]="{background: audioUnit?.sampleID === (playStateControlService.currentSampleID$ | async) ? '#ededed' : '#fafafa'}"
-    (click)="playState ? pause(audioUnit?.sampleID === currentSampleID, audioUnit?.sampleID) : play(audioUnit?.sampleID === currentSampleID, audioUnit?.sampleID)"
+    [ngStyle]="{background: audioUnit?.audioUnitID === (playStateControlService.currentSampleID$ | async) ? '#ededed' : '#fafafa'}"
+    (click)="playState ? pause(audioUnit?.audioUnitID === currentSampleID, audioUnit?.audioUnitID) : play(audioUnit?.audioUnitID === currentSampleID, audioUnit?.audioUnitID)"
     style="border-left: none; border-right: none;" class="player-widget px-8 py-0" fxLayout="row"
     fxLayoutAlign="center center">
     <!-- [routerLink]="['/shop/products/', product._id]" -->
@@ -26,7 +26,7 @@
       
                   </div> -->
         <div fxFlex="30" fxLayout="row wrap" fxLayoutAlign="start center" class="p-8">
-          <span fxFlex class="cell-content">{{audioUnit?.artistAlias.artistName}}</span>
+          <span fxFlex class="cell-content">{{audioUnit?.artistAlias?.artistName}}</span>
         </div>
         <div fxFlex="40" fxLayout="row wrap" fxLayoutAlign="start center" class="p-8">
           <span fxFlex class="cell-content">{{audioUnit?.title}}</span>
@@ -47,15 +47,15 @@
     <button mat-icon-button color="" class="mr-8" *ngIf="type === 'primary'">
       <mat-icon>more_vert</mat-icon>
     </button>
-    <button mat-icon-button [ngStyle]="{background: audioUnit?.sampleID === (playStateControlService.currentSampleID$ | async) ? 'var(--primary-color)' : '#fafafa',
-      border: audioUnit?.sampleID === (playStateControlService.currentSampleID$ | async) ? '1px solid var(--primary-color)' : '1px solid var(--body-color)'
+    <button mat-icon-button [ngStyle]="{background: audioUnit?.audioUnitID === (playStateControlService.currentSampleID$ | async) ? 'var(--primary-color)' : '#fafafa',
+      border: audioUnit?.audioUnitID === (playStateControlService.currentSampleID$ | async) ? '1px solid var(--primary-color)' : '1px solid var(--body-color)'
       
-    }" [ngClass]="audioUnit?.sampleID === (playStateControlService.currentSampleID$ | async) ? 'mat-elevation-z1' : ''"
+    }" [ngClass]="audioUnit?.audioUnitID === (playStateControlService.currentSampleID$ | async) ? 'mat-elevation-z1' : ''"
       fxLayout="row" fxLayoutAlign="center center">
       <!-- [ngStyle]="{color: audioUnit?.sampleID === (playStateControlService.currentSampleID$ | async) ? 'var(--body-color)': 'grey'}"> -->
       <mat-icon
-        [ngStyle]="{color: audioUnit?.sampleID === (playStateControlService.currentSampleID$ | async) ? 'var(--light-theme)': 'var(--body-color)'}">
-        {{audioUnit?.sampleID === (playStateControlService.currentSampleID$ | async) &&
+        [ngStyle]="{color: audioUnit?.audioUnitID === (playStateControlService.currentSampleID$ | async) ? 'var(--light-theme)': 'var(--body-color)'}">
+        {{audioUnit?.audioUnitID === (playStateControlService.currentSampleID$ | async) &&
         (playStateControlService.playState$ | async) ? 'pause' : 'play_arrow'}}
       </mat-icon>
     </button>
@@ -69,7 +69,7 @@
     <div class="info-wrap p-16">
       <div class="main-info">
         <h3 class="title">{{audioUnit?.title}}</h3>
-        <p class=" p-line">by <span class="artist-name">{{audioUnit?.artistName}}</span></p>
+        <p class=" p-line">by <span class="artist-name">{{audioUnit?.artistAlias.artistName}}</span></p>
         <ng-container *ngIf="type === 'sample'">
           <p class=" p-line">
             <strong>Category:</strong> {{audioUnit?.genre}}

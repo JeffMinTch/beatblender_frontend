@@ -233,9 +233,9 @@ export class AudioService implements OnDestroy {
   }
 
 
-  loadAudio(sampleID): void {
+  loadAudio(audioUnitID: string): void {
     this.isPlayerReady = false;
-    this.wavesurfer.load(`http://localhost:9090/api/web/public/media/audio/${sampleID}`);
+    this.wavesurfer.load(`http://localhost:9090/api/web/public/media/audio/${audioUnitID}`);
 
     //  let load =  this.wavesurfer.load(`http://localhost:9090/api/samplepool/downloadFile/${userName}/${fileName}`); 
   }
@@ -248,9 +248,9 @@ export class AudioService implements OnDestroy {
     return this.wavesurfer.getMute();
   }
 
-  loadPlayAudio(sampleID): void {
+  loadPlayAudio(audioUnitID: string): void {
     this.isPlayerReady = false;
-    this.wavesurfer.load(`http://localhost:9090/api/web/public/media/audio/${sampleID}`);
+    this.wavesurfer.load(`http://localhost:9090/api/web/public/media/audio/${audioUnitID}`);
     // this.wavesurfer.load(`http://localhost:9090/api/samplepool/downloadFile/${userName}/${fileName}`); 
   }
 

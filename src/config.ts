@@ -33,14 +33,15 @@ export const config = {
         root: '/protected/license',
         fullLicense: {
           root: '/full-license',
-          getFullLicense: '/get-full-license'
+          getFullLicenses: '/get-full-licenses',
+          upgradeFullLicense: '/withdraw-extension-option'
         },
         basicLicense: {
           root: '/basic-license',
           getBasicLicense: '/get-basic-license',
           getAll: '/get-all',
-          getAllTracks: '/get-all-tracks'
-          
+          getAllTracks: '/get-all-tracks',
+          getAllUnextendedTracks: '/get-all-unextended-tracks'
         }
       }
     },
@@ -52,7 +53,8 @@ export const config = {
       protected: {
         root: '/protected/media',
         getAudioFile: '/get-audio-file',
-        getBasicLicenseFile: '/get-basic-license-file'
+        getBasicLicenseFile: '/get-basic-license-file',
+        getFullLicenseFile: '/get-full-license-file'
       }
     }
   

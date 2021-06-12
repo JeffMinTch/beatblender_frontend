@@ -1,3 +1,4 @@
+import { SamplePage } from './../../models/sample-page.model';
 import { takeUntil } from 'rxjs/operators';
 import { ComponentCommunicationService } from './../../services/component-communication.service';
 import { SampleLicensingMarketService } from '../../../views/licensing/sample-licensing-market.service';
@@ -57,10 +58,9 @@ export class FooterComponent implements OnInit, AfterViewInit {
 
     this.sampleLicensingMarketService.samples$.pipe(
       takeUntil(this.sampleLicensingMarketService.sampleLicensingMarketDestroyed$)
-    ).subscribe((samples: Sample[]) => {
+    ).subscribe((samples: Array<Sample>) => {
       this.samples = samples;
       // this.changeDetectorRef.detectChanges();
-
     });
 
    
@@ -101,7 +101,7 @@ export class FooterComponent implements OnInit, AfterViewInit {
   }
 
   isSamples(): boolean {
-    if (this.sampleLicensingMarketService.getSamples()) {
+    if (this.sampleLicensingMarketService.getSamplePage()) {
       return false;
     } else {
       return true;
@@ -110,7 +110,7 @@ export class FooterComponent implements OnInit, AfterViewInit {
 
   previousNext(buttonName) {
     let newActiveSampleIndex: number;
-    const activeSampleIndex: number = this.samples.findIndex(sample => sample.sampleID === this.currentSampleID);
+    const activeSampleIndex: number = this.samples.findIndex(sample => sample.audioUnit.audioUnitID === this.currentSampleID);
     switch (buttonName) {
       case 'prev':
         newActiveSampleIndex = activeSampleIndex - 1;
@@ -119,25 +119,25 @@ export class FooterComponent implements OnInit, AfterViewInit {
         newActiveSampleIndex = activeSampleIndex + 1;
         break;
     }
-    this.loadAudio(this.samples[newActiveSampleIndex].sampleID);
-    this.playStateControlService.emitCurrentSampleID(this.samples[newActiveSampleIndex].sampleID);
+    this.loadAudio(this.samples[newActiveSampleIndex].audioUnit.audioUnitID);
+    this.playStateControlService.emitCurrentSampleID(this.samples[newActiveSampleIndex].audioUnit.audioUnitID);
     // this.playStateControlService.saveIDCurrentPlayElement(this.samples[newActiveSampleIndex].sampleID);
     this.changeDetectorRef.detectChanges();
   }
 
   findSampleIndex(samples: Sample[]): number {
-    const activeSample: Sample = samples.find(sample => sample.sampleID === this.playStateControlService.getIDCurrentPlayElement())
+    const activeSample: Sample = samples.find(sample => sample.audioUnit.audioUnitID === this.playStateControlService.getIDCurrentPlayElement())
     const activeSampleIndex: number = samples.findIndex(sample => sample === activeSample);
     return activeSampleIndex;
   }
 
-  loadAudio(sampleID: string):void {
-    this.audioService.loadAudio(sampleID);
+  loadAudio(audioUnitID: string):void {
+    this.audioService.loadAudio(audioUnitID);
   }
 
   isFirst(): boolean {
     if (this.samples) {
-      if (this.samples.findIndex(sample => sample.sampleID === this.currentSampleID)===0) {
+      if (this.samples.findIndex(sample => sample.audioUnit.audioUnitID === this.currentSampleID)===0) {
         return true;
       } else {
         return false;
@@ -155,7 +155,7 @@ export class FooterComponent implements OnInit, AfterViewInit {
 
   isLast():boolean {
     if(this.samples) {
-      if(this.samples.findIndex(sample => sample.sampleID === this.currentSampleID) === this.samples.length -1) {
+      if(this.samples.findIndex(sample => sample.audioUnit.audioUnitID === this.currentSampleID) === this.samples.length -1) {
         return true;
       } else {
         return false;

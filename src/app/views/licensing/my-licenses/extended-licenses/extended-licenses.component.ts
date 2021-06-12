@@ -1,3 +1,5 @@
+import { MediaWebService } from './../../../../shared/services/web-services/media-web.service';
+import { FullLicenseResponse } from './../../../../shared/models/full-license-response.model';
 import { TrackResponse } from './../../../../shared/models/track-response.model';
 import { HttpErrorResponse } from '@angular/common/http';
 import { LicenseWebService } from './../../../../shared/services/web-services/license-web.service';
@@ -5,51 +7,15 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { BasicLicense } from '../basic-licenses/basic-licenses.component';
+import { BasicLicense } from '../../../../shared/models/basic-license.model';
+import { Track } from 'app/shared/models/track.model';
+import { FullLicense } from 'app/shared/models/full-license.model';
+import { environment } from 'environments/environment';
+import {saveAs as importedSaveAs} from "file-saver";
 
 
-export interface FullLicense {
-  image: string;
-  id: string,
-  title: string;
-  extensionPrice: number;
-  downloadContractLink: string;
-  status: 'active' | 'inactive';
-  mixedIns: BasicLicense[];
-  // copyrightOwner: string,
-  // downloadSampleLink: string;
-}
 
-const ELEMENT_DATA: FullLicense[] = [
-  {
-    image: 'typ11.jpg', id: '040-498-657', title: 'A New Hope', extensionPrice: 12, downloadContractLink: '', status: 'inactive', mixedIns: [
-      { image: 'typ.jpg', id: '010-312-313', title: 'I Got U', copyrightOwner: 'Jar Jar', extensionPrice: 12, downloadSampleLink: 'H', downloadContractLink: 'csacsac' },
-      { image: 'frau.jpg', id: '345-456-243', title: 'Ocean Drive', copyrightOwner: 'Duke Dumont', extensionPrice: 2, downloadSampleLink: 'H', downloadContractLink: 'csacsac' },
-      { image: 'typ2.jpg', id: '983-643-453', title: 'Pippi Langstrumpf', copyrightOwner: 'Astrid Lindgren', extensionPrice: 1, downloadSampleLink: 'H', downloadContractLink: 'csacsac' },
-      
-    ]
 
-  },
-  {
-    image: 'typ11.jpg', id: '040-498-657', title: 'A New Hope', extensionPrice: 12, downloadContractLink: '',status: 'inactive', mixedIns: [
-      { image: 'typ.jpg', id: '010-312-313', title: 'I Got U', copyrightOwner: 'Jar Jar', extensionPrice: 12, downloadSampleLink: 'H', downloadContractLink: 'csacsac' },
-      { image: 'frau.jpg', id: '345-456-243', title: 'Ocean Drive', copyrightOwner: 'Duke Dumont', extensionPrice: 2, downloadSampleLink: 'H', downloadContractLink: 'csacsac' },
-      { image: 'typ2.jpg', id: '983-643-453', title: 'Pippi Langstrumpf', copyrightOwner: 'Astrid Lindgren', extensionPrice: 1, downloadSampleLink: 'H', downloadContractLink: 'csacsac' },
-      
-    ]
-
-  },
-  {
-    image: 'typ11.jpg', id: '040-498-657', title: 'A New Hope', extensionPrice: 12, downloadContractLink: '', status: 'inactive', mixedIns: [
-      { image: 'typ.jpg', id: '010-312-313', title: 'I Got U', copyrightOwner: 'Jar Jar', extensionPrice: 12, downloadSampleLink: 'H', downloadContractLink: 'csacsac' },
-      { image: 'frau.jpg', id: '345-456-243', title: 'Ocean Drive', copyrightOwner: 'Duke Dumont', extensionPrice: 2, downloadSampleLink: 'H', downloadContractLink: 'csacsac' },
-      { image: 'typ2.jpg', id: '983-643-453', title: 'Pippi Langstrumpf', copyrightOwner: 'Astrid Lindgren', extensionPrice: 1, downloadSampleLink: 'H', downloadContractLink: 'csacsac' },
-      
-    ]
-
-  }
-
-];
 
 
 @Component({
@@ -62,23 +28,37 @@ export class ExtendedLicensesComponent implements OnInit {
   // dataSource: MatTableDataSource<PeriodicElement>;
   // displayedColumns: string[];
   dataSource = new MatTableDataSource<any>([]);
+  fullLicenseDataSource = new MatTableDataSource<any>([]);
+
   displayedColumns = ['image', 'id', 'title', 'copyrightOwner', 'extensionPrice', 'downloadSampleLink', 'downloadContractLink'];
   displayedFullLicenseColumns = ['image','id','title', 'extensionPrice', 'status'];
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
+  // public fullLicenseResponse: Array<FullLicenseResponse> = new Array<FullLicenseResponse>();
+
   constructor(
-    private licenseWebService: LicenseWebService
+    private licenseWebService: LicenseWebService,
+    private mediaWebServce: MediaWebService
   ) {
     
   }
 
   ngOnInit() {
-    this.licenseWebService.getAllTracks().subscribe((trackResponse: Array<TrackResponse>) => {
+    this.licenseWebService.getAllUnextendedTracks().subscribe((trackResponse: Array<TrackResponse>) => {
       console.log(trackResponse);
       this.dataSource = new MatTableDataSource<any>(trackResponse);
     }, (error: Error) => {
       throw error;
+    });
+
+    this.licenseWebService.getFullLicenses().subscribe((fullLicenses) => {
+      // alert("Full Licenses received");
+      console.log(fullLicenses);
+
+      this.fullLicenseDataSource = new MatTableDataSource<FullLicenseResponse>(fullLicenses);
+      console.log(fullLicenses);
+      // this.fullLicenseResponse
     });
     // this.displayedColumns = ['position', 'name', 'weight', 'symbol', 'c'];
   }
@@ -99,4 +79,42 @@ export class ExtendedLicensesComponent implements OnInit {
     const dataSource = new MatTableDataSource<BasicLicense>(mixedIns);
     return dataSource;
   }
+
+  getAggregatedSamplePrice(basicLicenses: Array<BasicLicense>) {
+    // console.log(basicLicenses);
+    let sum = 0;
+    basicLicenses.forEach((basicLicense) => {
+      sum += basicLicense.lep;
+    });
+    return sum;
+  }
+
+
+  withdrawExtensionOption(track: Track) {
+     this.licenseWebService.withdrawLicenseOption(track).subscribe((data) => {
+      console.log(data);
+     });       
+  }
+
+  downloadFullLicenseFile(element: FullLicenseResponse) {
+    console.log(element);
+    const API = `${environment.apiURL.baseUrl + environment.apiURL.mediaPath.protected.root + environment.apiURL.mediaPath.protected.getFullLicenseFile}/${element.fullLicense.fullLicenseID}`;
+    // window.location.href = API;
+
+    this.mediaWebServce.downloadFile(API).subscribe(blob => {
+      // console.log(blob);
+      //     const url= window.URL.createObjectURL(blob);
+      // window.location.href= API;
+      // window.saveAs(blob, element.sample.audioUnit.audioFileName)
+      importedSaveAs(blob, 'full_license_' + element.fullLicense.track.audioUnit.title + '.pdf');
+  });
+  }
+  
+  
+
+
+  
+
+
+
 }

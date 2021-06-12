@@ -13,6 +13,8 @@ import { LocalStoreService } from 'app/shared/services/local-store.service';
 import { egretAnimations } from 'app/shared/animations/egret-animations';
 import { number } from 'ngx-custom-validators/src/app/number/validator';
 import { Subject } from 'rxjs';
+import { PaginationRequestParams } from 'app/shared/models/pagination-request-params.model';
+import { BasicLicense } from 'app/shared/models/basic-license.model';
 
 @Component({
   selector: 'app-select-mixedins-dialog',
@@ -30,7 +32,9 @@ export class SelectMixedinsDialogComponent implements OnInit, AfterViewInit {
   sortBy: string = 'title';
   count: number = 0;
 
-  public basicLicenseSubject$: Subject<any> = new Subject<any>();
+  private paginationRequestParams: PaginationRequestParams;
+
+  public basicLicenseSubject$: Subject<Array<BasicLicense>> = new Subject<Array<BasicLicense>>();
 
 
 
@@ -44,6 +48,7 @@ export class SelectMixedinsDialogComponent implements OnInit, AfterViewInit {
   ) { }
   
   ngOnInit(): void {
+    this.paginationRequestParams = new PaginationRequestParams('title', 1, 12,);
     // this.sampleLicensingMarketService.samples$.subscribe(samples => {
     //   this.initCheckboxes();
 
@@ -51,7 +56,7 @@ export class SelectMixedinsDialogComponent implements OnInit, AfterViewInit {
     
   }
   ngAfterViewInit(): void {
-    this.retrieveSamples();
+    // this.retrieveSamples();
     this.fetchAllBasicLicenses();
     // let that = this;
     // setTimeout(() => {
@@ -64,64 +69,70 @@ export class SelectMixedinsDialogComponent implements OnInit, AfterViewInit {
   }
 
   public fetchAllBasicLicenses(): void {
-    this.licenseWebService.getAllBasicLicense().subscribe((data: Array<any>) => {
-      const samples: Array<Sample> = new Array<Sample>();
-      data.forEach(data => {
-        samples.push({
-          sampleID: data.sample.sampleID,
-          title: data.sample.audioUnit.title,
-          genre: data.sample.audioUnit.genre,
-          tempo: data.sample.audioUnit.tempo,
-          moods: data.sample.audioUnit.moods,
-          tags: data.sample.audioUnit.tags,
-          audioFileName: data.sample.audioUnit.audioFileName,
-          imageFileName: data.sample.audioUnit.imageFileName,
-          lep: data.sample.audioUnit.lep,
-          artistName: data.sample.audioUnit.artistAlias.artistName
-        })
-      });
-      console.log(samples);
-      this.basicLicenseSubject$.next(samples);
+    this.licenseWebService.getAllBasicLicense().subscribe((basicLicenses: Array<BasicLicense>) => {
+      // const samples: Array<Sample> = new Array<Sample>();
+      // data.forEach(data => {
+      //   samples.push(
+      //     new Sample
+      //     {
+      //     sampleID: data.sample.sampleID,
+      //     audioUnit: data.audioUnit
+      //     // title: data.audioUnit.title,
+      //     // genre: data.sample.audioUnit.genre,
+      //     // tempo: data.sample.audioUnit.tempo,
+      //     // moods: data.sample.audioUnit.moods,
+      //     // tags: data.sample.audioUnit.tags,
+      //     // audioFileName: data.sample.audioUnit.audioFileName,
+      //     // imageFileName: data.sample.audioUnit.imageFileName,
+      //     // lep: data.sample.audioUnit.lep,
+      //     // artistName: data.sample.audioUnit.artistAlias.artistName
+      //   })
+      // });
+      console.log(basicLicenses);
+      // basicLicenses.forEach((license) => {
+      //   license.
+      // });
+      this.basicLicenseSubject$.next(basicLicenses);
       console.log('Basic Licenses');
-      console.log(data);
+      // console.log(data);
     });
   }
 
-  public retrieveSamples(): void {
-    const params = this.sampleLicensingMarketService.getRequestParams(this.sortBy, this.page, this.pageSize);
-    this.sampleLicensingMarketService.getAudioFiles(params).pipe(
-      share(),
-    ).subscribe((response) => {
-      console.log("Response");
-      console.log(response);
-      const { samples, totalItems } = response;
-      this.count = totalItems;
-      this.sampleLicensingMarketService.samples$.next(samples);
-      // (samples as Array<Sample>).forEach(sample => {
-        //   this.sampleCheckboxMap.set(sample)
-        // });
-        // this.cdr.detectChanges();
-        // setTimeout()
-        // this.cdr.detectChanges();
-        let that = this;
-        // setTimeout(() => {
-        // for(let i = 0; i < (samples as Array<Sample>).length; i++) {
-        //   this.audioPanelCheckboxService.sampleCheckboxMap.set(samples[i], that.checkboxList.toArray[i]);
-        //   console.log(that.checkboxList.toArray()[i]);
-        //   console.log(that.checkboxList[i]);
-        // }
-      // }, 1000);
+  // public retrieveSamples(): void {
+  //   const params = this.sampleLicensingMarketService.getRequestParams(this.sortBy, this.page, this.pageSize);
+  //   this.sampleLicensingMarketService.getAudioFiles(params).pipe(
+  //     share(),
+  //   ).subscribe((response) => {
+  //     console.log("Response");
+  //     console.log(response);
+  //     const { samples, totalItems } = response;
+  //     this.count = totalItems;
+  //     this.sampleLicensingMarketService.samples$.next(samples);
+  //     // (samples as Array<Sample>).forEach(sample => {
+  //       //   this.sampleCheckboxMap.set(sample)
+  //       // });
+  //       // this.cdr.detectChanges();
+  //       // setTimeout()
+  //       // this.cdr.detectChanges();
+  //       let that = this;
+  //       // setTimeout(() => {
+  //       // for(let i = 0; i < (samples as Array<Sample>).length; i++) {
+  //       //   this.audioPanelCheckboxService.sampleCheckboxMap.set(samples[i], that.checkboxList.toArray[i]);
+  //       //   console.log(that.checkboxList.toArray()[i]);
+  //       //   console.log(that.checkboxList[i]);
+  //       // }
+  //     // }, 1000);
 
-    }, (error) => {
-      if (error instanceof HttpErrorResponse) {
-        if (error.status === 401) {
-          this.ls.clear();
-          this.jwt.signin();
-        }
-      }
-      console.log(error);
-    });
-  }
+  //   }, (error) => {
+  //     if (error instanceof HttpErrorResponse) {
+  //       if (error.status === 401) {
+  //         this.ls.clear();
+  //         this.jwt.signin();
+  //       }
+  //     }
+  //     console.log(error);
+  //   });
+  // }
 
   handleMixedIn(change: MatCheckboxChange, sample: Sample) {
     if (change.checked) {

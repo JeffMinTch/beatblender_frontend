@@ -132,13 +132,13 @@
     </div>
   </div>
   <ng-container *ngFor="let sample of sampleLicensingMarketService.samples$ | async">
-    <div  *ngIf="sample?.sampleID === (playStateControlService.currentSampleID$ | async)" class="current-audio-container">
+    <div  *ngIf="sample?.audioUnit.audioUnitID === (playStateControlService.currentSampleID$ | async)" class="current-audio-container">
       <div fxLayoutAlign="center center">
-        <img class="" src="{{'http://localhost:9090/api/web/public/media/image/' + sample?.sampleID}}" alt="">
+        <img class="" src="{{'http://localhost:9090/api/web/public/media/image/' + sample?.audioUnit.audioUnitID}}" alt="">
       </div>  
         <div class="current-audio-info" fxLayout="column">
-          <span fxLayout="row">{{sample?.artistName}}</span>
-          <span fxLayout="row">{{sample?.title}}</span>
+          <span fxLayout="row">{{sample?.audioUnit.artistAlias.artistName}}</span>
+          <span fxLayout="row">{{sample?.audioUnit.title}}</span>
         </div>
       </div>
     </ng-container>

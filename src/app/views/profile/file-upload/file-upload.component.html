@@ -601,7 +601,7 @@
                 *ngFor="let sample of (formsSubject | async)?.get(item).controls['mixedIns'].value; let i = index;">
                 <!-- <span>{{i}}</span> -->
                 <div fxFlex>
-                  <app-audio-panel [sample]="sample" type="primary"></app-audio-panel>
+                  <app-audio-panel [audioUnit]="sample.audioUnit" type="primary"></app-audio-panel>
                 </div>
               </div>
             </div>

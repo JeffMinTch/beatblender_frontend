@@ -1,9 +1,9 @@
-import { AudioUnit } from "./audio-unit.model";
 import { Track } from "./track.model";
+import { BasicLicense } from "./basic-license.model";
 
 export class TrackResponse {
 
-    private _mixedIns: Array<AudioUnit>;
+    private _basicLicenses: Array<BasicLicense>;
     private _track: Track;
 
 
@@ -11,13 +11,12 @@ export class TrackResponse {
 	}
 
 
-
     /**
-     * Getter mixedIns
-     * @return {Array<AudioUnit>}
+     * Getter basicLicenses
+     * @return {Array<BasicLicense>}
      */
-	public get mixedIns(): Array<AudioUnit> {
-		return this._mixedIns;
+	public get basicLicenses(): Array<BasicLicense> {
+		return this._basicLicenses;
 	}
 
     /**
@@ -29,11 +28,11 @@ export class TrackResponse {
 	}
 
     /**
-     * Setter mixedIns
-     * @param {Array<AudioUnit>} value
+     * Setter basicLicenses
+     * @param {Array<BasicLicense>} value
      */
-	public set mixedIns(value: Array<AudioUnit>) {
-		this._mixedIns = value;
+	public set basicLicenses(value: Array<BasicLicense>) {
+		this._basicLicenses = value;
 	}
 
     /**
@@ -43,6 +42,11 @@ export class TrackResponse {
 	public set track(value: Track) {
 		this._track = value;
 	}
+
+
+
+
+    
     
 
     

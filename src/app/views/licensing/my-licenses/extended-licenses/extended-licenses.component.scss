@@ -7,6 +7,10 @@
 }
 
 
+.mat-card {
+  margin: 0;
+}
+
 
 .table-wrapper  {
 // border: 1px solid var(--base-primary-color);
@@ -35,7 +39,7 @@ tr {
 
 tr:hover {
   background: var(--base-focused-color);
-  font-weight: 900;
+  // font-weight: 900;
   th {
     background: var(--light-theme); 
    }

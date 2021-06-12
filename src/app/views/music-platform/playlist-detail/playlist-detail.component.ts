@@ -70,12 +70,13 @@ export class PlaylistDetailComponent implements OnInit {
 
   public retrieveSamples(): void {
     const params = this.sampleLicensingMarketService.getRequestParams(this.sortBy, this.page, this.pageSize);
-    this.sampleLicensingMarketService.getAudioFiles(params).pipe(
+    this.sampleLicensingMarketService.initSamples(params).pipe(
       share(),
     ).subscribe((response) => {
       console.log("Response");
       console.log(response);
       const { samples, totalItems } = response;
+      console.log(samples);
       this.count = totalItems;
       this.sampleLicensingMarketService.samples$.next(samples);
       // this.dataSource = new MatTableDataSource(samples);

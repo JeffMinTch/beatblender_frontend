@@ -69,7 +69,7 @@ export class PlaylistsComponent implements OnInit {
 
   public retrieveSamples(): void {
     const params = this.sampleLicensingMarketService.getRequestParams(this.sortBy, this.page, this.pageSize);
-    this.sampleLicensingMarketService.getAudioFiles(params).pipe(
+    this.sampleLicensingMarketService.initSamples(params).pipe(
       share(),
     ).subscribe((response) => {
       console.log("Response");

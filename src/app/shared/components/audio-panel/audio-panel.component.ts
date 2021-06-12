@@ -2,7 +2,6 @@ import { JwtAuthService } from 'app/shared/services/auth/jwt-auth.service';
 import { PlayStateControlService } from './../../services/play-state-control.service';
 import { Component, Input, OnInit, ChangeDetectorRef, Output, EventEmitter } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
-import { Sample } from 'app/shared/models/sample.model';
 import { AudioService } from 'app/shared/services/audio.service';
 import { AudioState } from 'app/shared/models/audio-state.model';
 import { AudioUnit } from 'app/shared/models/audio-unit.model';
@@ -16,7 +15,7 @@ export type AudioPanelType = 'primary' | 'sample' | 'playlist';
 })
 export class AudioPanelComponent implements OnInit {
 
-  @Input() audioUnit: Sample;
+  @Input() audioUnit: AudioUnit;
   @Input() type: AudioPanelType;
 
   @Output() downloadEvent = new EventEmitter();
@@ -30,6 +29,15 @@ export class AudioPanelComponent implements OnInit {
     private changeDetectorRef: ChangeDetectorRef,
     // private jwt: JwtAuthService
     ) { }
+
+
+    ngAfterViewInit() {
+      setTimeout(() => {
+        console.log(this.audioUnit);
+      }, 5000);
+      // console.log(this.sample);
+
+    }
 
   ngOnInit(): void {
 
@@ -58,31 +66,32 @@ export class AudioPanelComponent implements OnInit {
     });
 
 
+
   }
 
-  play(isCurrentSample: boolean, sampleID: string): void {
+  play(isCurrentSample: boolean, audioUnitID: string): void {
     if (isCurrentSample) {
       this.playStateControlService.emitPlayState(true);
       this.audioService.play();
       console.log('play yes');
     } else {
       this.playStateControlService.emitPlayState(true);
-      this.audioService.loadPlayAudio(sampleID);
+      this.audioService.loadPlayAudio(audioUnitID);
       // setTimeout(() => {
-      this.playStateControlService.emitCurrentSampleID(sampleID);
+      this.playStateControlService.emitCurrentSampleID(audioUnitID);
       // });
       console.log('play no');
     }
   }
 
-  pause(isCurrentSample: boolean, sampleID: string): void {
+  pause(isCurrentSample: boolean, audioUnitID: string): void {
     if (isCurrentSample) {
       this.playStateControlService.emitPlayState(false);
       this.audioService.pause();
       console.log('pause yes');
     } else {
-      this.playStateControlService.emitCurrentSampleID(sampleID);
-      this.audioService.loadPlayAudio(sampleID);
+      this.playStateControlService.emitCurrentSampleID(audioUnitID);
+      this.audioService.loadPlayAudio(audioUnitID);
       console.log('pause no');
 
     }

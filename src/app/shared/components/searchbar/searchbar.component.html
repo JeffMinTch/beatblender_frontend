@@ -30,13 +30,13 @@
               class="search-query-option pl-0">
               <div fxLayout="row" class="option-layout">
                 <img fxFlex="48px"
-                  src="{{'http://localhost:9090/api/web/public/media/image/' + suggestion?.sampleID}}" alt="">
+                  src="{{'http://localhost:9090/api/web/public/media/image/' + suggestion?.audioUnit.audioUnitID}}" alt="">
                 <div fxFlex="auto" fxLayout="column" fxLayoutAlign="center" class="pl-16">
-                  <span class="text-muted">{{suggestion?.title}}</span>
-                  <span class=""><span class="text-muted">by</span> {{suggestion?.artistName}}</span>
+                  <span class="text-muted">{{suggestion?.audioUnit.title}}</span>
+                  <span class=""><span class="text-muted">by</span> {{suggestion?.audioUnit.artistAlias.artistName}}</span>
                 </div>
               </div>
-              {{suggestion?.title}}
+              {{suggestion?.audioUnit.title}}
             </mat-option>
           </mat-autocomplete>
         </form>

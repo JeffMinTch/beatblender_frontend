@@ -1,19 +1,15 @@
 import { MinMaxSlider } from '../../shared/models/min-max-slider.model';
 import { AudioWebService } from '../../shared/services/web-services/audio-web.service';
-import { CloudService } from '../../shared/services/cloud-service.service';
 import { Injectable, OnDestroy } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup } from '@angular/forms';
-import { ProductDB } from 'app/shared/inmemory-db/products';
-import { combineLatest, throwError as observableThrowError, Observable, Subject, BehaviorSubject, empty, EMPTY } from 'rxjs';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { throwError as observableThrowError, Observable, Subject, BehaviorSubject } from 'rxjs';
 import { of } from 'rxjs/internal/observable/of';
-import { delay } from 'rxjs/internal/operators/delay';
 import { map } from 'rxjs/internal/operators/map';
-import { debounceTime, share, shareReplay, startWith, switchMap } from 'rxjs/operators';
 import { Sample } from 'app/shared/models/sample.model';
-import { defaultIfEmpty } from 'rxjs-compat/operator/defaultIfEmpty';
 import { SampleSearchQuery } from 'app/shared/models/sample-search-query.model';
 import { SidenavContent } from 'app/shared/models/sidenav-content.model';
 import { Selection } from 'app/shared/models/selection.model';
+import { SamplePage } from 'app/shared/models/sample-page.model';
 
 
 
@@ -39,6 +35,7 @@ export class SampleLicensingMarketService implements OnDestroy {
 
   public sampleSearchQueries: SampleSearchQuery[];
   private samples: Array<Sample>;
+  private samplePage: SamplePage;
   public initialFilters = {
     minLep: 1,
     maxLep: 1000,
@@ -64,10 +61,10 @@ export class SampleLicensingMarketService implements OnDestroy {
     this.samplesLoading$.next(value);
   }
 
-  public getAudioFiles(params): Observable<any> {
+  public initSamples(params): Observable<SamplePage> {
     this.emitSamplesLoading(true);
-    return this.audioWebService.getAudioFiles(params).pipe(
-      map(response => {
+    return this.audioWebService.getSamplePage(params).pipe(
+      map((response: SamplePage) => {
         // console.log(response.audioFileResponse);
         this.emitSamplesLoading(false);
         return response;
@@ -103,8 +100,8 @@ export class SampleLicensingMarketService implements OnDestroy {
 
   }
 
-  getSamples(): Array<Sample> {
-    return this.samples;
+  getSamplePage(): SamplePage {
+    return this.samplePage;
   }
 
   public getSamplesObservable(): Observable<Array<Sample>> {
