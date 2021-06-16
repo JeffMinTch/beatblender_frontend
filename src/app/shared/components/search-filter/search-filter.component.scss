@@ -12,10 +12,11 @@
     transition: height $transitionDuration $transitionTiming;
 }
 
+
+
 .expanded {
-    height: 250px;
+    height: fit-content;
     // margin: 0;
-    // min-height: 200px;
-     
+    // min-height: 200px;    
 }
 

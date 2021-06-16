@@ -1,3 +1,5 @@
+import { IconButtonDirective } from './icon-button/icon-button.directive';
+import { IconButtonComponent } from './icon-button/icon-button.component';
 import { SimpleDialogComponent } from './dialogs/simple-dialog/simple-dialog.component';
 import { SimpleInputDialogComponent } from './dialogs/simple-input-dialog/simple-input-dialog.component';
 import { SelectMixedinsDialogComponent } from './dialogs/select-mixedins-dialog/select-mixedins-dialog.component';
@@ -97,7 +99,9 @@ const components = [
   CreatePlaylistDialogComponent,
   SelectMixedinsDialogComponent,
   SimpleInputDialogComponent,
-  SimpleDialogComponent
+  SimpleDialogComponent,
+  IconButtonComponent,
+  IconButtonDirective
 ]
 
 @NgModule({

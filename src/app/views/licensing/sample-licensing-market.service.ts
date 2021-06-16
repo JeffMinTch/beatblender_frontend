@@ -226,20 +226,20 @@ export class SampleLicensingMarketService implements OnDestroy {
     });
   }
 
-  public getRequestParams(sortBy: string, page: number, pageSize: number) {
-    const params = {};
-    if (sortBy) {
-      params['sortBy'] = sortBy;
-    }
+  // public getRequestParams(sortBy: string, page: number, pageSize: number) {
+  //   const params = {};
+  //   if (sortBy) {
+  //     params['sortBy'] = sortBy;
+  //   }
 
-    if (page) {
-      params['page'] = page - 1;
-    }
+  //   if (page) {
+  //     params['page'] = page - 1;
+  //   }
 
-    if (pageSize) {
-      params['pageSize'] = pageSize;
-    }
-    return params;
-  }
+  //   if (pageSize) {
+  //     params['pageSize'] = pageSize;
+  //   }
+  //   return params;
+  // }
 
 }

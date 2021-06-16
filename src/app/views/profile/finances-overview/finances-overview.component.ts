@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { egretAnimations } from 'app/shared/animations/egret-animations';
 import { JwtAuthService } from 'app/shared/services/auth/jwt-auth.service';
 import { LocalStoreService } from 'app/shared/services/local-store.service';
+import { HttpService } from 'app/shared/services/web-services/http.service';
 import { SampleLicensingMarketService } from 'app/views/licensing/sample-licensing-market.service';
 import { share } from 'rxjs/operators';
 
@@ -27,6 +28,7 @@ export class FinancesOverviewComponent implements OnInit {
 
   constructor(
     public sampleLicensingMarketService: SampleLicensingMarketService,
+    private httpService: HttpService,
     private jwt: JwtAuthService,
     private ls: LocalStoreService,
   ) { }
@@ -37,7 +39,7 @@ export class FinancesOverviewComponent implements OnInit {
   }
 
   public retrieveSamples(): void {
-    const params = this.sampleLicensingMarketService.getRequestParams(this.sortBy, this.page, this.pageSize);
+    const params = this.httpService.getRequestParams(this.sortBy, this.page, this.pageSize);
     this.sampleLicensingMarketService.initSamples(params).pipe(
       share(),
     ).subscribe((response) => {
@@ -59,7 +61,7 @@ export class FinancesOverviewComponent implements OnInit {
   }
 
   removeProduct(value: any) {
-
+    
   }
 
 }

@@ -45,6 +45,11 @@ export const ProfileRoutes: Routes = [
       data: { title: 'Upload Audio', breadcrumb: 'Upload Audio'}
     },
     {
+      path: 'my-licenses',
+      loadChildren: () => import('../licensing/my-licenses/my-licenses.module').then(m => m.MyLicensesModule),
+      data: { title: 'my-licenses', breadcrumb: 'My Licenses'}
+    },
+    {
       path: '**',
       redirectTo: 'overview'
     }

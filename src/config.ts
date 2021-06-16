@@ -5,10 +5,13 @@ export const config = {
       public: {
         root: '/public/audio',
         samplesHome: '/samples-home',
+        tracksHome: '/tracks-home',
         findByString: '/find-by-string',
         searchSingleAudio: '/search-single-audio',
         searchMusicByInput: '/searchMusicByInput',
-        filterSamples: '/filter-samples'
+        filterSamples: '/filter-samples',
+        filterTracks: '/filter-tracks',
+        
       },
       protected: {
         root: '/protected/audio',

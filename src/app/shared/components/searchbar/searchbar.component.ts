@@ -1,4 +1,5 @@
-import { HttpErrorResponse } from '@angular/common/http';
+import { AudioUnitType } from 'app/shared/enums/audio-unit-type.enums';
+import { HttpErrorResponse, HttpParams } from '@angular/common/http';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { SampleLicensingMarketService } from '../../../views/licensing/sample-licensing-market.service';
 import { AudioWebService } from './../../services/web-services/audio-web.service';
@@ -11,6 +12,8 @@ import { map, debounceTime, skipWhile, skipUntil } from 'rxjs/operators';
 import { MatAutocomplete, MatAutocompleteTrigger, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { Track } from 'app/shared/models/track.model';
 import { SamplePage } from 'app/shared/models/sample-page.model';
+import { HttpService } from 'app/shared/services/web-services/http.service';
+import { TrackPage } from 'app/shared/models/track-page.model';
 
 @Component({
   selector: 'app-searchbar',
@@ -27,6 +30,7 @@ export class SearchbarComponent implements OnInit {
   @Input() sortBy: string;
   @Input() pageSize: number;
   @Input() searchForm: FormGroup;
+  @Input() type: 'track' | 'sample';
 
   @Output() pageChange = new EventEmitter<number>();
   @Output() countChange = new EventEmitter<number>();
@@ -35,11 +39,13 @@ export class SearchbarComponent implements OnInit {
   // @Output() searchFormChange = new EventEmitter<FormGroup>();
   @Output() searchStringChange = new EventEmitter<string>();
   @Output() searchRequest = new EventEmitter<void>();
+  @Output() applySuggestions = new EventEmitter<Array<Sample> | Array<Track>>();
 
   // public responseReceivedEvent: Subject<void>  = new Subject<void>(); 
   public searchString: string;
   public counter: number = 0;
   public searchbarEmpty: boolean = false;
+
 
   @HostListener('window:resize', ['$event'])
   onResize(event) {
@@ -62,6 +68,7 @@ export class SearchbarComponent implements OnInit {
   constructor(
     private audioWebService: AudioWebService,
     private sampleLicensingMarketService: SampleLicensingMarketService,
+    private httpService: HttpService,
     private fb: FormBuilder
   ) { }
 
@@ -80,6 +87,8 @@ export class SearchbarComponent implements OnInit {
     // this.buildSearchForm();
 
   }
+
+ 
 
   // buildSearchForm() {
   //   this.searchForm = this.fb.group({
@@ -103,39 +112,17 @@ export class SearchbarComponent implements OnInit {
     this.searchbarEmpty = false;
     console.log(searchString);
     if (searchString) {
-      const params = this.sampleLicensingMarketService.getRequestParams(this.sortBy, 1, this.pageSize);
-      params['searchString'] = searchString;
+      const params: HttpParams = this.httpService.getRequestParams(this.sortBy, 0, this.pageSize).set('search', searchString);
+      // params['searchString'] = searchString;
       this.searchString = searchString;
       this.emitSearchString(this.searchString);
-      this.audioWebService.findBySearchString(params).pipe(
-        // map((response) => {
-        //   this.searchbarEmpty = false;
-        //   return response;
-        // }),
-        skipWhile(() => {
-          if(this.searchbarEmpty) {
-            this.searchbarEmpty = false;
-            return true;
-          } else {
-            return false;
-          }
-        //  return this.searchbarEmpty
-        }),
-      ).subscribe((response: SamplePage) => {
-
-        // if (!this.searchbarEmpty) {
-        this.suggestionsCount = response.totalItems;
-        console.log('Suggestionscount' + this.suggestionsCount)
-        console.log(response.samples);
-        this.suggestionsSubject$.next(response.samples);
-        // this.responseReceivedEvent.next();
-        // }
-      }, (error: HttpErrorResponse) => {
-        if (error.status === 404) {
-          this.suggestionsSubject$.next([]);
-          this.matSearchInputTrigger.openPanel();
-        }
-      });
+      switch(this.type) {
+        case 'sample':
+          this.findSamplesBySearchString(params);
+          break;
+        case 'track':
+          this.findTracksBySearchString(params);
+      }
     } else {
       console.log("Suggestions null");
       // setTimeout(() => {
@@ -157,6 +144,72 @@ export class SearchbarComponent implements OnInit {
       // });
       // });
     }
+  }
+
+  findTracksBySearchString(params: HttpParams) {
+    this.audioWebService.findBySearchString(AudioUnitType.Track, params)
+    .pipe(
+      // map((response) => {
+      //   this.searchbarEmpty = false;
+      //   return response;
+      // }),
+      skipWhile(() => {
+        if(this.searchbarEmpty) {
+          this.searchbarEmpty = false;
+          return true;
+        } else {
+          return false;
+        }
+      //  return this.searchbarEmpty
+      }),
+    ).subscribe((response: TrackPage) => {
+
+      // if (!this.searchbarEmpty) {
+      this.suggestionsCount = response.totalItems;
+      console.log('Suggestionscount' + this.suggestionsCount)
+      console.log(response.tracks);
+      this.suggestionsSubject$.next(response.tracks);
+      // this.responseReceivedEvent.next();
+      // }
+    }, (error: HttpErrorResponse) => {
+      if (error.status === 404) {
+        this.suggestionsSubject$.next([]);
+        this.matSearchInputTrigger.openPanel();
+      }
+    });
+  }
+
+  findSamplesBySearchString(params: any) {
+    this.audioWebService.findBySearchString(AudioUnitType.Sample, params)
+    .pipe(
+      // map((response) => {
+      //   this.searchbarEmpty = false;
+      //   return response;
+      // }),
+      skipWhile(() => {
+        if(this.searchbarEmpty) {
+          this.searchbarEmpty = false;
+          return true;
+        } else {
+          return false;
+        }
+      //  return this.searchbarEmpty
+      }),
+    ).subscribe((response: SamplePage) => {
+
+      // if (!this.searchbarEmpty) {
+      this.suggestionsCount = response.totalItems;
+      console.log('Suggestionscount' + this.suggestionsCount)
+      console.log(response.samples);
+      this.suggestionsSubject$.next(response.samples);
+      // this.responseReceivedEvent.next();
+      // }
+    }, (error: HttpErrorResponse) => {
+      if (error.status === 404) {
+        this.suggestionsSubject$.next([]);
+        this.matSearchInputTrigger.openPanel();
+      }
+    });
   }
 
   public emitSearchString(searchString: string) {
@@ -221,7 +274,15 @@ export class SearchbarComponent implements OnInit {
     this.pageChange.emit(1);
     this.countChange.emit(this.suggestionsCount);
     // if(audioUnit instanceof Sample) {
-      this.sampleLicensingMarketService.samples$.next(this.suggestions as Array<Sample>);
+    switch(this.type) {
+      case 'sample':
+        this.sampleLicensingMarketService.samples$.next(this.suggestions as Array<Sample>);
+        break;
+      case 'track':
+        this.applySuggestions.emit(this.suggestions as Array<Track>);
+    }
+    this.matSearchInputTrigger.closePanel();
+
     // }
   }
 

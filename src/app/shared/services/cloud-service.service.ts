@@ -4,7 +4,6 @@ import { Injectable } from '@angular/core';
 import { of, Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { map, share } from 'rxjs/operators';
-import { SampleSearchQuery } from '../models/sample-search-query.model';
 import { environment } from 'environments/environment'
 @Injectable({
   providedIn: 'root'

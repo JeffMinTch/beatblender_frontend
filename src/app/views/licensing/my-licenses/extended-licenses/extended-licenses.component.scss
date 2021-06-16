@@ -7,8 +7,10 @@
 }
 
 
-.mat-card {
+.mat-card.table-wrapper {
   margin: 0;
+  box-shadow: none !important;
+  border: 1px solid var(--body-color);
 }
 
 
@@ -118,4 +120,15 @@ button {
 ::ng-deep .mat-tab-label .mat-tab-label-content {
   font-size: 18px;
   font-weight: 600;
+}
+
+
+mat-card.not-found-card {
+  box-shadow: none !important;
+  border: 1px solid var(--light-theme-accent);
+  margin-top: 16px;
+}
+
+.mat-box-shadow {
+  box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14) !important;
 }

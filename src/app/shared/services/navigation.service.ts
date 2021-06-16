@@ -47,7 +47,7 @@ export class NavigationService {
       type: 'dropDown',
       tooltip: 'My Licenses',
       icon: 'library_books',
-      state: 'licensing/my-licenses',
+      state: 'profile/my-licenses',
       sub: [
         { name: 'Basic Licenses', state: 'basic-licenses' },
         {name: 'Extended Licenses', state: 'extended-licenses'},

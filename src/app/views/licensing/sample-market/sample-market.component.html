@@ -3,7 +3,7 @@
   <div class="full-width">
     <!-- Search Form -->
     <!-- <router-outlet></router-outlet> -->
-    <app-searchbar [searchForm]="searchForm" (searchRequest)="applyFilter()" (searchStringChange)="changeSearchString($event)" (pageChange)="changePage($event)" (countChange)="changeCount($event)" (expandFilter)="toggleFilter($event)" (sidenavChange)="toggleSidenav()" [sortBy]="sortBy" [page]="page" [pageSize]="pageSize"></app-searchbar>
+    <app-searchbar type="sample" [searchForm]="searchForm" (searchRequest)="applyFilter()" (searchStringChange)="changeSearchString($event)" (pageChange)="changePage($event)" (countChange)="changeCount($event)" (expandFilter)="toggleFilter($event)" (sidenavChange)="toggleSidenav()" [sortBy]="sortBy" [page]="page" [pageSize]="pageSize"></app-searchbar>
     <!-- <mat-progress-bar color="primary" mode="determinate" value="100" class="mt-16"></mat-progress-bar> -->
     <!-- <mat-progress-bar *ngIf="!responseReceived" mode="query" class="mb-16"></mat-progress-bar> -->
     

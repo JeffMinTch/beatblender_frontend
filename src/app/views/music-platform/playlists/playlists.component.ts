@@ -11,6 +11,7 @@ import { Sample } from 'app/shared/models/sample.model';
 import { HttpErrorResponse } from '@angular/common/http';
 import { egretAnimations } from 'app/shared/animations/egret-animations';
 import { MatDialog } from '@angular/material/dialog';
+import { HttpService } from 'app/shared/services/web-services/http.service';
 
 @Component({
   selector: 'app-playlists',
@@ -34,6 +35,7 @@ export class PlaylistsComponent implements OnInit {
 
   constructor(
     public sampleLicensingMarketService: SampleLicensingMarketService,
+    private httpService: HttpService,
     public playStateControlService: PlayStateControlService,
     private audioService: AudioService,
     private loader: AppLoaderService,
@@ -68,7 +70,7 @@ export class PlaylistsComponent implements OnInit {
   }
 
   public retrieveSamples(): void {
-    const params = this.sampleLicensingMarketService.getRequestParams(this.sortBy, this.page, this.pageSize);
+    const params = this.httpService.getRequestParams(this.sortBy, this.page, this.pageSize);
     this.sampleLicensingMarketService.initSamples(params).pipe(
       share(),
     ).subscribe((response) => {

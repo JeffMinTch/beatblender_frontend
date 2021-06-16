@@ -5,7 +5,7 @@ import { Routes } from '@angular/router';
 export const MusicPlatformRoutes: Routes = [
   {
     path: '',
-    redirectTo: 'all-music',
+    redirectTo: 'find',
     pathMatch: 'full'
   },
   {
@@ -48,7 +48,7 @@ export const MusicPlatformRoutes: Routes = [
   },
   {
     path: '**',
-    redirectTo: 'all-music'
+    redirectTo: 'find'
   }
 ];
 

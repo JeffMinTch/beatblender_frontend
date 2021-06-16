@@ -7,6 +7,7 @@ import { AudioService } from 'app/shared/services/audio.service';
 import { JwtAuthService } from 'app/shared/services/auth/jwt-auth.service';
 import { LocalStoreService } from 'app/shared/services/local-store.service';
 import { PlayStateControlService } from 'app/shared/services/play-state-control.service';
+import { HttpService } from 'app/shared/services/web-services/http.service';
 import { SampleLicensingMarketService } from 'app/views/licensing/sample-licensing-market.service';
 import { map, share, takeUntil } from 'rxjs/operators';
 
@@ -50,6 +51,7 @@ export class AllMusicComponent implements OnInit {
 
   constructor(
     public sampleLicensingMarketService: SampleLicensingMarketService,
+    private httpService: HttpService,
     public playStateControlService: PlayStateControlService,
     private audioService: AudioService,
     private loader: AppLoaderService,
@@ -84,7 +86,7 @@ export class AllMusicComponent implements OnInit {
   }
 
   public retrieveSamples(): void {
-    const params = this.sampleLicensingMarketService.getRequestParams(this.sortBy, this.page, this.pageSize);
+    const params = this.httpService.getRequestParams(this.sortBy, this.page, this.pageSize);
     this.sampleLicensingMarketService.initSamples(params).pipe(
       share(),
     ).subscribe((response) => {

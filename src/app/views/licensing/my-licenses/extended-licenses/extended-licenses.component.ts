@@ -12,6 +12,7 @@ import { Track } from 'app/shared/models/track.model';
 import { FullLicense } from 'app/shared/models/full-license.model';
 import { environment } from 'environments/environment';
 import {saveAs as importedSaveAs} from "file-saver";
+import { AudioService } from 'app/shared/services/audio.service';
 
 
 
@@ -39,15 +40,20 @@ export class ExtendedLicensesComponent implements OnInit {
 
   constructor(
     private licenseWebService: LicenseWebService,
-    private mediaWebServce: MediaWebService
+    private mediaWebServce: MediaWebService,
+    private audioService: AudioService
   ) {
     
   }
 
   ngOnInit() {
+
+
+
     this.licenseWebService.getAllUnextendedTracks().subscribe((trackResponse: Array<TrackResponse>) => {
       console.log(trackResponse);
       this.dataSource = new MatTableDataSource<any>(trackResponse);
+      
     }, (error: Error) => {
       throw error;
     });
@@ -55,6 +61,9 @@ export class ExtendedLicensesComponent implements OnInit {
     this.licenseWebService.getFullLicenses().subscribe((fullLicenses) => {
       // alert("Full Licenses received");
       console.log(fullLicenses);
+
+      this.audioService.createWavesurferObj();
+          this.audioService.loadPlayAudio(fullLicenses[0].fullLicense.track.audioUnit.audioUnitID);
 
       this.fullLicenseDataSource = new MatTableDataSource<FullLicenseResponse>(fullLicenses);
       console.log(fullLicenses);
@@ -109,6 +118,29 @@ export class ExtendedLicensesComponent implements OnInit {
       importedSaveAs(blob, 'full_license_' + element.fullLicense.track.audioUnit.title + '.pdf');
   });
   }
+
+  downloadAudioFile(basicLicense: any) {
+    console.log(basicLicense);
+    const API: string = `${environment.apiURL.baseUrl + environment.apiURL.mediaPath.public.root + environment.apiURL.mediaPath.public.audio}/${basicLicense.sample.audioUnit.audioUnitID}`;
+    // window.location.href = API;
+
+    this.mediaWebServce.downloadFile(API).subscribe(blob => {
+      // console.log(blob);
+  //     const url= window.URL.createObjectURL(blob);
+  // window.location.href= API;
+  // window.saveAs(blob, element.sample.audioUnit.audioFileName)
+      importedSaveAs(blob, basicLicense.sample.audioUnit.audioFileName);
+  }
+)
+  }
+
+  
+
+  downloadBasicLicenseFile(basicLicense: BasicLicense) {
+    const API = `${environment.apiURL.baseUrl + environment.apiURL.mediaPath.protected.root + environment.apiURL.mediaPath.protected.getBasicLicenseFile}/${basicLicense.sample.sampleID}/${basicLicense.downloader.uuid}`;
+    window.location.href = API;
+  }
+
   
   
 

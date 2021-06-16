@@ -1,8 +1,10 @@
-<div class="pt-8" fxLayout="column" fxLayoutGap="10px">
-    <app-searchbar [searchForm]="searchForm" (searchRequest)="applyFilter()"
+<section #findComponent class="pt-8" fxLayout="column" fxLayoutGap="10px">
+    <app-searchbar [searchForm]="searchForm" (searchRequest)="filterTracks()"
         (searchStringChange)="changeSearchString($event)" (pageChange)="changePage($event)"
         (countChange)="changeCount($event)" (expandFilter)="toggleFilter($event)" (sidenavChange)="toggleSidenav()"
-        [sortBy]="sortBy" [page]="page" [pageSize]="pageSize"></app-searchbar>
+        [sortBy]="sortBy" [page]="page" [pageSize]="pageSize" type="track" (applySuggestions)="applySuggestions($event)"></app-searchbar>
+    
+
     <!-- <table mat-table [dataSource]="dataSource" class="mat-elevation-z8"> -->
     <!-- <mat-text-column name="artistName" headerText="Artist"></mat-text-column> -->
     <!-- <mat-text-column name="sampleTitle"></mat-text-column> -->
@@ -13,9 +15,13 @@
     <!-- <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr> -->
     <!-- <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr> -->
     <!-- <app-playlist-toolbar></app-playlist-toolbar> -->
-    <h1 class="pl-16">Search: ABBA</h1>
-    <app-playlist-toolbar></app-playlist-toolbar>
-    
+    <h1 *ngIf="searchString" class="pl-16">Search: {{searchString}}</h1>
+    <div fxLayout fxLayoutAlign="space-between center">
+        <app-playlist-toolbar></app-playlist-toolbar>
+        <app-search-filter [searchFilterFormMap]="searchFilterFormMap" (filterFormChange)="applyFilter($event)"
+        [isFilterOpen]="true"></app-search-filter>
+    </div>
+
     <div fxLayout style="height: 64px;">
         <div fxFlex="64px"></div>
         <div fxFlex fxLayout class="ml-32">
@@ -44,24 +50,23 @@
 
     <div class="product-container" fxLayout="row wrap" fxLayoutAlign="start start">
         <!-- Product Box -->
-        <ng-container
-            *ngIf="(sampleLicensingMarketService.samples$ | async)?.length <= 0 && (sampleLicensingMarketService.samples$ | async) != null"
-            ; else product>
+        <ng-container *ngIf="tracks?.length <= 0 && tracks != null" ; else product>
             <div fxFlex fxLayoutAlign="center">
-                <span class="fs-24">No samples match your request.</span>
+                <span class="fs-24">No songs match your request.</span>
             </div>
         </ng-container>
         <ng-container #product>
             <div fxLayout="row" class="product-wrap" style="width: 100%;"
-                *ngFor="let sample of (sampleLicensingMarketService.samples$ | async) | paginate: { itemsPerPage: pageSize, currentPage: page, totalItems: count }; let i = index;"
+                *ngFor="let track of tracks | paginate: { itemsPerPage: pageSize, currentPage: page, totalItems: count }; let i = index;"
                 [@animate]="{value:'*',params:{delay: (i*200)+'ms', y:'300px'}}">
                 <!-- [@animate]="{value:'*',params:{delay: (i*50)+'ms', y:'50px'}}" -->
                 <!-- [@animate]="{value:'*',params:{delay: (i*100)+'ms', y:'100px'}}" -->
-                <div fxLayout="column" class="product-inner default-bg full-width" style="border-bottom: 1px solid var(--light-theme-accent);">
+                <div fxLayout="column" class="product-inner default-bg full-width"
+                    style="border-bottom: 1px solid var(--light-theme-accent);">
                     <!-- <div *ngIf="product?.badge?.text" class="product-badge mat-elevation-z7" [ngStyle]="{background: product?.badge?.color || '#f44336'}">
                           <span>{{product?.badge?.text}}</span>
                         </div> -->
-                    <app-audio-panel [sample]="sample" type="primary"></app-audio-panel>
+                    <app-audio-panel [audioUnit]="track.audioUnit" type="primary"></app-audio-panel>
 
                     <!-- Visible when viewMode === list-view -->
                     <div class="more-info-wrap p-16" *ngIf="viewMode === 'list-view'">
@@ -115,4 +120,4 @@
     <!-- </table> -->
 
 
-</div>
+</section>

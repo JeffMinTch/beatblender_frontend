@@ -1,3 +1,4 @@
+import { BoxShadowDirective } from './box-shadow.directive';
 import { SidenavToggleDirective } from './sidenav-toggle.directive';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -23,6 +24,7 @@ const directives = [
   EgretSidenavHelperDirective,
   EgretSidenavTogglerDirective,
   EgretHighlightDirective,
+  BoxShadowDirective
 ]
 
 @NgModule({

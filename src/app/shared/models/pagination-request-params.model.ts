@@ -1,6 +1,6 @@
 export class PaginationRequestParams {
 
-    private _sortBy: string;
+    private _sortBy?: string;
     private _pageNo: number;
     private _pageSize: number;
 

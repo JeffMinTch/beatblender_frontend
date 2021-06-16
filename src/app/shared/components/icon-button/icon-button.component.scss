@@ -1,0 +1,61 @@
+.icon-button {
+    // border: 1px solid var(--light-theme-accent);
+    // border: 4px solid var(--light-theme-accent);
+    border-radius: 4px;
+    padding: 5px;
+    // background: var(--light-theme-accent);
+    // background: var(--primary-light-color);
+}
+
+.icon-button-size-xs {
+    width: 28px;
+    height: 28px;
+    mat-icon {
+        width: 20px;
+        height: 20px;
+    }
+}
+
+.icon-button-size-sm {
+    width: 34px;
+    height: 34px;
+    mat-icon {
+        // width: 24px;
+        // height: 24px;
+        width: fit-content;
+        height: fit-content;
+        font-size: 20px;
+        // color: var(--light-theme-accent);
+    }
+}
+
+.icon-button-size-md {
+    width: 42px;
+    height: 42px;
+    padding: 5px;
+    .mat-icon {
+        width: fit-content;
+        height: fit-content;
+        font-size: 30px;
+        // color: var(--light-theme);
+    }
+}
+
+.icon-button-size-lg {
+    height: 67px;
+    width: 67px;
+    // margin-right: 10px;
+    mat-icon {
+        width: 48px;
+        height: 48px;
+    }
+}
+
+.icon-button-size-xl {
+    height: 96px;
+    width: 96px;
+    mat-icon {
+        width: 68px;
+        height: 68px;
+    }
+}

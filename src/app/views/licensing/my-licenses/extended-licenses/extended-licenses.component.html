@@ -1,300 +1,377 @@
 <div fxFlex fxLayout="column" class="my-licenses-container">
-<!-- <div class="cloud-background"></div> -->
+  <!-- <div class="cloud-background"></div> -->
 
-<!-- <h2>Extended Licenses</h2> -->
-<h1 class="mb-16" style="color: var(--body-color);"><span style="color: var(--primary-color);">F</span>ull <span style="color: var(--accent-color);"> L</span> <span style="color: var(--base-accent-color);">icenses</span></h1>
+  <!-- <h2>Extended Licenses</h2> -->
+  <h1 class="mb-16" style="color: var(--body-color);"><span style="color: var(--primary-color);">F</span>ull <span
+      style="color: var(--accent-color);"> L</span> <span style="color: var(--base-accent-color);">icenses</span></h1>
 
-<!-- <p class="py-8">Overview and manage all your Basic Licenses. Basic Licenses enbale you
+  <!-- <p class="py-8">Overview and manage all your Basic Licenses. Basic Licenses enbale you
   without having payed anything yet to use the sample commercially in your own produtions.
   Lorem, ipsum dolor sit amet consectetur adipisicing elit. Voluptas quidem placeat unde ut rem vitae error
   temporibus, ad exercitationem accusantium!
 </p> -->
-<mat-tab-group dynamicHeight>
-  <mat-tab label="My Basic License Tracks">
-    <p class="py-8">Overview and manage all your Basic Licenses. Basic Licenses enbale you
-      without having payed anything yet to use the sample commercially in your own produtions.
-      Lorem, ipsum dolor sit amet consectetur adipisicing elit. Voluptas quidem placeat unde ut rem vitae error
-      temporibus, ad exercitationem accusantium!
-    </p>
-    <h3 style="color: var(--base-accent-color);">Upgrade your songs to a full license.</h3>
-    <div *ngFor="let data of dataSource.data" class="table-wrapper py-16 br-8 my-16" style="border: 1px solid var(--light-theme-accent);">
-      <div fxFlex class="table-container">
-        <h3 style="color: var(--base-accent-color); padding-left: 20px; font-weight: 500;">Your Track <br> <strong style="color: var(--body-color); font-size: 26px;">{{data.track.audioUnit.title}}</strong>:</h3>
-        <table mat-table [dataSource]="getData(data)" matSort class="full-license-table" >
-          <ng-container matColumnDef="image">
-            <th mat-header-cell *matHeaderCellDef>
-              <span fxFlex="60px" style="height: 60px;"></span>
-            </th>
-            <td mat-cell *matCellDef="let element">
-              <img src="{{'http://localhost:9090/api/web/public/media/image/' + element.track.audioUnit.audioUnitID}}" class="mat-elevation-z1" style="width: 100px; height: 100px; object-fit: cover; border-radius: 16px; border: 2px solid var(--body-color);" alt="">
-            </td>
-          </ng-container>
-          <ng-container matColumnDef="id">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> Track ID </th>
-            <td mat-cell *matCellDef="let element"> {{element.track.trackID}} </td>
-          </ng-container>
-    
-          <ng-container matColumnDef="title">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> Title </th>
-            <td mat-cell *matCellDef="let element"> {{data.track.audioUnit.title}} </td>
-          </ng-container>
-    
-         
-    
-          <ng-container matColumnDef="extensionPrice">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>
-              <div fxLayout="column">
-                <div fxLayout fxLayoutAlign="center center">
-                  <mat-icon>functions</mat-icon>
-                  Aggregated Extension Price 
-                </div>
-                <span>({{data.basicLicenses.length}} Samples Used)</span>
-              </div>
-            </th>
-            <td mat-cell *matCellDef="let element">
-               Karma Points</td>
-          </ng-container>
-          <ng-container matColumnDef="status">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>
-              Status
-            </th>
-            <td mat-cell *matCellDef="let element">
-              <div fxLayout="column" fxLayoutAlign="center center">
-                <div fxLayout fxLayoutAlign="center center">
-                  <span class="mr">Basic License</span>
-                  <mat-icon color="warn">receipt</mat-icon> 
-                </div>
-                <button (click)="withdrawExtensionOption(element.track)" mat-flat-button mat-sm-button color="primary" class="header-button">Upgrade To Full License</button>
-              </div>
-            </td>
-          </ng-container>
-          <tr mat-header-row *matHeaderRowDef="displayedFullLicenseColumns"></tr>
-          <tr  mat-row *matRowDef="let row; columns: displayedFullLicenseColumns;"></tr>
-        </table>
-        <h3 style="color: var(--base-accent-color); padding-left: 20px; font-weight: 500;"><strong style="color: var(--body-color); font-size: 26px;">MixedIn</strong> <br> Samples:</h3>
-        <div style="width: 100%; padding-left: 20px;">
-          <table mat-table [dataSource]="getMixedInTableData(data.basicLicenses)" matSort class="">
-            <ng-container matColumnDef="image">
-              <th mat-header-cell *matHeaderCellDef>
-                <span fxFlex="60px" style="height: 60px;"></span>
-              </th>
-              <td mat-cell *matCellDef="let element">
-                <img src="{{'http://localhost:9090/api/web/public/media/image/' + element.sample.audioUnit.audioUnitID}}" class="mat-elevation-z1" style="width: 50px; height: 50px; object-fit: cover; border-radius: 8px;"  alt="">
-              </td>
-            </ng-container>
-            <ng-container matColumnDef="id">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header> LicenseID </th>
-              <td mat-cell *matCellDef="let element"> {{element.basicLicenseID}} </td>
-            </ng-container>
-      
-            <ng-container matColumnDef="title">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header> Title </th>
-              <td mat-cell *matCellDef="let element"> {{element.sample.audioUnit.title}} </td>
-            </ng-container>
-      
-            <ng-container matColumnDef="copyrightOwner">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header> Copyright Owner </th>
-              <td mat-cell *matCellDef="let element"> {{element.sample.audioUnit.artistAlias.artistName}} </td>
-            </ng-container>
-      
-            <ng-container matColumnDef="extensionPrice">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header>Sample Extension Price </th>
-              <td mat-cell *matCellDef="let element"> {{element.sample.audioUnit.lep}} </td>
-            </ng-container>
-      
-            <ng-container matColumnDef="downloadSampleLink">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header>Download Audio File</th>
-              <td mat-cell *matCellDef="let element">
-                <button mat-stroked-button color="primary" fxLayout="column">
-                  <div fxLayout="column" fxLayoutAlign="center center">
-                    <mat-icon>library_music</mat-icon>
-                    <span class="ml-8" style="font-size: 10px;">Download Audio File</span>
-                  </div>
-      
-                </button>
-              </td>
-            </ng-container>
-            <ng-container matColumnDef="downloadContractLink">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header>Download License</th>
-              <td mat-cell *matCellDef="let element">
-                <button mat-stroked-button color="accent">
-                  <div fxLayout="column" fxLayoutAlign="center center">
-                    <mat-icon>description</mat-icon>
-                    <span class="ml-8" style="font-size: 10px;">Download Basic License</span>
-                  </div>
-                </button>
-              </td>
-            </ng-container>
-      
-      
-      
-      
-            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-            <tr  mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-          </table>
-          <div fxLayout="column" class="mt-16">
-            <p style="font-size: 22px; padding: 16px; color: var(--base-accent-color); max-width: 60%;">You need <strong style="color: var(--body-color);">{{getAggregatedSamplePrice(data.basicLicenses)}} Karma Points</strong>  to upgrade the song to a Full License.</p>
-            <div class="action-button-row" fxLayout fxLayoutAlign="end center">
-              <button mat-flat-button mat-lg-button style="width: fit-content; font-size: 22px;" color="primary" class="mr-16">
-                <mat-icon class="mr-8" inline="true" style="font-size: 40px;">upgrade</mat-icon>
-                Upgrade Song to Full License
-              </button>
-            </div>
-          </div>
-    
-        </div>
-    
-      </div>
-    
-    </div>
-  </mat-tab>
-  <mat-tab label="My Full License Tracks">
-    <p class="py-8">Overview and manage all your Basic Licenses. Basic Licenses enbale you
-      without having payed anything yet to use the sample commercially in your own produtions.
-      Lorem, ipsum dolor sit amet consectetur adipisicing elit. Voluptas quidem placeat unde ut rem vitae error
-      temporibus, ad exercitationem accusantium!
-    </p>
-    <h3 style="color: var(--base-accent-color);">All your Full Licenses at One Place.</h3>
-    <mat-card *ngFor="let fullLicenseResponse of fullLicenseDataSource.data" class="table-wrapper py-16 br-8 my-16" style="border: 1px solid var(--light-theme-accent);">
-      <div fxFlex class="table-container">
-        <!-- <h3 style="color: var(--base-accent-color); padding-left: 20px; font-weight: 500;">Your Track <br> <strong style="color: var(--body-color); font-size: 26px;">{{fullLicenseResponse?.fullLicense?.track?.audioUnit?.title}}</strong>:</h3> -->
-        <table mat-table [dataSource]="getData(fullLicenseResponse)" matSort class="full-license-table" >
-          <ng-container matColumnDef="image">
-            <th mat-header-cell *matHeaderCellDef>
-              <span fxFlex="60px" style="height: 60px;"></span>
-            </th>
-            <td mat-cell *matCellDef="let element">
-              <img class="mat-elevation-z1" style="width: 80px; height: 80px; object-fit: cover; border-radius: 16px;" src="{{'http://localhost:9090/api/web/public/media/image/' + element.fullLicense.track.audioUnit.audioUnitID}}" alt="">
-            </td>
-          </ng-container>
-          <ng-container matColumnDef="id">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> Track ID </th>
-            <td mat-cell *matCellDef="let element"> {{element.fullLicense.track.audioUnit.audioUnitID}} </td>
-          </ng-container>
-    
-          <ng-container matColumnDef="title">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> Title </th>
-            <td mat-cell *matCellDef="let element"> {{element.fullLicense.track.audioUnit.title}} </td>
-          </ng-container>
-    
-         
-    
-          <ng-container matColumnDef="extensionPrice">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>
-              <div fxLayout="column">
-                <div fxLayout fxLayoutAlign="center center">
-                  <mat-icon>functions</mat-icon>
-                  Aggregated Extension Price 
-                </div>
-                <span> {{fullLicenseResponse.basicLicenseList.length}}(Samples Used)</span>
-              </div>
-            </th>
-            <td mat-cell *matCellDef="let element">
-              
-            {{getAggregatedSamplePrice(element.basicLicenseList)}} Karma Points</td>
-          </ng-container>
-          <ng-container matColumnDef="status">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>
-              Status
-              
-            </th>
-            <td mat-cell *matCellDef="let element">
-              <div fxLayout="column" fxLayoutAlign="center center">
-                <div fxLayout fxLayoutAlign="center center">
-                  <span class="mr-8">ACTIVATED</span>
-                  <mat-icon color="primary">check</mat-icon> 
-                </div>
-                <button (click)="downloadFullLicenseFile(element)" mat-flat-button mat-sm-button color="primary" class="header-button">Download Full License</button>
-              </div>
-            </td>
-          </ng-container>
+  <mat-tab-group dynamicHeight>
+    <mat-tab label="My Basic License Tracks">
+      <ng-template #notFoundCard>
+        <mat-card class="not-found-card">
+          <h3 style="color: var(light-theme-accent) !important">You currently have no Basic License </h3>
+          <!-- <mat-card-title>You currently have no Basic License</mat-card-title> -->
+          <mat-card-content>
+            <p>You can download Basic Licenses <strong style="color: var(--primary-color);">FOR FREE</strong> in the
+              Sample Market.</p>
+          </mat-card-content>
+          <mat-action-row class="pl-0">
+            <button routerLink="/licensing/sample-market" class="mr-auto" mat-flat-button color="accent"
+              style="width: fit-content; color: var(--light-theme);">Sample Market</button>
+          </mat-action-row>
+        </mat-card>
 
-    
-    
-          
-    
-    
-    
-          <tr mat-header-row *matHeaderRowDef="displayedFullLicenseColumns"></tr>
-          <tr  mat-row *matRowDef="let row; columns: displayedFullLicenseColumns;"></tr>
-        </table>
-        <!-- <h3 style="color: var(--base-accent-color); padding-left: 20px; font-weight: 500;"><strong style="color: var(--body-color); font-size: 26px;">MixedIn</strong> Samples:</h3> -->
-        <div style="width: 100%; padding-left: 20px;">
-          <table mat-table [dataSource]="getMixedInTableData(fullLicenseResponse.basicLicenseList)" matSort class="">
-            <ng-container matColumnDef="image">
-              <th mat-header-cell *matHeaderCellDef>
-                <strong style="font-size: 26px;">MixedIn Samples</strong>
-                <!-- <span fxFlex="60px" style="height: 60px;"></span> -->
-              </th>
-              <td mat-cell *matCellDef="let element">
-                <img class="mat-elevation-z1" style="width: 50px; height: 50px; object-fit: cover; border-radius: 8px;" src="{{'http://localhost:9090/api/web/public/media/image/' + element.sample.audioUnit.audioUnitID}}" alt="">
-              </td>
-            </ng-container>
-            <ng-container matColumnDef="id">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header> LicenseID </th>
-              <td mat-cell *matCellDef="let element"> {{element.basicLicenseID}} </td>
-            </ng-container>
-      
-            <ng-container matColumnDef="title">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header> Title </th>
-              <td mat-cell *matCellDef="let element"> {{element.sample.audioUnit.title}} </td>
-            </ng-container>
-      
-            <ng-container matColumnDef="copyrightOwner">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header> Copyright Owner </th>
-              <td mat-cell *matCellDef="let element"> {{element.sample.audioUnit.artistAlias.artistName}} </td>
-            </ng-container>
-      
-            <ng-container matColumnDef="extensionPrice">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header>Sample Extension Price </th>
-              <td mat-cell *matCellDef="let element"> {{element.lep}} </td>
-            </ng-container>
-      
-            <ng-container matColumnDef="downloadSampleLink">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header>Download Audio File</th>
-              <td mat-cell *matCellDef="let element">
-                <button mat-stroked-button color="primary" fxLayout="column">
-                  <div fxLayout="column" fxLayoutAlign="center center">
-                    <mat-icon>library_music</mat-icon>
-                    <span class="ml-8" style="font-size: 10px;">Download Audio File</span>
+      </ng-template>
+      <ng-container *ngIf="dataSource.data.length > 0; else notFoundCard">
+        <p class="py-8">Overview and manage all your Basic Licenses. Basic Licenses enbale you
+          without having payed anything yet to use the sample commercially in your own produtions.
+          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Voluptas quidem placeat unde ut rem vitae error
+          temporibus, ad exercitationem accusantium!
+        </p>
+        <h3 style="color: var(--base-accent-color);">Upgrade your songs to a full license.</h3>
+        <div *ngFor="let data of dataSource.data" class="table-wrapper py-16 br-8 my-16"
+          style="border: 1px solid var(--light-theme-accent);">
+          <div fxFlex class="table-container">
+            <h3 style="color: var(--base-accent-color); padding-left: 20px; font-weight: 500;">Your Track <br> <strong
+                style="color: var(--body-color); font-size: 26px;">{{data.track.audioUnit.title}}</strong>:</h3>
+            <table mat-table [dataSource]="getData(data)" matSort class="full-license-table">
+              <ng-container matColumnDef="image">
+                <th mat-header-cell *matHeaderCellDef>
+                  <span fxFlex="60px" style="height: 60px;"></span>
+                </th>
+                <td mat-cell *matCellDef="let element">
+                  <img
+                    src="{{'http://localhost:9090/api/web/public/media/image/' + element.track.audioUnit.audioUnitID}}"
+                    class="mat-elevation-z1"
+                    style="width: 100px; height: 100px; object-fit: cover; border-radius: 16px; border: 2px solid var(--body-color);"
+                    alt="">
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="id">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Track ID </th>
+                <td mat-cell *matCellDef="let element"> {{element.track.trackID}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="title">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Title </th>
+                <td mat-cell *matCellDef="let element"> {{data.track.audioUnit.title}} </td>
+              </ng-container>
+
+
+
+              <ng-container matColumnDef="extensionPrice">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                  <div fxLayout="column">
+                    <div fxLayout fxLayoutAlign="center center">
+                      <mat-icon>functions</mat-icon>
+                      Aggregated Extension Price
+                    </div>
+                    <span>({{data.basicLicenses.length}} Samples Used)</span>
                   </div>
-      
-                </button>
-              </td>
-            </ng-container>
-            <ng-container matColumnDef="downloadContractLink">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header>Download License</th>
-              <td mat-cell *matCellDef="let element">
-                <button mat-stroked-button color="accent">
+                </th>
+                <td mat-cell *matCellDef="let element">
+                  Karma Points</td>
+              </ng-container>
+              <ng-container matColumnDef="status">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                  Status
+                </th>
+                <td mat-cell *matCellDef="let element">
                   <div fxLayout="column" fxLayoutAlign="center center">
-                    <mat-icon>description</mat-icon>
-                    <span class="ml-8" style="font-size: 10px;">Download Basic License</span>
+                    <div fxLayout fxLayoutAlign="center center">
+                      <span class="mr">Basic License</span>
+                      <mat-icon color="warn">receipt</mat-icon>
+                    </div>
+                    <button (click)="withdrawExtensionOption(element.track)" mat-flat-button mat-sm-button
+                      color="primary" class="header-button">Upgrade To Full License</button>
                   </div>
-                </button>
-              </td>
-            </ng-container>
-      
-      
-      
-      
-            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-            <tr  mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-          </table>
-          <!-- <div fxLayout="column" class="mt-16">
-            <p style="font-size: 22px; padding: 16px; color: var(--base-accent-color); max-width: 60%;">You need <strong style="color: var(--body-color);"> {{getAggregatedSamplePrice(fullLicenseResponse.basicLicenseList)}}Karma Points</strong>  to upgrade the song to a Full License.</p>
-            <div class="action-button-row" fxLayout fxLayoutAlign="end center">
-              <button mat-flat-button mat-lg-button style="width: fit-content; font-size: 22px;" color="primary" class="mr-16">
-                <mat-icon class="mr-8" inline="true" style="font-size: 40px;">upgrade</mat-icon>
-                Download Full License
-              </button>
+                </td>
+              </ng-container>
+              <tr mat-header-row *matHeaderRowDef="displayedFullLicenseColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedFullLicenseColumns;"></tr>
+            </table>
+            <h3 style="color: var(--base-accent-color); padding-left: 20px; font-weight: 500;"><strong
+                style="color: var(--body-color); font-size: 26px;">MixedIn</strong> <br> Samples:</h3>
+            <div style="width: 100%; padding-left: 20px;">
+              <table mat-table [dataSource]="getMixedInTableData(data.basicLicenses)" matSort class="">
+                <ng-container matColumnDef="image">
+                  <th mat-header-cell *matHeaderCellDef>
+                    <span fxFlex="60px" style="height: 60px;"></span>
+                  </th>
+                  <td mat-cell *matCellDef="let element">
+                    <img
+                      src="{{'http://localhost:9090/api/web/public/media/image/' + element.sample.audioUnit.audioUnitID}}"
+                      class="mat-elevation-z1" style="width: 50px; height: 50px; object-fit: cover; border-radius: 8px;"
+                      alt="">
+                  </td>
+                </ng-container>
+                <ng-container matColumnDef="id">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header> LicenseID </th>
+                  <td mat-cell *matCellDef="let element"> {{element.basicLicenseID}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="title">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header> Title </th>
+                  <td mat-cell *matCellDef="let element"> {{element.sample.audioUnit.title}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="copyrightOwner">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header> Copyright Owner </th>
+                  <td mat-cell *matCellDef="let element"> {{element.sample.audioUnit.artistAlias.artistName}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="extensionPrice">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header>Sample Extension Price </th>
+                  <td mat-cell *matCellDef="let element"> {{element.sample.audioUnit.lep}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="downloadSampleLink">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header>Download Audio File</th>
+                  <td mat-cell *matCellDef="let element">
+                    <button mat-stroked-button color="primary" fxLayout="column">
+                      <div fxLayout="column" fxLayoutAlign="center center">
+                        <mat-icon>library_music</mat-icon>
+                        <span class="ml-8" style="font-size: 10px;">Download Audio File</span>
+                      </div>
+
+                    </button>
+                  </td>
+                </ng-container>
+                <ng-container matColumnDef="downloadContractLink">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header>Download License</th>
+                  <td mat-cell *matCellDef="let element">
+                    <button mat-stroked-button color="accent">
+                      <div fxLayout="column" fxLayoutAlign="center center">
+                        <mat-icon>description</mat-icon>
+                        <span class="ml-8" style="font-size: 10px;">Download Basic License</span>
+                      </div>
+                    </button>
+                  </td>
+                </ng-container>
+
+
+
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+              </table>
+              <div fxLayout="column" class="mt-16">
+                <p style="font-size: 22px; padding: 16px; color: var(--base-accent-color); max-width: 60%;">You need
+                  <strong style="color: var(--body-color);">{{getAggregatedSamplePrice(data.basicLicenses)}} Karma
+                    Points</strong> to upgrade the song to a Full License.</p>
+                <div class="action-button-row" fxLayout fxLayoutAlign="end center">
+                  <button mat-flat-button mat-lg-button style="width: fit-content; font-size: 22px;" color="primary"
+                    class="mr-16">
+                    <mat-icon class="mr-8" inline="true" style="font-size: 40px;">upgrade</mat-icon>
+                    Upgrade Song to Full License
+                  </button>
+                </div>
+              </div>
+
             </div>
-          </div> -->
-    
+
+          </div>
+
         </div>
-    
+      </ng-container>
+    </mat-tab>
+    <mat-tab label="My Full License Tracks">
+      <p class="py-8">Overview and manage all your Basic Licenses. Basic Licenses enbale you
+        without having payed anything yet to use the sample commercially in your own produtions.
+        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Voluptas quidem placeat unde ut rem vitae error
+        temporibus, ad exercitationem accusantium!
+      </p>
+
+      <h3 style="color: var(--base-accent-color);">All your Full Licenses at One Place.</h3>
+      <div style="width: fit-content; height: fit-content; border-radius: 4px;">
+        <mat-card appBoxShadow *ngFor="let fullLicenseResponse of fullLicenseDataSource.data" class="table-wrapper py-16 br-8 my-16"
+          style="border: 1px solid var(--light-theme-accent);">
+          <div fxFlex class="table-container">
+            <!-- <h3 style="color: var(--base-accent-color); padding-left: 20px; font-weight: 500;">Your Track <br> <strong style="color: var(--body-color); font-size: 26px;">{{fullLicenseResponse?.fullLicense?.track?.audioUnit?.title}}</strong>:</h3> -->
+            <!-- <h5 style="padding: 0; margin: 0;">Your Track</h5> -->
+
+            <table mat-table [dataSource]="getData(fullLicenseResponse)" matSort class="full-license-table mb-16">
+              <ng-container matColumnDef="image">
+                <th mat-header-cell *matHeaderCellDef style="padding-right: 24px; padding-left: 0;">
+                  <!-- <span style="font-size: 26px;"></span> -->
+                  <!-- <span fxFlex="60px" style="height: 60px;"></span> -->
+                  <span fxLayout fxLayoutAlign="start center" fxLayoutGap="10px"
+                    style="color: var(--base-accent-color);">
+                    <!-- <mat-icon>audiotrack</mat-icon> -->
+                    <!-- <app-icon-button svg="false" iconName="play_arrow" iconSize="md" color="primary"></app-icon-button> -->
+                    <app-audio-panel [audioUnit]="fullLicenseResponse.fullLicense.track.audioUnit" type="iconButton"></app-audio-panel>
+                    <span style="font-size: 26px; color: var(--primary-color);">Track</span>
+                  </span>
+                </th>
+                <td mat-cell *matCellDef="let element" style="">
+                  <!-- <div fxLayout fxLayoutGap="5px" fxLayoutAlign="start center"> -->
+                  <!-- <div style="width: 30px; height: 30px; font-size: 20px;">
+                    <mat-icon color="primary" inline="true">arrow_right</mat-icon>
+                  </div> -->
+                  <img class="mat-elevation-z1"
+                    style="width: 60px; height: 60px; object-fit: cover; border-radius: 0px; margin-rght: 15px;"
+                    src="{{'http://localhost:9090/api/web/public/media/image/' + element.fullLicense.track.audioUnit.audioUnitID}}"
+                    alt="">
+                  <!-- </div> -->
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="id">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Track ID </th>
+                <td mat-cell *matCellDef="let element"> {{element.fullLicense.track.audioUnit.audioUnitID}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="title">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Title </th>
+                <td mat-cell *matCellDef="let element"> {{element.fullLicense.track.audioUnit.title}} </td>
+              </ng-container>
+
+
+
+              <ng-container matColumnDef="extensionPrice">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                  <div fxLayout="column">
+                    <div fxLayout fxLayoutAlign="center center">
+                      <mat-icon>functions</mat-icon>
+                      Aggregated Extension Price
+                    </div>
+                    <span> {{fullLicenseResponse.basicLicenseList.length}}(Samples Used)</span>
+                  </div>
+                </th>
+                <td mat-cell *matCellDef="let element">
+
+                  {{getAggregatedSamplePrice(element.basicLicenseList)}} Karma Points</td>
+              </ng-container>
+              <ng-container matColumnDef="status">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                  Status
+
+                </th>
+                <td mat-cell *matCellDef="let element">
+                  <div fxLayout="column" fxLayoutAlign="center center">
+                    <div fxLayout fxLayoutAlign="center center">
+                      <span class="mr-8">ACTIVATED</span>
+                      <mat-icon color="primary">check</mat-icon>
+                    </div>
+                    <button (click)="downloadFullLicenseFile(element)" mat-flat-button mat-sm-button color="primary"
+                      class="header-button">Download Full License</button>
+                  </div>
+                </td>
+              </ng-container>
+
+
+
+
+
+
+
+              <tr mat-header-row *matHeaderRowDef="displayedFullLicenseColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedFullLicenseColumns;"></tr>
+            </table>
+            <!-- <span style="color: var(--base-accent-color); font-size: 20px;" class="pl-32">
+            <mat-icon>audiotrack</mat-icon>
+            <strong style="color: var(--body-color);">MixedIn</strong> Samples:</span> -->
+            <div style="width: 100%; padding-left: 10px; background: var(--primary-color);">
+              <table mat-table [dataSource]="getMixedInTableData(fullLicenseResponse.basicLicenseList)" matSort
+                class="">
+                <ng-container matColumnDef="image">
+                  <th mat-header-cell *matHeaderCellDef>
+                    <strong style="font-size: 16px;"></strong>
+                    <!-- <span fxFlex="60px" style="height: 60px;"></span> -->
+                    <span fxLayout fxLayoutAlign="start center" fxLayoutGap="10px"
+                      style="color: var(--base-accent-color);">
+                      <!-- <mat-icon>audiotrack</mat-icon> -->
+                      <!-- <app-icon-button svg="false" iconName="audiotrack" iconSize="md" backgroundColor="var(--accent-color)"></app-icon-button> -->
+                      <span style="font-size: 26px; color: var(--accent-color); white-space: nowrap;">{{fullLicenseResponse.basicLicenseList.length}} MixedIns</span>
+                    </span>
+                  </th>
+                  <td mat-cell *matCellDef="let element">
+                    <div fxLayout fxLayoutGap="5px" fxLayoutAlign="start center">
+                      <!-- <mat-icon color="accent" style="font-size: 30px;">arrow_right</mat-icon> -->
+                      <!-- <mat-icon>audiotrack</mat-icon> -->
+                      <app-icon-button svg="false" iconName="play_arrow" iconSize="sm" color="accent"></app-icon-button>
+                      
+
+                      <img class="mat-elevation-z1"
+                        style="width: 50px; height: 50px; object-fit: cover; border-radius: 0px;"
+                        src="{{'http://localhost:9090/api/web/public/media/image/' + element.sample.audioUnit.audioUnitID}}"
+                        alt="">
+                    </div>
+                  </td>
+                </ng-container>
+                <ng-container matColumnDef="id">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header> LicenseID </th>
+                  <td mat-cell *matCellDef="let element"> {{element.basicLicenseID}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="title">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header> Title </th>
+                  <td mat-cell *matCellDef="let element"> {{element.sample.audioUnit.title}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="copyrightOwner">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header> Copyright Owner </th>
+                  <td mat-cell *matCellDef="let element"> {{element.sample.audioUnit.artistAlias.artistName}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="extensionPrice">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header>Sample Extension Price </th>
+                  <td mat-cell *matCellDef="let element"> {{element.lep}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="downloadSampleLink">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header>Download Audio File</th>
+                  <td mat-cell *matCellDef="let element">
+                    <button (click)="downloadAudioFile(element)" mat-stroked-button color="primary" fxLayout="column">
+                      <div fxLayout="column" fxLayoutAlign="center center">
+                        <mat-icon>library_music</mat-icon>
+                        <span class="ml-8" style="font-size: 10px;">Download Audio File</span>
+                      </div>
+
+                    </button>
+                  </td>
+                </ng-container>
+                <ng-container matColumnDef="downloadContractLink">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header>Download License</th>
+                  <td mat-cell *matCellDef="let element">
+                    
+                    <div fxLayout fxLayoutAlign="start center" fxLayoutGap="5px" >
+                      <button (click)="downloadBasicLicenseFile(element)" mat-stroked-button color="accent">
+                        <div fxLayout="column" fxLayoutAlign="center center">
+                          <mat-icon>description</mat-icon>
+                          <span class="ml-8" style="font-size: 10px;">Download Basic License</span>
+                        </div>
+                      </button>
+                      <app-audio-panel class="ml-8" [audioUnit]="element.sample.audioUnit" type="iconButton"></app-audio-panel>
+                    </div>
+                  </td>
+                </ng-container>
+
+
+
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+              </table>
+              <!-- <div fxLayout="column" class="mt-16">
+              <p style="font-size: 22px; padding: 16px; color: var(--base-accent-color); max-width: 60%;">You need <strong style="color: var(--body-color);"> {{getAggregatedSamplePrice(fullLicenseResponse.basicLicenseList)}}Karma Points</strong>  to upgrade the song to a Full License.</p>
+              <div class="action-button-row" fxLayout fxLayoutAlign="end center">
+                <button mat-flat-button mat-lg-button style="width: fit-content; font-size: 22px;" color="primary" class="mr-16">
+                  <mat-icon class="mr-8" inline="true" style="font-size: 40px;">upgrade</mat-icon>
+                  Download Full License
+                </button>
+              </div>
+            </div> -->
+
+            </div>
+
+          </div>
+        </mat-card>
       </div>
-    
-    </mat-card>
-  </mat-tab>
-</mat-tab-group>
+    </mat-tab>
+  </mat-tab-group>
 </div>

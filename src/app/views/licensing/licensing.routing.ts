@@ -60,11 +60,11 @@ export const LicensingRoutes: Routes = [
   //   component: MyLicensesComponent,
   //   data: { title: 'My Licenses', breadcrumb: 'My Licenses' }
   // },
-  {
-    path: 'my-licenses',
-    loadChildren: () => import('./my-licenses/my-licenses.module').then(m => m.MyLicensesModule),
-    data: { title: 'my-licenses', breadcrumb: 'My Licenses'}
-  },
+  // {
+  //   path: 'my-licenses',
+  //   loadChildren: () => import('./my-licenses/my-licenses.module').then(m => m.MyLicensesModule),
+  //   data: { title: 'my-licenses', breadcrumb: 'My Licenses'}
+  // },
 //   {
 //     path: 'upload-samples',
 //     component: CheckoutComponent,

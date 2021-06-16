@@ -30,6 +30,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { SamplePage } from '../../../shared/models/sample-page.model';
 import { PaginationRequestParams } from 'app/shared/models/pagination-request-params.model';
+import { HttpService } from 'app/shared/services/web-services/http.service';
+import { AudioUnitType } from 'app/shared/enums/audio-unit-type.enums';
 // import { MinMaxSlider } from 'app/shared/models/min-max-slider.model';
 
 
@@ -80,7 +82,7 @@ export class SampleMarketComponent implements OnInit, AfterViewInit {
   duration: number;
 
 
-  page: number = 1;
+  page: number = 0;
   pageSize: number = 12;
   sortBy: string = 'title';
   count: number = 0;
@@ -122,7 +124,8 @@ export class SampleMarketComponent implements OnInit, AfterViewInit {
     private layout: LayoutService,
     private matchMedia: MatchMediaService,
     public dialog: MatDialog,
-    private router: Router
+    private router: Router,
+    private httpService: HttpService
   ) {
 
     this.matchMedia.onMediaChange.subscribe((data) => {
@@ -161,7 +164,7 @@ export class SampleMarketComponent implements OnInit, AfterViewInit {
   }
 
   public retrieveSamples(): void {
-    const params = this.sampleLicensingMarketService.getRequestParams(this.sortBy, this.page, this.pageSize);
+    const params = this.httpService.getRequestParams(this.sortBy, this.page, this.pageSize);
     this.sampleLicensingMarketService.initSamples(params).pipe(
       share(),
       map((res: SamplePage) => { return res })
@@ -520,7 +523,7 @@ export class SampleMarketComponent implements OnInit, AfterViewInit {
     // }
     this.responseReceived = false;
     // (this.searchForm.controls['search'] as FormControl).value.title as string
-    this.audioWebService.applySearchFilter(this.searchString, this.searchFilterFormMap, new PaginationRequestParams(this.sortBy, 0, this.pageSize));
+    this.audioWebService.applySearchFilter(this.searchString, this.searchFilterFormMap, AudioUnitType.Sample ,new PaginationRequestParams(this.sortBy, 0, this.pageSize));
     // .pipe(
     //   debounceTime(5000)
     // )
@@ -556,7 +559,7 @@ export class SampleMarketComponent implements OnInit, AfterViewInit {
 
       dialogRef.afterClosed().subscribe(result => {
         console.log('The dialog was closed');
-        this.router.navigate(['licensing', 'my-licenses', 'extended-licenses']);
+        this.router.navigate(['profile', 'my-licenses', 'basic-licenses']);
 
         // this.animal = result;
       });

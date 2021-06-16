@@ -14,6 +14,8 @@ import TimelinePlugin from 'wavesurfer.js/dist/plugin/wavesurfer.timeline.js';
 import { AudioState } from '../models/audio-state.model';
 import { ComponentCommunicationService } from './component-communication.service';
 import { MatSliderChange } from '@angular/material/slider';
+import { Track } from '../models/track.model';
+import { AudioUnit } from '../models/audio-unit.model';
 
 @Injectable({
   providedIn: 'root'
@@ -280,6 +282,17 @@ export class AudioService implements OnDestroy {
       this.wavesurfer.setProgressColor(color);
       this.toggle = !this.toggle;
 
+    }
+  }
+
+  initAudioPlayer(audioUnits: Array<AudioUnit>) {
+    if (this.playStateControlService.getPlayState()) {
+      this.playStateControlService.emitPlayState(false);
+    }
+    // this.loader.close();
+    if(audioUnits.length > 0) {
+      this.createWavesurferObj();
+      this.loadPlayAudio(audioUnits[0].audioUnitID);
     }
   }
 

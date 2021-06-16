@@ -44,7 +44,7 @@ export class LayoutService {
 
     this.router.events.subscribe((routerEvent: RouterEvent) => {
       if (routerEvent instanceof NavigationEnd) {
-        switch (routerEvent.url) {
+        switch (routerEvent.urlAfterRedirects) {
           case '/licensing/sample-market':
             this.layoutConf.footerFixed = true;
             break;
@@ -67,6 +67,9 @@ export class LayoutService {
               this.layoutConf.footerFixed = true;
               break;
               case '/profile/overview':
+              this.layoutConf.footerFixed = true;
+              break;
+              case '/profile/my-licenses/extended-licenses':
               this.layoutConf.footerFixed = true;
               break;
           default:

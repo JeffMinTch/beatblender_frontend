@@ -1,0 +1,6 @@
+<div fxLayout fxLayoutAlign="center center" appIconButton [iconSize]="iconSize"  class="icon-button">
+    <mat-icon [svgIcon]="iconName" *ngIf="svgIcon; else matIcon"></mat-icon>
+    <ng-template #matIcon>
+        <mat-icon inline="true" [color]="color">{{iconName}}</mat-icon>
+    </ng-template>
+</div>

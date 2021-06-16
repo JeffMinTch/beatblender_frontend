@@ -1,4 +1,5 @@
 export enum AudioUnitType {
     Sample,
-    Track
+    Track,
+    AudioUnit
 }
