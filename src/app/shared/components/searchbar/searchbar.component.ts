@@ -5,10 +5,9 @@ import { SampleLicensingMarketService } from '../../../views/licensing/sample-li
 import { AudioWebService } from './../../services/web-services/audio-web.service';
 import { Component, ElementRef, Input, OnInit, Output, ViewChild, EventEmitter, HostListener } from '@angular/core';
 import { MatOption, MatOptionSelectionChange } from '@angular/material/core';
-import { MatSidenav } from '@angular/material/sidenav';
 import { Sample } from 'app/shared/models/sample.model';
 import { Subject } from 'rxjs';
-import { map, debounceTime, skipWhile, skipUntil } from 'rxjs/operators';
+import { map, skipWhile } from 'rxjs/operators';
 import { MatAutocomplete, MatAutocompleteTrigger, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { Track } from 'app/shared/models/track.model';
 import { SamplePage } from 'app/shared/models/sample-page.model';
@@ -31,6 +30,7 @@ export class SearchbarComponent implements OnInit {
   @Input() pageSize: number;
   @Input() searchForm: FormGroup;
   @Input() type: 'track' | 'sample';
+  @Input() extraButton: boolean = true;
 
   @Output() pageChange = new EventEmitter<number>();
   @Output() countChange = new EventEmitter<number>();

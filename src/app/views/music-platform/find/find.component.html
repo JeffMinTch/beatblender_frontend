@@ -2,7 +2,7 @@
     <app-searchbar [searchForm]="searchForm" (searchRequest)="filterTracks()"
         (searchStringChange)="changeSearchString($event)" (pageChange)="changePage($event)"
         (countChange)="changeCount($event)" (expandFilter)="toggleFilter($event)" (sidenavChange)="toggleSidenav()"
-        [sortBy]="sortBy" [page]="page" [pageSize]="pageSize" type="track" (applySuggestions)="applySuggestions($event)"></app-searchbar>
+        [sortBy]="sortBy" [page]="page" [pageSize]="pageSize" type="track" extraButton="false" (applySuggestions)="applySuggestions($event)"></app-searchbar>
     
 
     <!-- <table mat-table [dataSource]="dataSource" class="mat-elevation-z8"> -->

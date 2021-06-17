@@ -41,7 +41,7 @@
           </mat-autocomplete>
         </form>
       </div>
-      <button mat-stroked-button color="primary" style="height: 95%;" (click)="toggleFilter()">
+      <button *ngIf="extraButton === true" mat-stroked-button color="primary" style="height: 95%;" (click)="toggleFilter()">
         <mat-icon>filter_list</mat-icon> {{isFilterOpen ? 'Close' : 'Open'}} Filter
       </button>
     </div>

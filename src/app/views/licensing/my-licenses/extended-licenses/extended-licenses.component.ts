@@ -1,7 +1,6 @@
 import { MediaWebService } from './../../../../shared/services/web-services/media-web.service';
 import { FullLicenseResponse } from './../../../../shared/models/full-license-response.model';
 import { TrackResponse } from './../../../../shared/models/track-response.model';
-import { HttpErrorResponse } from '@angular/common/http';
 import { LicenseWebService } from './../../../../shared/services/web-services/license-web.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
@@ -9,10 +8,12 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { BasicLicense } from '../../../../shared/models/basic-license.model';
 import { Track } from 'app/shared/models/track.model';
-import { FullLicense } from 'app/shared/models/full-license.model';
 import { environment } from 'environments/environment';
 import {saveAs as importedSaveAs} from "file-saver";
 import { AudioService } from 'app/shared/services/audio.service';
+import { MatDialog } from '@angular/material/dialog';
+import { AppLoaderService } from 'app/shared/services/app-loader/app-loader.service';
+import { SimpleDialogComponent } from 'app/shared/components/dialogs/simple-dialog/simple-dialog.component';
 
 
 
@@ -41,7 +42,9 @@ export class ExtendedLicensesComponent implements OnInit {
   constructor(
     private licenseWebService: LicenseWebService,
     private mediaWebServce: MediaWebService,
-    private audioService: AudioService
+    private audioService: AudioService,
+    public dialog: MatDialog,
+    private loader: AppLoaderService,
   ) {
     
   }
@@ -100,7 +103,29 @@ export class ExtendedLicensesComponent implements OnInit {
 
 
   withdrawExtensionOption(track: Track) {
+      this.loader.open();
      this.licenseWebService.withdrawLicenseOption(track).subscribe((data) => {
+      this.loader.close();
+      const dialogRef = this.dialog.open(SimpleDialogComponent, {
+        width: '550px',
+        // data: {name: this.name, animal: this.animal}
+        data: {
+          title: 'Congratulations!',
+          firstParagraph: `Now you own a Full License for ${track.audioUnit.title}.`,
+          submitButton: 'Yes, Sir!',
+          // route: ''
+          // cancelButton: 'Stay here.'
+        },
+        // data: this.formsMap.get(item).controls['mixedIns'].value,
+        hasBackdrop: false
+      });
+
+      dialogRef.afterClosed().subscribe(result => {
+        console.log('The dialog was closed');
+        // this.router.navigate(['profile', 'my-licenses', 'basic-licenses']);
+        window.location.reload();
+        // this.animal = result;
+      });
       console.log(data);
      });       
   }

@@ -20,7 +20,8 @@
     <li *ngFor="let item of menuItems" appDropdownLink routerLinkActive="open">
       <div class="nav-item-sep" *ngIf="item.type === 'separator'">
         <!-- <mat-divider></mat-divider> -->
-        <span class="text-muted" style="font-size: 24px; font-family: 'Lazer84';">{{item.name | translate}}</span>
+        <!-- class="text-muted" -->
+        <span class="text-muted" [ngStyle]="setTitleColor()" style="font-size: 32px; font-family: 'Lazer84';">{{item.name | translate}}</span>
       </div>
       <div *ngIf="!item.disabled && item.type !== 'separator' && item.type !== 'icon'" class="lvl1">
         <a routerLink="/{{item.state}}" appDropdownToggle matRipple *ngIf="item.type === 'link'">

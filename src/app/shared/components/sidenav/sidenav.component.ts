@@ -8,9 +8,11 @@ export class SidenavComponent {
   @Input('items') public menuItems: any[] = [];
   @Input('hasIconMenu') public hasIconTypeMenuItem: boolean;
   @Input('iconMenuTitle') public iconTypeMenuTitle: string;
+  @Input('titleColor') public titleColor: 'primary' | 'accent';
 
-  constructor() {}
-  ngOnInit() {}
+
+  constructor() { }
+  ngOnInit() { }
 
   // Only for demo purpose
   addMenuItem() {
@@ -21,9 +23,24 @@ export class SidenavComponent {
       icon: 'done',
       state: 'material',
       sub: [
-        {name: 'SUBITEM', state: 'cards'},
-        {name: 'SUBITEM', state: 'buttons'}
+        { name: 'SUBITEM', state: 'cards' },
+        { name: 'SUBITEM', state: 'buttons' }
       ]
     });
+  }
+
+  setTitleColor() {
+    switch (this.titleColor) {
+      case 'primary':
+        return {
+          color: 'var(--primary-color)'
+        }
+      case 'accent':
+        return {
+          color: 'var(--accent-color)'
+        }
+      
+    }
+
   }
 }
