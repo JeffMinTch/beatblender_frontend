@@ -1,3 +1,4 @@
+import { AudioService } from 'app/shared/services/audio.service';
 import { MinMaxSlider } from '../../shared/models/min-max-slider.model';
 import { AudioWebService } from '../../shared/services/web-services/audio-web.service';
 import { Injectable, OnDestroy } from '@angular/core';
@@ -25,7 +26,6 @@ export interface RightSidenavData {
 )
 export class SampleLicensingMarketService implements OnDestroy {
 
-  public samplesLoading$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
 
   public toggleFilter$: BehaviorSubject<RightSidenavData> = new BehaviorSubject<RightSidenavData>({ toggleState: false, apply: SidenavContent.Filter });
   public sampleLicensingMarketDestroyed$: Subject<void> = new Subject<void>();
@@ -49,7 +49,8 @@ export class SampleLicensingMarketService implements OnDestroy {
 
   constructor(
     private audioWebService: AudioWebService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private audioService: AudioService
   ) {
   }
 
@@ -57,16 +58,14 @@ export class SampleLicensingMarketService implements OnDestroy {
     this.sampleLicensingMarketDestroyed$.next();
   }
 
-  emitSamplesLoading(value: boolean) {
-    this.samplesLoading$.next(value);
-  }
+  
 
   public initSamples(params): Observable<SamplePage> {
-    this.emitSamplesLoading(true);
+    this.audioService.emitAudioUnitsLoading(true);
     return this.audioWebService.getSamplePage(params).pipe(
       map((response: SamplePage) => {
         // console.log(response.audioFileResponse);
-        this.emitSamplesLoading(false);
+        this.audioService.emitAudioUnitsLoading(false);
         return response;
       })
     );

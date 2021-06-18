@@ -11,6 +11,7 @@ import { CurrentFile } from 'app/shared/models/current-file.model';
 import { AudioState } from 'app/shared/models/audio-state.model';
 import { map, share } from 'rxjs/operators';
 import { createTrue } from 'typescript';
+import { Track } from 'app/shared/models/track.model';
 
 @Component({
   selector: 'app-footer',
@@ -20,7 +21,7 @@ import { createTrue } from 'typescript';
 })
 export class FooterComponent implements OnInit, AfterViewInit {
 
-  private samples: Array<Sample>;
+  // private samples: Array<Sample>;
   private currentSampleID: string;
   isMuted: boolean = false;
   audioStateSubscription: Subscription;
@@ -28,10 +29,10 @@ export class FooterComponent implements OnInit, AfterViewInit {
   // samples$: Observable<Sample[]>;
   audioLoadCompleteSubscription: Subscription;
   public initIcons: boolean = false;
-
+  public audioUnits: Array<Sample | Track>; 
 
   constructor(
-    private audioService: AudioService,
+    public audioService: AudioService,
     public playStateControlService: PlayStateControlService,
     public changeDetectorRef: ChangeDetectorRef,
     public sampleLicensingMarketService: SampleLicensingMarketService,
@@ -56,11 +57,15 @@ export class FooterComponent implements OnInit, AfterViewInit {
       this.changeDetectorRef.detectChanges();
     });
 
-    this.sampleLicensingMarketService.samples$.pipe(
-      takeUntil(this.sampleLicensingMarketService.sampleLicensingMarketDestroyed$)
-    ).subscribe((samples: Array<Sample>) => {
-      this.samples = samples;
-      // this.changeDetectorRef.detectChanges();
+    // this.sampleLicensingMarketService.samples$.pipe(
+    //   takeUntil(this.sampleLicensingMarketService.sampleLicensingMarketDestroyed$)
+    // ).subscribe((samples: Array<Sample>) => {
+    //   this.samples = samples;
+    //   // this.changeDetectorRef.detectChanges();
+    // });
+
+    this.audioService.audioUnits$.subscribe((audioUnits) => {
+      this.audioUnits = audioUnits;
     });
 
    
@@ -110,7 +115,7 @@ export class FooterComponent implements OnInit, AfterViewInit {
 
   previousNext(buttonName) {
     let newActiveSampleIndex: number;
-    const activeSampleIndex: number = this.samples.findIndex(sample => sample.audioUnit.audioUnitID === this.currentSampleID);
+    const activeSampleIndex: number = this.audioUnits.findIndex(audioUnit => audioUnit.audioUnit.audioUnitID === this.currentSampleID);
     switch (buttonName) {
       case 'prev':
         newActiveSampleIndex = activeSampleIndex - 1;
@@ -119,8 +124,8 @@ export class FooterComponent implements OnInit, AfterViewInit {
         newActiveSampleIndex = activeSampleIndex + 1;
         break;
     }
-    this.loadAudio(this.samples[newActiveSampleIndex].audioUnit.audioUnitID);
-    this.playStateControlService.emitCurrentSampleID(this.samples[newActiveSampleIndex].audioUnit.audioUnitID);
+    this.loadAudio(this.audioUnits[newActiveSampleIndex].audioUnit.audioUnitID);
+    this.playStateControlService.emitCurrentSampleID(this.audioUnits[newActiveSampleIndex].audioUnit.audioUnitID);
     // this.playStateControlService.saveIDCurrentPlayElement(this.samples[newActiveSampleIndex].sampleID);
     this.changeDetectorRef.detectChanges();
   }
@@ -136,8 +141,8 @@ export class FooterComponent implements OnInit, AfterViewInit {
   }
 
   isFirst(): boolean {
-    if (this.samples) {
-      if (this.samples.findIndex(sample => sample.audioUnit.audioUnitID === this.currentSampleID)===0) {
+    if (this.audioUnits) {
+      if (this.audioUnits.findIndex(sample => sample.audioUnit.audioUnitID === this.currentSampleID)===0) {
         return true;
       } else {
         return false;
@@ -154,8 +159,8 @@ export class FooterComponent implements OnInit, AfterViewInit {
   }
 
   isLast():boolean {
-    if(this.samples) {
-      if(this.samples.findIndex(sample => sample.audioUnit.audioUnitID === this.currentSampleID) === this.samples.length -1) {
+    if(this.audioUnits) {
+      if(this.audioUnits.findIndex(sample => sample.audioUnit.audioUnitID === this.currentSampleID) === this.audioUnits.length -1) {
         return true;
       } else {
         return false;

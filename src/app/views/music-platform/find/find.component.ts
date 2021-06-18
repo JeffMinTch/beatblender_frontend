@@ -18,6 +18,7 @@ import { SearchFilterFormMap } from 'app/shared/models/search-filter-form-map.mo
 import { MinMaxSlider } from 'app/shared/models/min-max-slider.model';
 import { PaginationRequestParams } from 'app/shared/models/pagination-request-params.model';
 import { Selection } from 'app/shared/models/selection.model';
+import { Theme } from 'app/shared/enums/theme.enum';
 
 export interface PeriodicElement {
   name: string;
@@ -162,15 +163,17 @@ export class FindComponent implements OnInit {
   }
 
   public retrieveTracks(): void {
+    this.audioService.emitAudioUnitsLoading(true);
     const params = this.httpService.getRequestParams(this.sortBy, this.page, this.pageSize);
     this.loader.open();
     this.audioWebService.getTracksHome(params).subscribe((trackPage: TrackPage) => {
       const totalItems  = trackPage.totalItems;
       this.tracks = trackPage.tracks;
       this.count = totalItems;
-      this.audioService.initAudioPlayer(this.tracks.map((track) => track.audioUnit));
+      this.audioService.initAudioPlayer(this.tracks.map((track) => track.audioUnit), Theme.PRIMARY);
       this.playStateControlService.emitCurrentSampleID(this.tracks[0].audioUnit.audioUnitID);
-      
+      this.audioService.emitAudioUnits(this.tracks);
+      this.audioService.emitAudioUnitsLoading(false);
       // this.dataSource = new MatTableDataSource(tracks);
       this.loader.close();
     }, (error) => {
@@ -281,6 +284,7 @@ export class FindComponent implements OnInit {
 
   public filterTracks() {
     this.loader.open();
+    this.audioService.emitAudioUnitsLoading(true);
     this.audioWebService.filterTracks(
       // this.searchString,
       new HttpParams()
@@ -292,9 +296,10 @@ export class FindComponent implements OnInit {
       const totalItems  = trackPage.totalItems;
       this.tracks = trackPage.tracks;
       this.count = totalItems;
-      this.audioService.initAudioPlayer(this.tracks.map((track) => track.audioUnit));
+      this.audioService.initAudioPlayer(this.tracks.map((track) => track.audioUnit), Theme.PRIMARY);
       this.playStateControlService.emitCurrentSampleID(this.tracks[0].audioUnit.audioUnitID);
-      
+      this.audioService.emitAudioUnits(this.tracks);
+      this.audioService.emitAudioUnitsLoading(false);
       // this.dataSource = new MatTableDataSource(tracks);
       this.loader.close();
     }, (error) => {

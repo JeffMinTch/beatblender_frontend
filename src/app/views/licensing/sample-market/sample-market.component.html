@@ -3,11 +3,11 @@
   <div class="full-width">
     <!-- Search Form -->
     <!-- <router-outlet></router-outlet> -->
-    <app-searchbar type="sample" [searchForm]="searchForm" (searchRequest)="applyFilter()" (searchStringChange)="changeSearchString($event)" (pageChange)="changePage($event)" (countChange)="changeCount($event)" (expandFilter)="toggleFilter($event)" (sidenavChange)="toggleSidenav()" [sortBy]="sortBy" [page]="page" [pageSize]="pageSize"></app-searchbar>
+    <app-searchbar type="sample" [searchForm]="searchForm" (searchRequest)="applyFilter(0)" (searchStringChange)="changeSearchString($event)" (pageChange)="changePage($event)" (countChange)="changeCount($event)" (expandFilter)="toggleFilter($event)" (sidenavChange)="toggleSidenav()" [sortBy]="sortBy" [page]="pageNo" [pageSize]="pageSize"></app-searchbar>
     <!-- <mat-progress-bar color="primary" mode="determinate" value="100" class="mt-16"></mat-progress-bar> -->
     <!-- <mat-progress-bar *ngIf="!responseReceived" mode="query" class="mb-16"></mat-progress-bar> -->
     
-    <app-search-filter [searchFilterFormMap]="searchFilterFormMap" (filterFormChange)="applyFilter($event)" [isFilterOpen]="isFilterOpen"></app-search-filter>
+    <app-search-filter [searchFilterFormMap]="searchFilterFormMap" (filterFormChange)="applyFilter(0, $event)" [isFilterOpen]="isFilterOpen"></app-search-filter>
     <!-- <app-search-filter></app-search-filter> -->
     <!-- Products container -->
     <!-- <h2 style="color: var(--primary-color);">Sample Market</h2> -->
@@ -22,7 +22,7 @@
       </ng-container>
       <ng-container #product>
         <div fxLayout="row" class="product-wrap"
-          *ngFor="let sample of (sampleLicensingMarketService.samples$ | async) | paginate: { itemsPerPage: pageSize, currentPage: page, totalItems: count }; let i = index;"
+          *ngFor="let sample of (sampleLicensingMarketService.samples$ | async) | paginate: { itemsPerPage: pageSize, currentPage: pageNo, totalItems: count }; let i = index;"
           [@animate]="{value:'*',params:{delay: (i*300)+'ms', y:'300px'}}"
           >
           <!-- [@animate]="{value:'*',params:{delay: (i*50)+'ms', y:'50px'}}" -->
@@ -75,7 +75,7 @@
         </div>
       </ng-container>
 
-      <div class="products-pagination" *ngIf="count > 0">
+      <div class="products-pagination" *ngIf="count > pageSize">
         <!-- <pagination-controls (pageChange)="currentPage = $event"></pagination-controls> -->
         <pagination-controls (pageChange)="handlePageChange($event)"></pagination-controls>
       </div>

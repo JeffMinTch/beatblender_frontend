@@ -94,7 +94,7 @@
               type="button" 
               mat-icon-button 
               (click)="play()" 
-              [disabled]="sampleLicensingMarketService.samplesLoading$ | async"
+              [disabled]="audioService.audioUnitsLoading$ | async"
               onclick="this.blur()" 
               class="player-button">
         <mat-icon
@@ -125,20 +125,20 @@
           </button>
     </div>
     <div class="player-tools" fxFlex fxLayout="row nowrap" fxLayoutALign="start center">
-      <button mat-icon-button (click)="toggleMute()" [disabled]="sampleLicensingMarketService.samplesLoading$ | async" type="button" mat-icon-button
+      <button mat-icon-button (click)="toggleMute()" [disabled]="audioService.audioUnitsLoading$ | async" type="button" mat-icon-button
           onclick="this.blur()" class="mute-button" style="">
           <mat-icon inline="true" class="mute-icon" aria-hidden="false" aria-label="Example home icon">{{getMute() ? 'volume_off' : 'volume_mute'}}</mat-icon>
         </button>
     </div>
   </div>
-  <ng-container *ngFor="let sample of sampleLicensingMarketService.samples$ | async">
-    <div  *ngIf="sample?.audioUnit.audioUnitID === (playStateControlService.currentSampleID$ | async)" class="current-audio-container">
+  <ng-container *ngFor="let audioUnit of audioUnits">
+    <div  *ngIf="audioUnit?.audioUnit.audioUnitID === (playStateControlService.currentSampleID$ | async)" class="current-audio-container">
       <div fxLayoutAlign="center center">
-        <img class="" src="{{'http://localhost:9090/api/web/public/media/image/' + sample?.audioUnit.audioUnitID}}" alt="">
+        <img class="" src="{{'http://localhost:9090/api/web/public/media/image/' + audioUnit?.audioUnit.audioUnitID}}" alt="">
       </div>  
         <div class="current-audio-info" fxLayout="column">
-          <span fxLayout="row">{{sample?.audioUnit.artistAlias.artistName}}</span>
-          <span fxLayout="row">{{sample?.audioUnit.title}}</span>
+          <span fxLayout="row">{{audioUnit?.audioUnit.artistAlias.artistName}}</span>
+          <span fxLayout="row">{{audioUnit?.audioUnit.title}}</span>
         </div>
       </div>
     </ng-container>

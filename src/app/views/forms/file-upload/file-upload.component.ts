@@ -1,12 +1,10 @@
 import { SimpleInputDialogComponent } from './../../../shared/components/dialogs/simple-input-dialog/simple-input-dialog.component';
-import { config } from './../../../../config';
 import { SelectMixedinsDialogComponent } from './../../../shared/components/dialogs/select-mixedins-dialog/select-mixedins-dialog.component';
-import { AudioUnitType } from './../../../shared/enums/audio-unit-type.enums';
 import { environment } from './../../../../environments/environment.prod';
 import {OAuthService} from 'angular-oauth2-oidc';
 import {AudioService} from './../../../shared/services/audio.service';
-import {filter, skipWhile, takeUntil} from 'rxjs/operators';
-import {ChangeDetectorRef, Component, ElementRef, HostListener, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {filter, takeUntil} from 'rxjs/operators';
+import {ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {FileItem, FileUploader, FileUploaderOptions} from 'ng2-file-upload';
 import {BehaviorSubject, Observable, ReplaySubject, Subject} from 'rxjs';
@@ -25,6 +23,7 @@ import { AudioWebService } from 'app/shared/services/web-services/audio-web.serv
 import { HttpErrorResponse } from '@angular/common/http';
 import { MatOption } from '@angular/material/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { Theme } from 'app/shared/enums/theme.enum';
 @Component({
     selector: 'app-file-upload',
     templateUrl: './file-upload.component.html',
@@ -231,7 +230,7 @@ export class FileUploadComponent implements OnInit, OnDestroy {
         };
 
         setTimeout(() => {
-            this.audioService.createWavesurferObj();
+            this.audioService.createWavesurferObj(Theme.BODY);
         });
 
 

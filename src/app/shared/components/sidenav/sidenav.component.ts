@@ -8,7 +8,7 @@ export class SidenavComponent {
   @Input('items') public menuItems: any[] = [];
   @Input('hasIconMenu') public hasIconTypeMenuItem: boolean;
   @Input('iconMenuTitle') public iconTypeMenuTitle: string;
-  @Input('titleColor') public titleColor: 'primary' | 'accent';
+  @Input('titleColor') public titleColor: 'primary' | 'accent' | 'body';
 
 
   constructor() { }
@@ -39,7 +39,10 @@ export class SidenavComponent {
         return {
           color: 'var(--accent-color)'
         }
-      
+      case 'body':
+        return {
+          color: 'var(--body-color)'
+        }
     }
 
   }

@@ -174,7 +174,7 @@ export class SearchbarComponent implements OnInit {
     }, (error: HttpErrorResponse) => {
       if (error.status === 404) {
         this.suggestionsSubject$.next([]);
-        this.matSearchInputTrigger.openPanel();
+        this.matSearchInputTrigger.closePanel();
       }
     });
   }

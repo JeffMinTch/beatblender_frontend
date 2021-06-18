@@ -1,21 +1,16 @@
-import { environment } from 'environments/environment';
-import { Injectable, ViewChild, ElementRef, Renderer2, RendererFactory2, ChangeDetectorRef, OnDestroy, OnInit } from '@angular/core';
-import { Subject, Observable, BehaviorSubject, Subscription } from 'rxjs';
+import { Theme } from './../enums/theme.enum';
+import { Injectable, OnDestroy } from '@angular/core';
+import { Subject, Observable, Subscription, BehaviorSubject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import * as moment from "moment";
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { PlayStateControlService } from './play-state-control.service';
 import { Sample } from '../models/sample.model';
 import { CurrentFile } from '../models/current-file.model';
-// import { FileUploadService } from './file-upload.service';
 import WaveSurfer from 'wavesurfer.js/dist/wavesurfer.js';
 import CursorPlugin from 'wavesurfer.js/dist/plugin/wavesurfer.cursor.js';
-import TimelinePlugin from 'wavesurfer.js/dist/plugin/wavesurfer.timeline.js';
 import { AudioState } from '../models/audio-state.model';
 import { ComponentCommunicationService } from './component-communication.service';
-import { MatSliderChange } from '@angular/material/slider';
-import { Track } from '../models/track.model';
 import { AudioUnit } from '../models/audio-unit.model';
+import { Track } from '../models/track.model';
 
 @Injectable({
   providedIn: 'root'
@@ -25,38 +20,30 @@ export class AudioService implements OnDestroy {
   public audioServiceDestroyed$: Subject<void> = new Subject<void>();
   private subjectAudioFile = new Subject<Array<any>>();
   audioFileEmitted$ = this.subjectAudioFile.asObservable();
+
   audioFileSubscription: Subscription;
   currentTime: number;
   duration: number;
   private _playState: boolean;
 
+  public audioUnitSubject: Subject<Array<Sample | Track>> = new Subject<Array<Sample | Track>>();
+  audioUnits$: Observable<Array<Sample | Track>> = this.audioUnitSubject.asObservable();
+  public emitAudioUnits(audioUnits: Array<Sample | Track>): void {
+    this.audioUnitSubject.next(audioUnits);
+  }
+
+  public audioUnitsLoading$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
+  
 
 
   constructor(
     private compComService: ComponentCommunicationService,
     private playStateControlService: PlayStateControlService,
-    // public changeDetectorRef: ChangeDetectorRef
   ) {
-    // this.createWavesurferObj();
-    // this.audioFileSubscription = this.audioFileEmitted$.subscribe(audioContainerArray => {
-    //   let file = audioContainerArray[0];
-    //   let index = audioContainerArray[1];
-    //   const currentFile = this.playStateControlService.getCurrentFile();
-    //   if (currentFile.index === audioContainerArray[1]) {
-    //     this.play();
-    //   } else {
-    //     this.playStateControlService.updateCurrentFile(file, index);
-    //     // this.wavesurfer.destroy();
-    //     // this.createWavesurferObj();
-    //     this.loadPlayAudio(audioContainerArray[0].userName, audioContainerArray[0].url);
-    //   }
-    // });
-
     this.playStateControlService.playState$.pipe(
       takeUntil(this.playStateControlService.playStateServiceDestroyed$)
     ).subscribe((playState: boolean) => {
       this.playState = playState;
-      // this.changeDetectorRef.detectChanges();
     });
   }
 
@@ -68,22 +55,17 @@ export class AudioService implements OnDestroy {
   public wavesurfer;
 
   public isPlayerReady = false;
-  primaryColor: string = window.getComputedStyle(document.documentElement).getPropertyValue('--primary');
-  whiteColor: string = window.getComputedStyle(document.documentElement).getPropertyValue('--white');
-  whiteSuperColor: string = window.getComputedStyle(document.documentElement).getPropertyValue('--white-super');
-
-  themeColor: string = window.getComputedStyle(document.documentElement).getPropertyValue('--theme');
-  themeLightColor: string = window.getComputedStyle(document.documentElement).getPropertyValue('--theme-super');
-  themeDarkColor: string = window.getComputedStyle(document.documentElement).getPropertyValue('--theme-dark');
-  accentColor: string = window.getComputedStyle(document.documentElement).getPropertyValue('--accent');
-
-
   onReadylistener;
   counter: number = 0;
   public audioState = new Subject<any>();
   audioState$ = this.audioState.asObservable();
+
   emitAudioState(state: AudioState) {
     this.audioState.next(state);
+  }
+
+  emitAudioUnitsLoading(value: boolean) {
+    this.audioUnitsLoading$.next(value);
   }
 
 
@@ -97,15 +79,28 @@ export class AudioService implements OnDestroy {
 
   stop() {
     this.wavesurfer.stop();
-
   }
 
 
 
-  createWavesurferObj() {
+  createWavesurferObj(theme: Theme) {
     // this.wavesurfer = null;
     if (this.wavesurfer) {
       this.wavesurfer.destroy();
+    }
+    let progressColor: string;
+    switch(theme) {
+      case Theme.PRIMARY:
+        progressColor = window.getComputedStyle(document.documentElement).getPropertyValue('--primary-color');
+        break;
+      case Theme.ACCENT:
+        progressColor = window.getComputedStyle(document.documentElement).getPropertyValue('--accent-color');
+        break;
+      case Theme.BODY:
+        progressColor = window.getComputedStyle(document.documentElement).getPropertyValue('--body-color');
+        break;  
+      default:
+        progressColor = window.getComputedStyle(document.documentElement).getPropertyValue('--body-color');  
     }
     this.wavesurfer = WaveSurfer.create({
       container: '#waveform',
@@ -124,8 +119,8 @@ export class AudioService implements OnDestroy {
       // // progressColor: '#03a9f4',
       // #051136
       // #0081ff
-
-      progressColor: '#d69090',
+      // '#d69090'
+      progressColor: progressColor,
       responsive: true,
       // waveColor: 'transparent',
       waveColor: 'rgb(202,202,202)',
@@ -273,25 +268,25 @@ export class AudioService implements OnDestroy {
     return this.wavesurfer.getCurrentTime();
   }
 
-  toggle = false;
-  setWaveColor(color: string) {
-    if (this.toggle) {
-      this.wavesurfer.setProgressColor(this.primaryColor);
-      this.toggle = !this.toggle;
-    } else {
-      this.wavesurfer.setProgressColor(color);
-      this.toggle = !this.toggle;
+  // toggle = false;
+  // setWaveColor(color: string) {
+  //   if (this.toggle) {
+  //     this.wavesurfer.setProgressColor(this.primaryColor);
+  //     this.toggle = !this.toggle;
+  //   } else {
+  //     this.wavesurfer.setProgressColor(color);
+  //     this.toggle = !this.toggle;
 
-    }
-  }
+  //   }
+  // }
 
-  initAudioPlayer(audioUnits: Array<AudioUnit>) {
+  initAudioPlayer(audioUnits: Array<AudioUnit>, theme: Theme) {
     if (this.playStateControlService.getPlayState()) {
       this.playStateControlService.emitPlayState(false);
     }
     // this.loader.close();
     if(audioUnits.length > 0) {
-      this.createWavesurferObj();
+      this.createWavesurferObj(theme);
       this.loadPlayAudio(audioUnits[0].audioUnitID);
     }
   }

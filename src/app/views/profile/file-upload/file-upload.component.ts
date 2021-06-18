@@ -9,6 +9,7 @@ import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { SelectMixedinsDialogComponent } from 'app/shared/components/dialogs/select-mixedins-dialog/select-mixedins-dialog.component';
 import { SimpleInputDialogComponent } from 'app/shared/components/dialogs/simple-input-dialog/simple-input-dialog.component';
+import { Theme } from 'app/shared/enums/theme.enum';
 import { AudioState } from 'app/shared/models/audio-state.model';
 import { Sample } from 'app/shared/models/sample.model';
 import { AudioService } from 'app/shared/services/audio.service';
@@ -236,7 +237,7 @@ export class FileUploadComponent implements OnInit, OnDestroy {
         };
 
         setTimeout(() => {
-            this.audioService.createWavesurferObj();
+            this.audioService.createWavesurferObj(Theme.PRIMARY);
         });
 
         //   (this.formsMap.get(item).controls['artistPseudonymGroup'] as FormGroup).controls['artistPseudonym']

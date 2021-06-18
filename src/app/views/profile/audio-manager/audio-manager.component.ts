@@ -1,6 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit, ViewChildren, QueryList, AfterViewInit } from '@angular/core';
 import { MatExpansionPanel } from '@angular/material/expansion';
+import { Theme } from 'app/shared/enums/theme.enum';
 import { Sample } from 'app/shared/models/sample.model';
 import { AppLoaderService } from 'app/shared/services/app-loader/app-loader.service';
 import { AudioService } from 'app/shared/services/audio.service';
@@ -48,7 +49,7 @@ export class AudioManagerComponent implements OnInit, AfterViewInit {
         }
         this.loader.close();
         if(samples.length > 0) {
-          this.audioService.createWavesurferObj();
+          this.audioService.createWavesurferObj(Theme.PRIMARY);
           this.audioService.loadPlayAudio(samples[0].sampleID);
         }
         return samples;

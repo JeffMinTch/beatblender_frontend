@@ -32,7 +32,7 @@ import { SamplePage } from '../../../shared/models/sample-page.model';
 import { PaginationRequestParams } from 'app/shared/models/pagination-request-params.model';
 import { HttpService } from 'app/shared/services/web-services/http.service';
 import { AudioUnitType } from 'app/shared/enums/audio-unit-type.enums';
-// import { MinMaxSlider } from 'app/shared/models/min-max-slider.model';
+import { Theme } from 'app/shared/enums/theme.enum';
 
 
 @Component({
@@ -42,48 +42,35 @@ import { AudioUnitType } from 'app/shared/enums/audio-unit-type.enums';
   animations: [egretAnimations],
   // tslint:disable-next-line:use-component-view-encapsulation
   encapsulation: ViewEncapsulation.None,
-  // styleUrls: ['basic-licenses.component.scss']
 })
 export class SampleMarketComponent implements OnInit, AfterViewInit {
   public isFilterOpen: boolean = false;
   public isSideNavOpen: boolean;
   public viewMode = 'grid-view';
   public currentPage: any;
-  // @ViewChildren('audioSlider', { read: MatSlider }) private audioSliders: QueryList<MatSlider>;
-  // @ViewChild('featuredImage', { static: false, read: ElementRef }) private featuredImage: ElementRef;
-  // @ViewChildren('.mat-slider-track-background', { read: ElementRef }) private matSliderTrackBackground: QueryList<ElementRef>;
 
 
   private _playState: boolean;
   private _currentSampleID: string;
-  // public categories$: Observable<any>;
   public genres$: Observable<string[]>;
   public activeCategory = 'all';
   public activeGenre = 'all';
-  // public activeGenre: string ='all;'
   public sampleSearchQueries: SampleSearchQuery[];
-  // public filterForm: FormGroup;
   public searchForm: FormGroup;
   searchString: string;
   selectionList: Array<Selection>;
-  minMaxList: Array<MinMaxSlider>
-
+  minMaxList: Array<MinMaxSlider>;
   public searchFilterFormMap: SearchFilterFormMap = {
     selectionFormMap: null,
     minMaxSliderFormMap: null
   };
 
   responseReceived: boolean = true;
-  // filterFormMap: Map<string, Array<Selection> | Array<MinMaxSlider>>;
-  // selectionFormMap: Map<FormControl, Selection> = new Map<FormControl, Selection>();
-  // minMaxSliderFormMap: Map<FormControl, MinMaxSlider> = new Map<FormControl, MinMaxSlider>();
-
   currentTime: number;
   duration: number;
 
-
-  page: number = 0;
-  pageSize: number = 12;
+  pageNo: number = 0;
+  pageSize: number = 1;
   sortBy: string = 'title';
   count: number = 0;
 
@@ -102,8 +89,6 @@ export class SampleMarketComponent implements OnInit, AfterViewInit {
   categoryList: Array<string>;
   selections: Array<Selection> = new Array<Selection>();
   // public songKeyList: string[] = ['A major', 'A minor', 'A flat major', 'A flat minor', 'B major', 'B minor', 'B flat major', 'B flat minor', 'C major', 'C minor', 'D major', 'D minor', 'D flat major', 'D flat minor', 'E major', 'E minor', 'E flat major', 'E flat minor', 'F major', 'F minor', 'G major', 'G minor', 'G flat major', 'G flat minor'];
-  // public bpmMinMaxValues: string[];
-  // public yearMinMaxValues: string[];
 
 
   // public mockCategories: string[] = ['Trending', 'New', 'Low Sample Price', 'Bargain', 'High Option Price', 'Trending', 'Bargain', 'Low Sample Price', 'New'];
@@ -135,16 +120,9 @@ export class SampleMarketComponent implements OnInit, AfterViewInit {
 
 
     this.sampleLicensingMarketService.samples$.pipe(
-      // debounceTime(500),
       map((samples: Array<Sample>) => {
-        if (this.playState) {
-          this.playStateControlService.emitPlayState(false);
-        }
         this.loader.close();
-        if (samples.length > 0) {
-          this.audioService.createWavesurferObj();
-          this.audioService.loadPlayAudio(samples[0].audioUnit.audioUnitID);
-        }
+        this.audioService.initAudioPlayer(samples.map(sample => sample.audioUnit), Theme.ACCENT);
         return samples;
       }),
       takeUntil(this.sampleLicensingMarketService.sampleLicensingMarketDestroyed$),
@@ -154,17 +132,12 @@ export class SampleMarketComponent implements OnInit, AfterViewInit {
         this.initCurrentFile(samples[0].audioUnit.audioUnitID);
       }
     });
-
-
     this.retrieveSamples();
-
-    // this.suggestionsSubject$.subscribe((suggestions: Array<Sample>) => {
-    //   this.suggestions = suggestions;
-    // });
   }
 
   public retrieveSamples(): void {
-    const params = this.httpService.getRequestParams(this.sortBy, this.page, this.pageSize);
+    const params = this.httpService.getRequestParams(this.sortBy, this.pageNo, this.pageSize);
+    this.audioService.emitAudioUnitsLoading(true);
     this.sampleLicensingMarketService.initSamples(params).pipe(
       share(),
       map((res: SamplePage) => { return res })
@@ -173,6 +146,7 @@ export class SampleMarketComponent implements OnInit, AfterViewInit {
       console.log(response);
       const { samples, totalItems } = response;
       this.count = totalItems;
+      this.audioService.emitAudioUnitsLoading(false);
       this.sampleLicensingMarketService.samples$.next(samples);
 
     }, (error) => {
@@ -186,41 +160,25 @@ export class SampleMarketComponent implements OnInit, AfterViewInit {
     });
   }
 
-
-
-
-
-
-
   ngOnInit() {
     this.searchFilterFormMap.selectionFormMap = new Map<FormControl, Selection>();
     this.searchFilterFormMap.minMaxSliderFormMap = new Map<FormGroup, MinMaxSlider>();
-
-
     this.sampleLicensingMarketService.getFilterFormData().subscribe((filterFormMap) => {
-      // this.filterFormMap = filterFormMap;
-      // const filterForm: FormGroup = this.buildFilterForm()
-
       this.selectionList = filterFormMap.get('selection') as Array<Selection>;
       this.minMaxList = filterFormMap.get('minMaxSlider') as Array<MinMaxSlider>;
-
       this.initSearchFilterFormMap(this.selectionList, this.minMaxList);
     });
-
+    this.audioService.emitAudioUnitsLoading(true);
     this.audioWebService.searchFilterSubject$.pipe(
-      // throttle()
-
       debounceTime(500)
-
     ).subscribe((response: SamplePage) => {
-
       this.responseReceived = true;
       console.log('Apply')
       const { samples, totalItems } = response;
       this.count = totalItems;
-
+      this.audioService.emitAudioUnits(samples);
+      this.audioService.emitAudioUnitsLoading(false);
       this.sampleLicensingMarketService.samples$.next(samples);
-
     }
     );
 
@@ -477,15 +435,15 @@ export class SampleMarketComponent implements OnInit, AfterViewInit {
     this.sampleLicensingMarketService.toggleFilter$.next({ toggleState: true, apply: SidenavContent.Filter });
   }
 
-  handlePageChange(event: number) {
-    console.log(event);
-    this.page = event;
-    this.applyFilter(this.searchFilterFormMap);
+  handlePageChange(pageNo: number) {
+    console.log(pageNo);
+    this.pageNo = pageNo;
+    this.applyFilter(this.pageNo - 1, this.searchFilterFormMap);
     // this.retrieveSamples();
   }
 
-  changePage(page: number) {
-    this.page = page;
+  changePage(pageNo: number) {
+    this.pageNo = pageNo;
     this.initSearchFilterFormMap(this.selectionList, this.minMaxList);
 
   }
@@ -511,7 +469,7 @@ export class SampleMarketComponent implements OnInit, AfterViewInit {
     // this.sideNav.opened = !this.sideNav.opened;
   }
 
-  public applyFilter(searchFilterFormMap?: SearchFilterFormMap) {
+  public applyFilter(pageNo: number, searchFilterFormMap?: SearchFilterFormMap) {
     if (searchFilterFormMap) {
       this.searchFilterFormMap = searchFilterFormMap;
     }
@@ -523,7 +481,7 @@ export class SampleMarketComponent implements OnInit, AfterViewInit {
     // }
     this.responseReceived = false;
     // (this.searchForm.controls['search'] as FormControl).value.title as string
-    this.audioWebService.applySearchFilter(this.searchString, this.searchFilterFormMap, AudioUnitType.Sample ,new PaginationRequestParams(this.sortBy, 0, this.pageSize));
+    this.audioWebService.applySearchFilter(this.searchString, this.searchFilterFormMap, AudioUnitType.Sample ,new PaginationRequestParams(this.sortBy, pageNo, this.pageSize));
     // .pipe(
     //   debounceTime(5000)
     // )

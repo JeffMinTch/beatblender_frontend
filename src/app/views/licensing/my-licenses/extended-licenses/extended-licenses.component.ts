@@ -14,6 +14,7 @@ import { AudioService } from 'app/shared/services/audio.service';
 import { MatDialog } from '@angular/material/dialog';
 import { AppLoaderService } from 'app/shared/services/app-loader/app-loader.service';
 import { SimpleDialogComponent } from 'app/shared/components/dialogs/simple-dialog/simple-dialog.component';
+import { Theme } from 'app/shared/enums/theme.enum';
 
 
 
@@ -65,7 +66,7 @@ export class ExtendedLicensesComponent implements OnInit {
       // alert("Full Licenses received");
       console.log(fullLicenses);
 
-      this.audioService.createWavesurferObj();
+      this.audioService.createWavesurferObj(Theme.BODY);
           this.audioService.loadPlayAudio(fullLicenses[0].fullLicense.track.audioUnit.audioUnitID);
 
       this.fullLicenseDataSource = new MatTableDataSource<FullLicenseResponse>(fullLicenses);

@@ -12,6 +12,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { egretAnimations } from 'app/shared/animations/egret-animations';
 import { MatDialog } from '@angular/material/dialog';
 import { HttpService } from 'app/shared/services/web-services/http.service';
+import { Theme } from 'app/shared/enums/theme.enum';
 
 @Component({
   selector: 'app-playlists',
@@ -53,7 +54,7 @@ export class PlaylistsComponent implements OnInit {
         }
         this.loader.close();
         if(samples.length > 0) {
-          this.audioService.createWavesurferObj();
+          this.audioService.createWavesurferObj(Theme.PRIMARY);
           this.audioService.loadPlayAudio(samples[0].sampleID);
         }
         return samples;

@@ -15,14 +15,14 @@
     <!-- <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr> -->
     <!-- <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr> -->
     <!-- <app-playlist-toolbar></app-playlist-toolbar> -->
-    <h1 *ngIf="searchString" class="pl-16">Search: {{searchString}}</h1>
+    <!-- <h1 *ngIf="searchString" class="pl-16">Search: {{searchString}}</h1> -->
     <div fxLayout fxLayoutAlign="space-between center">
         <app-playlist-toolbar></app-playlist-toolbar>
         <app-search-filter [searchFilterFormMap]="searchFilterFormMap" (filterFormChange)="applyFilter($event)"
         [isFilterOpen]="true"></app-search-filter>
     </div>
 
-    <div fxLayout style="height: 64px;">
+    <div fxLayout style="height: 64px;" *ngIf="tracks">
         <div fxFlex="64px"></div>
         <div fxFlex fxLayout class="ml-32">
             <!-- <div fxFlex fxLayoutAlign="center center">
